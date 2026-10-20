@@ -6,82 +6,60 @@
 <meta name="theme-color" content="#100909">
 <title>MKHost — Kartaviy</title>
 <style>
-:root {
-  --bg:#100909;
-  --panel:#1b1111;
-  --red:#e32636;
-  --red2:#ff4655;
-  --text:#f6eeee;
-  --muted:#a99b9b;
-  --line:#382222;
+:root{
+  --bg:#100909;--panel:#1b1111;--red:#e32636;
+  --red2:#ff4655;--text:#f6eeee;--muted:#a99b9b;
+  --line:#382222;--green:#35d58a;--yellow:#ffbd45;
 }
 *{box-sizing:border-box}
-body{
-  margin:0;background:var(--bg);color:var(--text);
-  font-family:Arial,Helvetica,sans-serif;
-}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif}
 button{font:inherit;cursor:pointer}
-header{
-  border-bottom:1px solid var(--line);
-  padding:17px 5%;display:flex;align-items:center;
-  justify-content:space-between;gap:12px;
-  background:#160b0b;position:sticky;top:0;z-index:5;
-}
+header{border-bottom:1px solid var(--line);padding:17px 5%;display:flex;align-items:center;justify-content:space-between;gap:12px;background:#160b0b;position:sticky;top:0;z-index:5}
 .logo{font-weight:900;font-size:23px;letter-spacing:1px}
 .logo span{color:var(--red2)}
 .tag{color:var(--muted);font-size:12px;margin-top:4px}
 .wrap{max-width:1100px;margin:auto;padding:25px 16px 45px}
-.hero{
-  padding:30px 24px;border:1px solid var(--line);
-  border-radius:18px;
-  background:radial-gradient(ellipse at top right,#491419 0%,#211010 40%,#171010 78%);
-}
+.hero{padding:30px 24px;border:1px solid var(--line);border-radius:18px;background:radial-gradient(ellipse at top right,#491419 0%,#211010 40%,#171010 78%)}
 .eyebrow{color:#ff6873;font-size:12px;font-weight:bold;letter-spacing:2px}
 h1{font-size:clamp(30px,6vw,48px);margin:12px 0}
 p{line-height:1.5}
 .muted{color:var(--muted)}
 .iprow{display:flex;gap:9px;flex-wrap:wrap;margin-top:22px}
-.ip{
-  flex:1;min-width:190px;background:#0e0909;border:1px solid #503030;
-  padding:14px;border-radius:10px;font-weight:bold;overflow-wrap:anywhere;
-}
-.btn{
-  border:0;border-radius:10px;padding:13px 16px;
-  background:var(--red);color:white;font-weight:bold;
-}
+.ip{flex:1;min-width:190px;background:#0e0909;border:1px solid #503030;padding:14px;border-radius:10px;font-weight:bold;overflow-wrap:anywhere}
+.btn{border:0;border-radius:10px;padding:13px 16px;background:var(--red);color:white;font-weight:bold}
 .btn:hover{background:var(--red2)}
 .btn.secondary{background:#302020;border:1px solid #503030}
 .btn:disabled{opacity:.6;cursor:wait}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:17px}
-.card{
-  min-width:0;background:var(--panel);border:1px solid var(--line);
-  border-radius:15px;padding:20px;
-}
+.card{min-width:0;background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:20px}
 .card h2{font-size:18px;margin:0 0 17px}
 .statusline{display:flex;align-items:center;gap:10px}
 .dot{width:10px;height:10px;border-radius:50%;background:#777;flex-shrink:0}
-.dot.online{background:#35d58a;box-shadow:0 0 12px #35d58a66}
-.dot.offline{background:#ff4555}
-.dot.checking{background:#ffbd45;box-shadow:0 0 10px #ffbd4566}
+.dot.online{background:var(--green);box-shadow:0 0 12px #35d58a66}
+.dot.offline{background:var(--red2)}
+.dot.checking{background:var(--yellow);box-shadow:0 0 10px #ffbd4566}
 .big{font-size:27px;font-weight:800;margin-top:14px}
-.small{font-size:13px;color:var(--muted);margin-top:7px}
-.players{display:flex;flex-direction:column;gap:8px}
-.player{
-  background:#100b0b;padding:11px 12px;border-radius:9px;
-  display:flex;align-items:center;gap:10px;overflow-wrap:anywhere;
-  word-break:break-word;
-}
+.small{font-size:13px;color:var(--muted);margin-top:7px;line-height:1.5}
+.players,.history{display:flex;flex-direction:column;gap:8px}
+.player,.history-item{background:#100b0b;padding:11px 12px;border-radius:9px;display:flex;align-items:flex-start;gap:10px;overflow-wrap:anywhere;word-break:break-word}
 .playericon{color:var(--red2)}
-.empty{
-  padding:13px;border:1px dashed #493030;border-radius:9px;
-  color:var(--muted);font-size:14px;line-height:1.5;
-}
+.empty{padding:13px;border:1px dashed #493030;border-radius:9px;color:var(--muted);font-size:14px;line-height:1.5}
+.history-item{display:block;border-left:3px solid #493030}
+.history-item.started{border-left-color:var(--green)}
+.history-item.stopped{border-left-color:var(--red2)}
+.history-title{font-weight:bold;margin-bottom:5px}
+.history-date{font-size:12px;color:var(--muted);line-height:1.5}
+.section-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:15px}
+.section-head h2{margin:0}
+.btn.mini{padding:8px 10px;font-size:12px}
+.notice{margin-top:12px;padding:12px;background:#100b0b;border-radius:9px;color:var(--muted);font-size:12px;line-height:1.5}
 footer{text-align:center;padding:20px;color:#887777;font-size:12px}
 @media(max-width:650px){
   .grid{grid-template-columns:1fr}
   header{padding:14px 16px}
   .wrap{padding-top:16px}
   .hero{padding:23px 17px}
+  .btn{padding:12px 14px}
 }
 </style>
 </head>
@@ -93,17 +71,19 @@ footer{text-align:center;padding:20px;color:#887777;font-size:12px}
   </div>
   <button class="btn secondary" id="refreshBtn" type="button">↻ Обновить</button>
 </header>
+
 <main class="wrap">
   <section class="hero">
     <div class="eyebrow">ТВОЙ МИР. ТВОИ ПРАВИЛА.</div>
     <h1>Kartaviy <span style="color:#ff4655">Server</span></h1>
     <p class="muted">Присоединяйся к нашему Minecraft-серверу.</p>
-<div class="iprow">
-  <div class="ip" id="serverIp">Kartaviy.aternos.me</div>
-  <button class="btn" id="copyBtn" type="button">Копировать IP</button>
-</div>
-<div class="small" id="copyStatus">Java Edition · Адрес сервера</div>
+    <div class="iprow">
+      <div class="ip" id="serverIp">Kartaviy.aternos.me</div>
+      <button class="btn" id="copyBtn" type="button">Копировать IP</button>
+    </div>
+    <div class="small" id="copyStatus">Java Edition · Адрес сервера</div>
   </section>
+
   <div class="grid">
     <section class="card">
       <h2>Статус сервера</h2>
@@ -114,27 +94,377 @@ footer{text-align:center;padding:20px;color:#887777;font-size:12px}
       <div class="big" id="playerCount">— / —</div>
       <div class="small">Игроков онлайн</div>
       <div class="small" id="versionText">Версия: проверяется…</div>
-      <div class="small" id="updatedText">Ожидание ответа сервера</div>
+      <div class="small" id="updatedText">Ожидание ответа серверов проверки</div>
+      <div class="small" id="sourceText">Проверяем двумя сервисами…</div>
     </section>
-<section class="card">
-  <h2>Игроки онлайн</h2>
-  <div class="players" id="playersList">
-    <div class="empty">Загружаем список игроков…</div>
+
+    <section class="card">
+      <h2>Игроки онлайн</h2>
+      <div class="players" id="playersList">
+        <div class="empty">Загружаем список игроков…</div>
+      </div>
+    </section>
   </div>
-</section>
-  </div>
+
+  <section class="card" style="margin-top:17px">
+    <div class="section-head">
+      <h2>История работы сервера</h2>
+      <button class="btn secondary mini" id="clearHistoryBtn" type="button">Очистить</button>
+    </div>
+    <div class="grid" style="margin-top:0">
+      <div>
+        <div class="small">Текущий сеанс</div>
+        <div class="big" id="currentDuration">—</div>
+        <div class="small" id="sessionText">Ожидаем подтверждения статуса</div>
+      </div>
+      <div>
+        <div class="small">Последний запуск</div>
+        <div style="font-weight:bold;margin-top:14px" id="lastStart">Пока неизвестен</div>
+        <div class="small" id="lastDuration">Длительность: —</div>
+      </div>
+    </div>
+    <div class="history" id="historyList" style="margin-top:18px">
+      <div class="empty">История начнёт собираться после подтверждённых проверок.</div>
+    </div>
+    <div class="notice">
+      История хранится в браузере этого устройства. Сайт фиксирует изменения статуса только во время открытой страницы. Из-за интервалов проверки время запуска и остановки может быть приблизительным. История не содержит данные о запусках до установки этого кода.
+    </div>
+  </section>
 </main>
+
 <footer>MKHost © 2026 · Kartaviy</footer>
+
 <script>
 "use strict";
+
 const SERVER_IP = "Kartaviy.aternos.me";
-const STATUS_API =
+const API_URLS = [
   "https://api.mcstatus.io/v2/status/java/" +
-  encodeURIComponent(SERVER_IP) +
-  "?timeout=10&query=false";
+    encodeURIComponent(SERVER_IP) + "?timeout=10&query=false",
+  "https://api.mcsrvstat.us/3/" + encodeURIComponent(SERVER_IP)
+];
+
+const HISTORY_KEY = "mkhost_kartaviy_history_v1";
+const SESSION_KEY = "mkhost_kartaviy_session_v1";
 const $ = id => document.getElementById(id);
-let isChecking = false;
-let lastSuccessfulStatus = null;
+
+let checking = false;
+let previousStatus = null;
+let sessionStarted = null;
+let history = loadHistory();
+
+function loadHistory() {
+  try {
+    const value = JSON.parse(localStorage.getItem(HISTORY_KEY) || "[]");
+    return Array.isArray(value) ? value : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveHistory() {
+  try {
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(history.slice(0, 50)));
+  } catch {}
+}
+
+function loadSession() {
+  try {
+    const value = JSON.parse(localStorage.getItem(SESSION_KEY) || "null");
+    if (value && Number.isFinite(value.startedAt)) return value;
+  } catch {}
+  return null;
+}
+
+function saveSession() {
+  try {
+    if (sessionStarted !== null) {
+      localStorage.setItem(SESSION_KEY, JSON.stringify({startedAt:sessionStarted}));
+    } else {
+      localStorage.removeItem(SESSION_KEY);
+    }
+  } catch {}
+}
+
+function formatDate(timestamp) {
+  if (!timestamp) return "Неизвестно";
+  return new Date(timestamp).toLocaleString("ru-RU", {
+    day:"2-digit",month:"2-digit",year:"numeric",
+    hour:"2-digit",minute:"2-digit",second:"2-digit"
+  });
+}
+
+function duration(ms) {
+  if (!Number.isFinite(ms) || ms < 0) return "—";
+  const total = Math.floor(ms / 1000);
+  const days = Math.floor(total / 86400);
+  const hours = Math.floor((total % 86400) / 3600);
+  const minutes = Math.floor((total % 3600) / 60);
+  const seconds = total % 60;
+  return (days ? days + " д " : "") +
+    hours + " ч " + minutes + " мин " + seconds + " сек";
+}
+
+function renderHistory() {
+  const list = $("historyList");
+  list.replaceChildren();
+
+  const latestStart = history.find(item => item.type === "start");
+  const latestCompleted = history.find(item =>
+    item.type === "stop" && item.durationMs != null
+  );
+
+  $("lastStart").textContent =
+    latestStart ? formatDate(latestStart.time) : "Пока неизвестен";
+
+  $("lastDuration").textContent = latestCompleted
+    ? "Последняя длительность: " + duration(latestCompleted.durationMs)
+    : "Завершённых сеансов пока нет";
+
+  if (!history.length) {
+    const empty = document.createElement("div");
+    empty.className = "empty";
+    empty.textContent = "История появится после подтверждённого запуска или остановки.";
+    list.appendChild(empty);
+    return;
+  }
+
+  history.slice(0, 20).forEach(item => {
+    const row = document.createElement("div");
+    row.className = "history-item " +
+      (item.type === "start" ? "started" : "stopped");
+
+    const title = document.createElement("div");
+    title.className = "history-title";
+    title.textContent = item.type === "start"
+      ? "● Сервер запущен"
+      : "● Сервер остановлен";
+
+    const date = document.createElement("div");
+    date.className = "history-date";
+    date.textContent = formatDate(item.time);
+    row.append(title, date);
+
+    if (item.type === "stop" && item.durationMs != null) {
+      const elapsed = document.createElement("div");
+      elapsed.className = "history-date";
+      elapsed.textContent = "Время работы: " + duration(item.durationMs);
+      row.appendChild(elapsed);
+    }
+    list.appendChild(row);
+  });
+}
+
+function updateDuration() {
+  $("currentDuration").textContent = sessionStarted === null
+    ? "—"
+    : duration(Date.now() - sessionStarted);
+  $("sessionText").textContent = sessionStarted === null
+    ? "Нет подтверждённого активного сеанса"
+    : "Запуск замечен: " + formatDate(sessionStarted);
+}
+
+function addEvent(type, time, durationMs = null) {
+  history.unshift({type, time, durationMs});
+  history = history.slice(0, 50);
+  saveHistory();
+  renderHistory();
+}
+
+function acceptConfirmedStatus(online) {
+  const now = Date.now();
+
+  if (previousStatus === null) {
+    const saved = loadSession();
+
+    if (online) {
+      sessionStarted = saved?.startedAt || now;
+      if (!saved) addEvent("start", now);
+      saveSession();
+    } else {
+      sessionStarted = null;
+      saveSession();
+    }
+  } else if (previousStatus !== online) {
+    if (online) {
+      sessionStarted = now;
+      saveSession();
+      addEvent("start", now);
+    } else {
+      const elapsed = sessionStarted === null ? null : now - sessionStarted;
+      addEvent("stop", now, elapsed);
+      sessionStarted = null;
+      saveSession();
+    }
+  }
+
+  previousStatus = online;
+  updateDuration();
+}
+
+function getName(player) {
+  if (typeof player === "string") return player;
+  if (!player || typeof player !== "object") return "";
+  if (typeof player.name === "string") return player.name;
+  if (player.name && typeof player.name === "object") {
+    return player.name.clean || player.name.raw || "";
+  }
+  return player.name_clean || player.name_raw || player.username || "";
+}
+
+function renderPlayers(result) {
+  const container = $("playersList");
+  container.replaceChildren();
+
+  const players = result.data.players || {};
+  const rawList = Array.isArray(players.list) ? players.list :
+    Array.isArray(players.sample) ? players.sample : [];
+  const names = [...new Set(rawList.map(getName).filter(Boolean))];
+
+  if (!names.length) {
+    const empty = document.createElement("div");
+    empty.className = "empty";
+    empty.textContent = result.playersOnline > 0
+      ? "Игроки онлайн, но их ники недоступны через API."
+      : "Сейчас на сервере никого нет.";
+    container.appendChild(empty);
+    return;
+  }
+
+  names.forEach(name => {
+    const row = document.createElement("div");
+    row.className = "player";
+    const icon = document.createElement("span");
+    icon.className = "playericon";
+    icon.textContent = "◆";
+    const label = document.createElement("span");
+    label.textContent = name;
+    row.append(icon, label);
+    container.appendChild(row);
+  });
+}
+
+async function fetchJSON(url) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 12000);
+
+  try {
+    const response = await fetch(url, {
+      method:"GET",
+      cache:"no-store",
+      signal:controller.signal,
+      headers:{"Accept":"application/json"}
+    });
+    if (!response.ok) throw new Error("HTTP " + response.status);
+    return await response.json();
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+function normalizeResult(data, source) {
+  if (!data || typeof data.online !== "boolean") {
+    throw new Error("Invalid status response");
+  }
+
+  const players = data.players || {};
+  const version = data.version;
+
+  return {
+    online:data.online,
+    playersOnline:Number(players.online || 0),
+    playersMax:players.max ?? "?",
+    version:source === "mcstatus"
+      ? version?.name_clean || version?.name_raw || version?.name || "не определена"
+      : (typeof version === "string" ? version : version?.name) || "не определена",
+    data,
+    source
+  };
+}
+
+async function updateStatus() {
+  if (checking) return;
+  checking = true;
+  $("refreshBtn").disabled = true;
+  $("refreshBtn").textContent = "Проверка…";
+
+  if (previousStatus === null) {
+    $("statusDot").className = "dot checking";
+    $("statusText").textContent = "Проверяем двумя сервисами…";
+  }
+
+  try {
+    const results = await Promise.allSettled([
+      fetchJSON(API_URLS[0]).then(data => normalizeResult(data, "mcstatus")),
+      fetchJSON(API_URLS[1]).then(data => normalizeResult(data, "mcsrvstat"))
+    ]);
+
+    const good = results
+      .filter(result => result.status === "fulfilled")
+      .map(result => result.value);
+
+    if (!good.length) throw new Error("Оба сервиса недоступны");
+
+    let chosen;
+    let confirmed = false;
+
+    if (good.length === 2 && good[0].online === good[1].online) {
+      confirmed = true;
+      chosen = good[0].online ? good.find(r => r.online) : good[0];
+
+      $("statusDot").className = "dot " + (chosen.online ? "online" : "offline");
+      $("statusText").textContent = chosen.online
+        ? "Сервер онлайн"
+        : "Сервер офлайн";
+      $("sourceText").textContent = "Статус подтверждён двумя сервисами";
+    } else if (good.length === 2) {
+      chosen = good.find(r => r.online) || good[0];
+      $("statusDot").className = "dot checking";
+      $("statusText").textContent = "Статус уточняется";
+      $("sourceText").textContent = "Сервисы не согласны — повторная проверка через минуту";
+    } else {
+      chosen = good[0];
+      $("statusDot").className = "dot checking";
+      $("statusText").textContent = chosen.online
+        ? "Вероятно, сервер онлайн"
+        : "Статус не подтверждён";
+      $("sourceText").textContent = "Ответил только один сервис; точность не гарантирована";
+    }
+
+    $("playerCount").textContent =
+      chosen.playersOnline + " / " + chosen.playersMax;
+    $("versionText").textContent = "Версия: " + chosen.version;
+    $("updatedText").textContent =
+      "Проверено: " + new Date().toLocaleTimeString("ru-RU");
+
+    if (confirmed) acceptConfirmedStatus(chosen.online);
+
+    if (chosen.online) {
+      renderPlayers(chosen);
+    } else {
+      const container = $("playersList");
+      container.replaceChildren();
+      const empty = document.createElement("div");
+      empty.className = "empty";
+      empty.textContent = confirmed
+        ? "Сервер выключен — игроков нет."
+        : "Статус пока не подтверждён.";
+      container.appendChild(empty);
+    }
+  } catch (error) {
+    $("statusDot").className = "dot checking";
+    $("statusText").textContent = "Нет подтверждённого статуса";
+    $("updatedText").textContent =
+      "Ошибка соединения. Это не доказывает, что сервер офлайн.";
+    $("sourceText").textContent = "Сервисы проверки не ответили";
+    console.warn("MKHost status error:", error);
+  } finally {
+    checking = false;
+    $("refreshBtn").disabled = false;
+    $("refreshBtn").textContent = "↻ Обновить";
+  }
+}
+
 $("copyBtn").addEventListener("click", async () => {
   try {
     if (navigator.clipboard && window.isSecureContext) {
@@ -146,122 +476,37 @@ $("copyBtn").addEventListener("click", async () => {
       field.style.opacity = "0";
       document.body.appendChild(field);
       field.select();
-      const copied = document.execCommand("copy");
+      const ok = document.execCommand("copy");
       field.remove();
-      if (!copied) throw new Error("Copy failed");
+      if (!ok) throw new Error("Copy failed");
     }
     $("copyStatus").textContent = "IP скопирован!";
   } catch {
-    $("copyStatus").textContent = "Скопируй адрес вручную: " + SERVER_IP;
+    $("copyStatus").textContent = "Скопируй вручную: " + SERVER_IP;
   }
 });
-function getPlayerName(player) {
-  if (typeof player === "string") return player;
-  if (!player || typeof player !== "object") return "";
-  const name = player.name;
-  if (typeof name === "string") return name;
-  if (name && typeof name === "object") {
-    return name.clean || name.raw || "";
-  }
-  return player.name_clean ||
-         player.name_raw ||
-         player.username ||
-         "";
-}
-function renderPlayers(data) {
-  const container = $("playersList");
-  container.replaceChildren();
-  const players = data.players || {};
-  const list = Array.isArray(players.list) ? players.list :
-               Array.isArray(players.sample) ? players.sample : [];
-  const names = [...new Set(list.map(getPlayerName).filter(Boolean))];
-  if (names.length === 0) {
-    const empty = document.createElement("div");
-    empty.className = "empty";
-    empty.textContent = Number(players.online || 0) > 0
-      ? "Сервер сообщает об игроках, но их ники не переданы статус API."
-      : "Сейчас на сервере никого нет.";
-    container.appendChild(empty);
-    return;
-  }
-  names.forEach(name => {
-    const item = document.createElement("div");
-    item.className = "player";
-    const icon = document.createElement("span");
-    icon.className = "playericon";
-    icon.textContent = "◆";
-    const label = document.createElement("span");
-    label.textContent = name;
-    item.append(icon, label);
-    container.appendChild(item);
-  });
-}
-function showApiError() {
-  $("statusDot").className = "dot checking";
-  $("statusText").textContent = "Не удалось получить статус";
-  $("updatedText").textContent = "Ошибка соединения с сервисом проверки.";
-  if (lastSuccessfulStatus === null) {
-    $("playerCount").textContent = "— / —";
-    $("versionText").textContent = "Версия: пока неизвестна";
-    $("playersList").replaceChildren();
-    const empty = document.createElement("div");
-    empty.className = "empty";
-    empty.textContent =
-      "Не удалось проверить сервер. Нажми «Обновить» позже. Это не подтверждает, что сервер офлайн.";
-    $("playersList").appendChild(empty);
-  }
-}
-async function updateStatus() {
-  if (isChecking) return;
-  isChecking = true;
-  $("refreshBtn").disabled = true;
-  $("refreshBtn").textContent = "Проверка…";
-  if (lastSuccessfulStatus === null) {
-    $("statusDot").className = "dot checking";
-    $("statusText").textContent = "Проверяем сервер…";
-  }
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 12000);
-  try {
-    const response = await fetch(STATUS_API, {
-      method: "GET",
-      cache: "no-store",
-      signal: controller.signal,
-      headers: { "Accept": "application/json" }
-    });
-    if (!response.ok) {
-      throw new Error("HTTP " + response.status);
-    }
-    const data = await response.json();
-    if (typeof data.online !== "boolean") {
-      throw new Error("Некорректный ответ API");
-    }
-    lastSuccessfulStatus = data;
-    const online = data.online;
-    const players = data.players || {};
-    $("statusDot").className = "dot " + (online ? "online" : "offline");
-    $("statusText").textContent = online ? "Сервер онлайн" : "Сервер офлайн";
-    $("playerCount").textContent =
-      (players.online ?? 0) + " / " + (players.max ?? "?");
-    const version = data.version || {};
-    $("versionText").textContent = "Версия: " +
-      (version.name_clean || version.name_raw || version.name || "не определена");
-    $("updatedText").textContent =
-      "Последняя проверка: " + new Date().toLocaleTimeString("ru-RU");
-    renderPlayers(data);
-  } catch (error) {
-    showApiError();
-    console.warn("Ошибка проверки Minecraft-сервера:", error);
-  } finally {
-    clearTimeout(timeout);
-    isChecking = false;
-    $("refreshBtn").disabled = false;
-    $("refreshBtn").textContent = "↻ Обновить";
-  }
-}
+
 $("refreshBtn").addEventListener("click", updateStatus);
+
+$("clearHistoryBtn").addEventListener("click", () => {
+  if (!confirm("Удалить историю на этом устройстве?")) return;
+  history = [];
+  sessionStarted = null;
+  previousStatus = null;
+  try {
+    localStorage.removeItem(HISTORY_KEY);
+    localStorage.removeItem(SESSION_KEY);
+  } catch {}
+  renderHistory();
+  updateDuration();
+  updateStatus();
+});
+
+renderHistory();
+updateDuration();
 updateStatus();
-setInterval(updateStatus, 30000);
+setInterval(updateStatus, 60000);
+setInterval(updateDuration, 1000);
 </script>
 </body>
 </html>
