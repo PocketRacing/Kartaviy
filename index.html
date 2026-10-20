@@ -1,0 +1,228 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MKHost — Minecraft Server</title>
+<meta name="theme-color" content="#101010">
+<style>
+:root {
+  --bg:#0b0b0e;
+  --panel:#151519;
+  --red:#ff303b;
+  --text:#f6f6f8;
+  --muted:#9999a5;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:Arial,sans-serif;min-height:100vh;
+}
+header{
+  padding:22px max(20px,calc((100% - 1050px)/2));
+  border-bottom:1px solid #29292f;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.logo{font-size:25px;font-weight:900;letter-spacing:1px}
+.logo span{color:var(--red)}
+.tag{font-size:12px;color:var(--muted)}
+main{max-width:850px;margin:65px auto;padding:0 20px}
+.eyebrow{color:var(--red);font-size:12px;font-weight:bold;letter-spacing:3px}
+h1{font-size:clamp(35px,8vw,58px);margin:14px 0}
+.subtitle{color:var(--muted);line-height:1.6}
+.card{
+  margin-top:32px;background:var(--panel);
+  border:1px solid #29292f;border-radius:18px;
+  padding:25px;box-shadow:0 15px 60px #0005;
+}
+.top{display:flex;align-items:center;gap:15px}
+.server-icon{
+  width:62px;height:62px;border-radius:13px;
+  background:#29292f;display:grid;place-items:center;
+  font-size:30px;flex-shrink:0;
+}
+.server-name{font-size:21px;font-weight:bold}
+.ip{color:var(--muted);font-size:14px;margin-top:7px;word-break:break-all}
+.status{
+  margin-left:auto;padding:9px 12px;border-radius:30px;
+  background:#333;color:#ddd;font-size:12px;font-weight:bold;
+  white-space:nowrap;
+}
+.status.online{background:#153b27;color:#68f3a0}
+.status.offline{background:#421a20;color:#ff7b85}
+.status.checking{background:#333;color:#ddd}
+hr{border:0;border-top:1px solid #303036;margin:24px 0}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.stat{background:#0e0e12;border-radius:12px;padding:17px}
+.stat small{color:var(--muted);display:block;margin-bottom:10px}
+.stat strong{font-size:22px}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+button,.btn{
+  padding:14px 17px;border:0;border-radius:10px;
+  font-size:14px;font-weight:bold;cursor:pointer;
+  text-decoration:none;display:inline-flex;justify-content:center;
+  align-items:center;flex:1;min-width:140px;
+}
+.primary{background:var(--red);color:white}
+.secondary{background:#29292f;color:white}
+button:hover,.btn:hover{filter:brightness(1.12)}
+.note{font-size:12px;color:var(--muted);line-height:1.6;margin-top:17px}
+#players{color:var(--muted);font-size:13px;margin-top:18px}
+#playerList{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+.player{background:#27272d;padding:7px 10px;border-radius:8px;font-size:12px}
+footer{text-align:center;color:#777;padding:30px 15px;font-size:12px}
+#updated{color:var(--muted);font-size:12px;margin-top:16px}
+@media(max-width:480px){
+  main{margin-top:40px}
+  .card{padding:18px}
+  .status{font-size:10px;padding:8px}
+  .server-name{font-size:18px}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">MK<span>HOST</span></div>
+  <div class="tag">MINECRAFT SERVER</div>
+</header>
+
+<main>
+  <div class="eyebrow">YOUR WORLD. YOUR RULES.</div>
+  <h1>Играй вместе.</h1>
+  <p class="subtitle">
+    Твой мир Minecraft. Проверяй статус сервера
+    и подключайся к друзьям.
+  </p>
+
+  <section class="card">
+    <div class="top">
+      <div class="server-icon">⛏️</div>
+      <div>
+        <div class="server-name">Kartaviy Server</div>
+        <div class="ip" id="ip">Kartaviy.aternos.me</div>
+      </div>
+      <div class="status checking" id="status">ПРОВЕРКА...</div>
+    </div>
+
+    <hr>
+
+    <div class="stats">
+      <div class="stat">
+        <small>Игроки онлайн</small>
+        <strong id="playersCount">— / —</strong>
+      </div>
+      <div class="stat">
+        <small>Версия Minecraft</small>
+        <strong id="version">—</strong>
+      </div>
+    </div>
+
+    <div id="players"></div>
+    <div id="playerList"></div>
+
+    <div class="actions">
+      <button class="primary" id="copyBtn">📋 Копировать IP</button>
+      <a class="btn secondary"
+         href="https://aternos.org/servers/"
+         target="_blank" rel="noopener">
+         🚀 Запустить на Aternos
+      </a>
+      <button class="secondary" id="refreshBtn">↻ Обновить статус</button>
+    </div>
+
+    <div class="note">
+      Кнопка запуска открывает Aternos. Войди в аккаунт,
+      выбери свой сервер и нажми «Запустить».
+      Статус проверяется через внешний сервис мониторинга.
+    </div>
+    <div id="updated">Ожидание проверки...</div>
+  </section>
+</main>
+
+<footer>© 2026 MKHost · Minecraft Community</footer>
+
+<script>
+const SERVER = "Kartaviy.aternos.me";
+const API = "https://api.mcsrvstat.us/3/" +
+            encodeURIComponent(SERVER);
+
+const statusEl = document.getElementById("status");
+const countEl = document.getElementById("playersCount");
+const versionEl = document.getElementById("version");
+const playersEl = document.getElementById("players");
+const playerListEl = document.getElementById("playerList");
+const updatedEl = document.getElementById("updated");
+
+function setStatus(text, type) {
+  statusEl.textContent = text;
+  statusEl.className = "status " + type;
+}
+
+async function checkServer() {
+  setStatus("ПРОВЕРКА...", "checking");
+  updatedEl.textContent = "Обновляем информацию...";
+
+  try {
+    const response = await fetch(API, {cache:"no-store"});
+    if (!response.ok) throw new Error("HTTP " + response.status);
+    const data = await response.json();
+
+    if (data.online) {
+      setStatus("● ONLINE", "online");
+      countEl.textContent =
+        (data.players?.online ?? 0) + " / " +
+        (data.players?.max ?? "?");
+      versionEl.textContent =
+        data.version || data.protocol?.name || "Неизвестно";
+
+      const list = data.players?.list || [];
+      playersEl.textContent = list.length
+        ? "Игроки на сервере:"
+        : "";
+
+      playerListEl.replaceChildren();
+      list.forEach(player => {
+        const item = document.createElement("span");
+        item.className = "player";
+        item.textContent = player.name || "Игрок";
+        playerListEl.appendChild(item);
+      });
+    } else {
+      setStatus("● OFFLINE", "offline");
+      countEl.textContent = "0 / 0";
+      versionEl.textContent = "—";
+      playersEl.textContent = "Сервер сейчас недоступен.";
+      playerListEl.replaceChildren();
+    }
+
+    updatedEl.textContent =
+      "Последняя проверка: " +
+      new Date().toLocaleTimeString("ru-RU");
+  } catch (error) {
+    setStatus("НЕТ ДАННЫХ", "checking");
+    countEl.textContent = "— / —";
+    versionEl.textContent = "—";
+    playersEl.textContent =
+      "Не удалось получить статус. Попробуй обновить.";
+    playerListEl.replaceChildren();
+    updatedEl.textContent = "Ошибка проверки соединения.";
+  }
+}
+
+document.getElementById("copyBtn").addEventListener("click", async () => {
+  try {
+    await navigator.clipboard.writeText(SERVER);
+    document.getElementById("copyBtn").textContent = "✓ IP скопирован";
+  } catch {
+    window.prompt("Скопируй IP сервера:", SERVER);
+  }
+});
+
+document.getElementById("refreshBtn").addEventListener("click", checkServer);
+
+checkServer();
+setInterval(checkServer, 30000);
+</script>
+</body>
+</html>
