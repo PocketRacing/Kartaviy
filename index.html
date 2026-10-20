@@ -58,15 +58,15 @@ hr{border:0;border-top:1px solid #303036;margin:24px 0}
 .stat small{color:var(--muted);display:block;margin-bottom:10px}
 .stat strong{font-size:22px}
 .actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
-button,.btn{
+button{
   padding:14px 17px;border:0;border-radius:10px;
   font-size:14px;font-weight:bold;cursor:pointer;
-  text-decoration:none;display:inline-flex;justify-content:center;
+  display:inline-flex;justify-content:center;
   align-items:center;flex:1;min-width:140px;
 }
 .primary{background:var(--red);color:white}
 .secondary{background:#29292f;color:white}
-button:hover,.btn:hover{filter:brightness(1.12)}
+button:hover{filter:brightness(1.12)}
 .note{font-size:12px;color:var(--muted);line-height:1.6;margin-top:17px}
 #players{color:var(--muted);font-size:13px;margin-top:18px}
 #playerList{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
@@ -123,18 +123,12 @@ footer{text-align:center;color:#777;padding:30px 15px;font-size:12px}
 
     <div class="actions">
       <button class="primary" id="copyBtn">📋 Копировать IP</button>
-      <a class="btn secondary"
-         href="https://aternos.org/servers/"
-         target="_blank" rel="noopener">
-         🚀 Запустить на Aternos
-      </a>
       <button class="secondary" id="refreshBtn">↻ Обновить статус</button>
     </div>
 
     <div class="note">
-      Кнопка запуска открывает Aternos. Войди в аккаунт,
-      выбери свой сервер и нажми «Запустить».
-      Статус проверяется через внешний сервис мониторинга.
+      Статус сервера проверяется через внешний сервис мониторинга.
+      Данные могут обновляться с задержкой.
     </div>
     <div id="updated">Ожидание проверки...</div>
   </section>
