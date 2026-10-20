@@ -4,255 +4,423 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#101010">
-<title>MKHost — Minecraft Server</title>
-
+<title>MKHost — Kartaviy</title>
+<meta name="theme-color" content="#100909">
 <style>
 :root {
-  --bg:#0b0b0e;
-  --panel:#151519;
-  --red:#ff303b;
-  --text:#f6f6f8;
-  --muted:#9999a5;
+  --bg:#100909;
+  --panel:#1b1111;
+  --red:#e32636;
+  --red2:#ff4655;
+  --text:#f6eeee;
+  --muted:#a99b9b;
+  --line:#382222;
 }
 *{box-sizing:border-box}
 body{
   margin:0;background:var(--bg);color:var(--text);
-  font-family:Arial,sans-serif;min-height:100vh;
+  font-family:Arial,Helvetica,sans-serif;
 }
+button,input{font:inherit}
+button{cursor:pointer}
 header{
-  padding:22px max(20px,calc((100% - 1050px)/2));
-  border-bottom:1px solid #29292f;
-  display:flex;justify-content:space-between;align-items:center;
+  border-bottom:1px solid var(--line);
+  padding:17px 5%;display:flex;align-items:center;
+  justify-content:space-between;gap:12px;
+  background:#160b0b;position:sticky;top:0;z-index:5;
 }
-.logo{font-size:25px;font-weight:900;letter-spacing:1px}
-.logo span{color:var(--red)}
-.tag{font-size:12px;color:var(--muted)}
-main{max-width:850px;margin:65px auto;padding:0 20px}
-.eyebrow{color:var(--red);font-size:12px;font-weight:bold;letter-spacing:3px}
-h1{font-size:clamp(35px,8vw,58px);margin:14px 0}
-.subtitle{color:var(--muted);line-height:1.6}
+.logo{font-weight:900;font-size:23px;letter-spacing:1px}
+.logo span{color:var(--red2)}
+.tag{color:var(--muted);font-size:12px;margin-top:4px}
+.wrap{max-width:1100px;margin:auto;padding:25px 16px 45px}
+.hero{
+  padding:30px 24px;border:1px solid var(--line);
+  border-radius:18px;
+  background:radial-gradient(ellipse at top right,#491419 0%,#211010 40%,#171010 78%);
+}
+.eyebrow{color:#ff6873;font-size:12px;font-weight:bold;letter-spacing:2px}
+h1{font-size:clamp(30px,6vw,48px);margin:12px 0}
+p{line-height:1.5}
+.muted{color:var(--muted)}
+.iprow{display:flex;gap:9px;flex-wrap:wrap;margin-top:22px}
+.ip{
+  flex:1;min-width:190px;background:#0e0909;border:1px solid #503030;
+  padding:14px;border-radius:10px;font-weight:bold;overflow-wrap:anywhere;
+}
+.btn{
+  border:0;border-radius:10px;padding:13px 16px;
+  background:var(--red);color:white;font-weight:bold;
+}
+.btn:hover{background:var(--red2)}
+.btn.secondary{background:#302020;border:1px solid #503030}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:17px}
 .card{
-  margin-top:32px;background:var(--panel);
-  border:1px solid #29292f;border-radius:18px;
-  padding:25px;box-shadow:0 15px 60px #0005;
+  min-width:0;background:var(--panel);border:1px solid var(--line);
+  border-radius:15px;padding:20px;
 }
-.top{display:flex;align-items:center;gap:15px}
-.server-icon{
-  width:62px;height:62px;border-radius:13px;
-  background:#29292f;display:grid;place-items:center;
-  font-size:30px;flex-shrink:0;
+.card h2{font-size:18px;margin:0 0 17px}
+.statusline{display:flex;align-items:center;gap:10px}
+.dot{width:10px;height:10px;border-radius:50%;background:#777;flex-shrink:0}
+.dot.online{background:#35d58a;box-shadow:0 0 12px #35d58a66}
+.dot.offline{background:#ff4555}
+.big{font-size:27px;font-weight:800;margin-top:14px}
+.small{font-size:13px;color:var(--muted);margin-top:7px}
+.players{display:flex;flex-direction:column;gap:8px}
+.player{
+  background:#100b0b;padding:11px 12px;border-radius:9px;
+  display:flex;align-items:center;gap:10px;overflow-wrap:anywhere
 }
-.server-name{font-size:21px;font-weight:bold}
-.ip{color:var(--muted);font-size:14px;margin-top:7px;word-break:break-all}
-.status{
-  margin-left:auto;padding:9px 12px;border-radius:30px;
-  background:#333;color:#ddd;font-size:12px;font-weight:bold;
-  white-space:nowrap;
+.playericon{color:var(--red2)}
+.empty{padding:13px;border:1px dashed #493030;border-radius:9px;color:var(--muted);font-size:14px}
+.chatbox{margin-top:17px}
+.chat-messages{
+  height:260px;overflow:auto;background:#100b0b;border:1px solid var(--line);
+  border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:10px
 }
-.status.online{background:#153b27;color:#68f3a0}
-.status.offline{background:#421a20;color:#ff7b85}
-.status.checking{background:#333;color:#ddd}
-hr{border:0;border-top:1px solid #303036;margin:24px 0}
-.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.stat{background:#0e0e12;border-radius:12px;padding:17px}
-.stat small{color:var(--muted);display:block;margin-bottom:10px}
-.stat strong{font-size:22px}
-.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
-button{
-  padding:14px 17px;border:0;border-radius:10px;
-  font-size:14px;font-weight:bold;cursor:pointer;
-  display:inline-flex;justify-content:center;align-items:center;
-  flex:1;min-width:140px;
+.msg{overflow-wrap:anywhere;line-height:1.4}
+.msg .nick{color:#ff6873;font-weight:bold}
+.msg.system{color:var(--muted);font-size:13px}
+.chat-form{display:flex;gap:8px;margin-top:10px}
+.field{
+  width:100%;min-width:0;background:#100b0b;color:white;
+  border:1px solid #503030;border-radius:9px;padding:12px;outline:none
 }
-.primary{background:var(--red);color:white}
-.secondary{background:#29292f;color:white}
-button:hover{filter:brightness(1.12)}
-button:disabled{opacity:.6;cursor:wait}
-.note{font-size:12px;color:var(--muted);line-height:1.6;margin-top:17px}
-#players{color:var(--muted);font-size:13px;margin-top:18px}
-#playerList{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
-.player{background:#27272d;padding:7px 10px;border-radius:8px;font-size:12px}
-footer{text-align:center;color:#777;padding:30px 15px;font-size:12px}
-#updated{color:var(--muted);font-size:12px;margin-top:16px}
-@media(max-width:480px){
-  main{margin-top:40px}
-  .card{padding:18px}
-  .status{font-size:10px;padding:8px}
-  .server-name{font-size:18px}
+.field:focus{border-color:var(--red)}
+.chat-form input{flex:1}
+.chat-note{font-size:12px;color:var(--muted);margin-top:10px;line-height:1.5}
+footer{text-align:center;padding:20px;color:#887777;font-size:12px}
+.modal{
+  position:fixed;inset:0;z-index:20;background:#000c;
+  display:flex;align-items:center;justify-content:center;padding:18px
+}
+.modal.hidden{display:none}
+.modal-card{
+  width:100%;max-width:370px;background:#1b1111;border:1px solid #563030;
+  border-radius:16px;padding:23px
+}
+.modal-card h2{margin-top:0}
+.modal-card input{margin:8px 0 13px}
+@media(max-width:650px){
+  .grid{grid-template-columns:1fr}
+  header{padding:14px 16px}
+  .wrap{padding-top:16px}
+  .hero{padding:23px 17px}
+  .chat-form{flex-wrap:wrap}
+  .chat-form button{width:100%}
 }
 </style>
 </head>
-
 <body>
+
 <header>
-  <div class="logo">MK<span>HOST</span></div>
-  <div class="tag">MINECRAFT SERVER</div>
+  <div>
+    <div class="logo">MK<span>HOST</span></div>
+    <div class="tag">MINECRAFT SERVER • KARTAVIY</div>
+  </div>
+  <button class="btn secondary" id="refreshBtn">↻ Обновить</button>
 </header>
 
-<main>
-  <div class="eyebrow">YOUR WORLD. YOUR RULES.</div>
-  <h1>Играй вместе.</h1>
-  <p class="subtitle">
-    Твой мир Minecraft. Проверяй статус сервера
-    и подключайся к друзьям.
-  </p>
+<main class="wrap">
+  <section class="hero">
+    <div class="eyebrow">ТВОЙ МИР. ТВОИ ПРАВИЛА.</div>
+    <h1>Kartaviy <span style="color:#ff4655">Server</span></h1>
+    <p class="muted">Присоединяйся к нашему Minecraft-серверу.</p>
+    <div class="iprow">
+      <div class="ip" id="serverIp">Kartaviy.aternos.me</div>
+      <button class="btn" id="copyBtn">Копировать IP</button>
+    </div>
+    <div class="small" id="copyStatus">Java Edition · Адрес сервера</div>
+  </section>
 
-  <section class="card">
-    <div class="top">
-      <div class="server-icon">⛏️</div>
-      <div>
-        <div class="server-name">Kartaviy Server</div>
-        <div class="ip">Kartaviy.aternos.me</div>
+  <div class="grid">
+    <section class="card">
+      <h2>Статус сервера</h2>
+      <div class="statusline">
+        <span class="dot" id="statusDot"></span>
+        <strong id="statusText">Проверяем сервер…</strong>
       </div>
-      <div class="status checking" id="status">ПРОВЕРКА...</div>
-    </div>
+      <div class="big" id="playerCount">— / —</div>
+      <div class="small">Игроков онлайн</div>
+      <div class="small" id="versionText">Версия: проверяется…</div>
+      <div class="small" id="updatedText">Ожидание ответа сервера</div>
+    </section>
 
-    <hr>
-
-    <div class="stats">
-      <div class="stat">
-        <small>Игроки онлайн</small>
-        <strong id="playersCount">— / —</strong>
+    <section class="card">
+      <h2>Игроки онлайн</h2>
+      <div class="players" id="playersList">
+        <div class="empty">Загружаем список игроков…</div>
       </div>
-      <div class="stat">
-        <small>Версия Minecraft</small>
-        <strong id="version">—</strong>
-      </div>
+    </section>
+  </div>
+
+  <section class="card chatbox">
+    <h2>Игровой чат</h2>
+    <p class="muted" style="font-size:14px;margin-top:-7px">
+      Общайся с игроками сервера прямо с сайта.
+    </p>
+    <div class="chat-messages" id="chatMessages" aria-live="polite">
+      <div class="msg system">Добро пожаловать в чат MKHost.</div>
+      <div class="msg system">Чат ожидает подключения серверного плагина.</div>
     </div>
-
-    <div id="players"></div>
-    <div id="playerList"></div>
-
-    <div class="actions">
-      <button class="primary" id="copyBtn">📋 Копировать IP</button>
-      <button class="secondary" id="refreshBtn">↻ Обновить статус</button>
+    <form id="chatForm" class="chat-form">
+      <input class="field" id="chatInput" maxlength="200"
+        placeholder="Напиши сообщение…" autocomplete="off">
+      <button class="btn" type="submit">Отправить</button>
+    </form>
+    <div class="chat-note" id="chatStatus">
+      Связь с Minecraft пока не настроена. Сообщения ещё не отправляются в игру.
     </div>
-
-    <div class="note">
-      Статус проверяется через внешний мониторинг Minecraft.
-      Возможна небольшая задержка обновления.
-    </div>
-
-    <div id="updated">Ожидание проверки...</div>
   </section>
 </main>
 
-<footer>© 2026 MKHost · Minecraft Community</footer>
+<footer>MKHost © 2026 · Kartaviy</footer>
+
+<div class="modal" id="nickModal">
+  <div class="modal-card">
+    <div class="eyebrow">MKHOST COMMUNITY</div>
+    <h2>Как тебя называть?</h2>
+    <p class="muted">Введи свой ник для общения на сайте.</p>
+    <form id="nickForm">
+      <input class="field" id="nickInput" maxlength="16"
+        minlength="3" pattern="[A-Za-z0-9_]{3,16}"
+        placeholder="Твой игровой ник" required>
+      <button class="btn" type="submit" style="width:100%">Войти на сайт</button>
+    </form>
+    <div class="chat-note">Можно использовать латинские буквы, цифры и _.</div>
+  </div>
+</div>
 
 <script>
-const SERVER = "Kartaviy.aternos.me";
-const API =
+"use strict";
+
+const SERVER_IP = "Kartaviy.aternos.me";
+const STATUS_API =
   "https://api.mcstatus.io/v2/status/java/" +
-  encodeURIComponent(SERVER);
+  encodeURIComponent(SERVER_IP);
 
-const statusEl = document.getElementById("status");
-const countEl = document.getElementById("playersCount");
-const versionEl = document.getElementById("version");
-const playersEl = document.getElementById("players");
-const playerListEl = document.getElementById("playerList");
-const updatedEl = document.getElementById("updated");
-const refreshBtn = document.getElementById("refreshBtn");
+/*
+  После установки плагина сюда добавим адрес его веб-чата
+  и формат обмена сообщениями. Не вставляй сюда пароль или
+  секретный токен администратора.
+*/
+const CHAT_BRIDGE_URL = "";
 
-let checking = false;
+const $ = id => document.getElementById(id);
+let nickname = "";
+let chatSocket = null;
 
-function setStatus(text, type) {
-  statusEl.textContent = text;
-  statusEl.className = "status " + type;
+function addMessage(name, message, system = false) {
+  const row = document.createElement("div");
+  row.className = "msg" + (system ? " system" : "");
+
+  if (system) {
+    row.textContent = message;
+  } else {
+    const nick = document.createElement("span");
+    nick.className = "nick";
+    nick.textContent = name + ": ";
+
+    const body = document.createElement("span");
+    body.textContent = message;
+
+    row.append(nick, body);
+  }
+
+  $("chatMessages").appendChild(row);
+  $("chatMessages").scrollTop = $("chatMessages").scrollHeight;
 }
 
-async function checkServer() {
-  if (checking) return;
+function setChatStatus(message) {
+  $("chatStatus").textContent = message;
+}
 
-  checking = true;
-  refreshBtn.disabled = true;
-  setStatus("ПРОВЕРКА...", "checking");
-  updatedEl.textContent = "Получаем актуальные данные...";
+function connectChat() {
+  if (!CHAT_BRIDGE_URL) {
+    setChatStatus(
+      "Ожидание настройки плагина. После его установки подключим сайт к игровому чату."
+    );
+    return;
+  }
 
   try {
-    const response = await fetch(API, {
-      cache: "no-store"
-    });
+    chatSocket = new WebSocket(CHAT_BRIDGE_URL);
 
-    if (!response.ok) {
-      throw new Error("HTTP " + response.status);
-    }
+    chatSocket.onopen = () => {
+      setChatStatus("Соединение с чатом установлено.");
+      addMessage("MKHost", "Подключение к чату установлено.", true);
+    };
 
-    const data = await response.json();
+    chatSocket.onmessage = event => {
+      try {
+        const data = JSON.parse(event.data);
+        if (data.type === "message" && data.username && data.message) {
+          addMessage(String(data.username), String(data.message));
+        }
+      } catch {
+        // Игнорируем сообщения, формат которых не распознан.
+      }
+    };
 
-    if (data.online === true) {
-      setStatus("● ONLINE", "online");
+    chatSocket.onerror = () => {
+      setChatStatus("Не удалось подключиться к чату. Проверь настройку плагина.");
+    };
 
-      countEl.textContent =
-        (data.players?.online ?? 0) + " / " +
-        (data.players?.max ?? "?");
-
-      versionEl.textContent =
-        data.version?.name || "Неизвестно";
-
-      const list = data.players?.list || [];
-      playersEl.textContent = list.length
-        ? "Игроки на сервере:"
-        : "Сервер доступен.";
-
-      playerListEl.replaceChildren();
-
-      list.forEach(player => {
-        const item = document.createElement("span");
-        item.className = "player";
-        item.textContent = player.name_clean ||
-                           player.name_raw ||
-                           player.name ||
-                           "Игрок";
-        playerListEl.appendChild(item);
-      });
-
-    } else if (data.online === false) {
-      setStatus("● OFFLINE", "offline");
-
-      // Не выдаём неизвестное количество игроков за точный ноль.
-      countEl.textContent = "— / —";
-      versionEl.textContent = "—";
-      playersEl.textContent =
-        "Мониторинг не смог подключиться к серверу.";
-      playerListEl.replaceChildren();
-
-    } else {
-      throw new Error("Неизвестный ответ сервиса");
-    }
-
-    updatedEl.textContent =
-      "Проверено: " +
-      new Date().toLocaleTimeString("ru-RU");
-
-  } catch (error) {
-    setStatus("НЕТ ДАННЫХ", "checking");
-    countEl.textContent = "— / —";
-    versionEl.textContent = "—";
-    playersEl.textContent =
-      "Не удалось проверить сервер. Попробуй ещё раз.";
-    playerListEl.replaceChildren();
-    updatedEl.textContent =
-      "Ошибка проверки. Последний статус не подтверждён.";
-  } finally {
-    checking = false;
-    refreshBtn.disabled = false;
+    chatSocket.onclose = () => {
+      setChatStatus("Чат отключён. Проверь доступность сервера чата.");
+    };
+  } catch {
+    setChatStatus("Адрес подключения к чату указан неверно.");
   }
 }
 
-document.getElementById("copyBtn").addEventListener("click", async () => {
+$("chatForm").addEventListener("submit", event => {
+  event.preventDefault();
+
+  const message = $("chatInput").value.trim();
+  if (!message) return;
+
+  if (!nickname) {
+    $("nickModal").classList.remove("hidden");
+    return;
+  }
+
+  if (!CHAT_BRIDGE_URL || !chatSocket ||
+      chatSocket.readyState !== WebSocket.OPEN) {
+    addMessage("MKHost", "Чат ещё не подключён к Minecraft.", true);
+    return;
+  }
+
+  // Формат предварительный; подстроим его под установленный плагин.
+  chatSocket.send(JSON.stringify({
+    type: "message",
+    username: nickname,
+    message: message
+  }));
+
+  $("chatInput").value = "";
+});
+
+$("nickForm").addEventListener("submit", event => {
+  event.preventDefault();
+
+  const value = $("nickInput").value.trim();
+  if (!/^[A-Za-z0-9_]{3,16}$/.test(value)) {
+    $("nickInput").setCustomValidity(
+      "От 3 до 16 символов: латинские буквы, цифры или _."
+    );
+    $("nickInput").reportValidity();
+    return;
+  }
+
+  $("nickInput").setCustomValidity("");
+  nickname = value;
+  $("nickModal").classList.add("hidden");
+  addMessage("MKHost", "Ты вошёл как " + nickname + ".", true);
+});
+
+$("nickInput").addEventListener("input", () => {
+  $("nickInput").setCustomValidity("");
+});
+
+$("copyBtn").addEventListener("click", async () => {
   try {
-    await navigator.clipboard.writeText(SERVER);
-    document.getElementById("copyBtn").textContent = "✓ IP скопирован";
+    await navigator.clipboard.writeText(SERVER_IP);
+    $("copyStatus").textContent = "IP скопирован!";
   } catch {
-    window.prompt("Скопируй IP сервера:", SERVER);
+    $("copyStatus").textContent =
+      "Не удалось скопировать автоматически: " + SERVER_IP;
   }
 });
 
-refreshBtn.addEventListener("click", checkServer);
+function getPlayerName(player) {
+  if (typeof player === "string") return player;
 
-checkServer();
-setInterval(checkServer, 30000);
+  return player?.name_clean ||
+    player?.name_raw ||
+    player?.name?.clean ||
+    player?.name?.raw ||
+    player?.name ||
+    player?.username ||
+    "";
+}
+
+function renderPlayers(data) {
+  const container = $("playersList");
+  container.replaceChildren();
+
+  const players = data.players || {};
+  const list = Array.isArray(players.list) ? players.list :
+    Array.isArray(players.sample) ? players.sample : [];
+
+  const names = list.map(getPlayerName).filter(Boolean);
+
+  if (names.length === 0) {
+    const empty = document.createElement("div");
+    empty.className = "empty";
+    empty.textContent = Number(players.online || 0) > 0
+      ? "Сервер сообщает об игроках, но их ники недоступны через статус API."
+      : "Сейчас на сервере никого нет.";
+    container.appendChild(empty);
+    return;
+  }
+
+  names.forEach(name => {
+    const item = document.createElement("div");
+    item.className = "player";
+
+    const icon = document.createElement("span");
+    icon.className = "playericon";
+    icon.textContent = "◆";
+
+    const label = document.createElement("span");
+    label.textContent = name;
+
+    item.append(icon, label);
+    container.appendChild(item);
+  });
+}
+
+async function updateStatus() {
+  $("statusText").textContent = "Проверяем сервер…";
+  $("statusDot").className = "dot";
+
+  try {
+    const response = await fetch(STATUS_API, { cache: "no-store" });
+    if (!response.ok) throw new Error("Status API error");
+
+    const data = await response.json();
+    const online = data.online === true;
+    const players = data.players || {};
+
+    $("statusDot").className = "dot " + (online ? "online" : "offline");
+    $("statusText").textContent = online ? "Сервер онлайн" : "Сервер офлайн";
+    $("playerCount").textContent =
+      (players.online ?? 0) + " / " + (players.max ?? "?");
+    $("versionText").textContent =
+      "Версия: " + (data.version?.name_clean ||
+      data.version?.name_raw || data.version?.name || "не определена");
+    $("updatedText").textContent =
+      "Обновлено: " + new Date().toLocaleTimeString("ru-RU");
+
+    renderPlayers(data);
+  } catch {
+    $("statusDot").className = "dot offline";
+    $("statusText").textContent = "Не удалось проверить сервер";
+    $("playerCount").textContent = "— / —";
+    $("versionText").textContent = "Версия: недоступна";
+    $("updatedText").textContent = "Попробуй обновить позже.";
+    $("playersList").innerHTML =
+      '<div class="empty">Не удалось загрузить список игроков.</div>';
+  }
+}
+
+$("refreshBtn").addEventListener("click", updateStatus);
+
+updateStatus();
+setInterval(updateStatus, 30000);
+connectChat();
+
+$("nickModal").classList.remove("hidden");
 </script>
 </body>
 </html>
