@@ -1,154 +1,21 @@
 
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MKHost — Kartaviy</title>
-<meta name="theme-color" content="#100909">
-
-<style>
-:root {
-  --bg:#100909;
-  --panel:#1b1111;
-  --red:#e32636;
-  --red2:#ff4655;
-  --text:#f6eeee;
-  --muted:#a99b9b;
-  --line:#382222;
-}
-*{box-sizing:border-box}
-body{
-  margin:0;background:var(--bg);color:var(--text);
-  font-family:Arial,Helvetica,sans-serif;
-}
-button{font:inherit;cursor:pointer}
-header{
-  border-bottom:1px solid var(--line);
-  padding:17px 5%;display:flex;align-items:center;
-  justify-content:space-between;gap:12px;
-  background:#160b0b;position:sticky;top:0;z-index:5;
-}
-.logo{font-weight:900;font-size:23px;letter-spacing:1px}
-.logo span{color:var(--red2)}
-.tag{color:var(--muted);font-size:12px;margin-top:4px}
-.wrap{max-width:1100px;margin:auto;padding:25px 16px 45px}
-.hero{
-  padding:30px 24px;border:1px solid var(--line);
-  border-radius:18px;
-  background:radial-gradient(ellipse at top right,#491419 0%,#211010 40%,#171010 78%);
-}
-.eyebrow{color:#ff6873;font-size:12px;font-weight:bold;letter-spacing:2px}
-h1{font-size:clamp(30px,6vw,48px);margin:12px 0}
-p{line-height:1.5}
-.muted{color:var(--muted)}
-.iprow{display:flex;gap:9px;flex-wrap:wrap;margin-top:22px}
-.ip{
-  flex:1;min-width:190px;background:#0e0909;border:1px solid #503030;
-  padding:14px;border-radius:10px;font-weight:bold;overflow-wrap:anywhere;
-}
-.btn{
-  border:0;border-radius:10px;padding:13px 16px;
-  background:var(--red);color:white;font-weight:bold;
-}
-.btn:hover{background:var(--red2)}
-.btn.secondary{background:#302020;border:1px solid #503030}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:17px}
-.card{
-  min-width:0;background:var(--panel);border:1px solid var(--line);
-  border-radius:15px;padding:20px;
-}
-.card h2{font-size:18px;margin:0 0 17px}
-.statusline{display:flex;align-items:center;gap:10px}
-.dot{width:10px;height:10px;border-radius:50%;background:#777;flex-shrink:0}
-.dot.online{background:#35d58a;box-shadow:0 0 12px #35d58a66}
-.dot.offline{background:#ff4555}
-.big{font-size:27px;font-weight:800;margin-top:14px}
-.small{font-size:13px;color:var(--muted);margin-top:7px}
-.players{display:flex;flex-direction:column;gap:8px}
-.player{
-  background:#100b0b;padding:11px 12px;border-radius:9px;
-  display:flex;align-items:center;gap:10px;overflow-wrap:anywhere
-}
-.playericon{color:var(--red2)}
-.empty{
-  padding:13px;border:1px dashed #493030;border-radius:9px;
-  color:var(--muted);font-size:14px
-}
-footer{text-align:center;padding:20px;color:#887777;font-size:12px}
-
-@media(max-width:650px){
-  .grid{grid-template-columns:1fr}
-  header{padding:14px 16px}
-  .wrap{padding-top:16px}
-  .hero{padding:23px 17px}
-}
-</style>
-</head>
-
-<body>
-<header>
-  <div>
-    <div class="logo">MK<span>HOST</span></div>
-    <div class="tag">MINECRAFT SERVER • KARTAVIY</div>
-  </div>
-  <button class="btn secondary" id="refreshBtn">↻ Обновить</button>
-</header>
-
-<main class="wrap">
-  <section class="hero">
-    <div class="eyebrow">ТВОЙ МИР. ТВОИ ПРАВИЛА.</div>
-    <h1>Kartaviy <span style="color:#ff4655">Server</span></h1>
-    <p class="muted">Присоединяйся к нашему Minecraft-серверу.</p>
-
-    <div class="iprow">
-      <div class="ip" id="serverIp">Kartaviy.aternos.me</div>
-      <button class="btn" id="copyBtn">Копировать IP</button>
-    </div>
-    <div class="small" id="copyStatus">Java Edition · Адрес сервера</div>
-  </section>
-
-  <div class="grid">
-    <section class="card">
-      <h2>Статус сервера</h2>
-      <div class="statusline">
-        <span class="dot" id="statusDot"></span>
-        <strong id="statusText">Проверяем сервер…</strong>
-      </div>
-      <div class="big" id="playerCount">— / —</div>
-      <div class="small">Игроков онлайн</div>
-      <div class="small" id="versionText">Версия: проверяется…</div>
-      <div class="small" id="updatedText">Ожидание ответа сервера</div>
-    </section>
-
-    <section class="card">
-      <h2>Игроки онлайн</h2>
-      <div class="players" id="playersList">
-        <div class="empty">Загружаем список игроков…</div>
-      </div>
-    </section>
-  </div>
-</main>
-
-<footer>MKHost © 2026 · Kartaviy</footer>
-
 <script>
 "use strict";
 
 const SERVER_IP = "Kartaviy.aternos.me";
 const STATUS_API =
   "https://api.mcstatus.io/v2/status/java/" +
-  encodeURIComponent(SERVER_IP);
+  encodeURIComponent(SERVER_IP) + "?timeout=10&query=false";
 
 const $ = id => document.getElementById(id);
+let checking = false;
 
 $("copyBtn").addEventListener("click", async () => {
   try {
     await navigator.clipboard.writeText(SERVER_IP);
     $("copyStatus").textContent = "IP скопирован!";
   } catch {
-    $("copyStatus").textContent =
-      "Не удалось скопировать автоматически: " + SERVER_IP;
+    $("copyStatus").textContent = "IP сервера: " + SERVER_IP;
   }
 });
 
@@ -159,9 +26,8 @@ function getPlayerName(player) {
     player?.name_raw ||
     player?.name?.clean ||
     player?.name?.raw ||
-    player?.name ||
-    player?.username ||
-    "";
+    (typeof player?.name === "string" ? player.name : "") ||
+    player?.username || "";
 }
 
 function renderPlayers(data) {
@@ -174,11 +40,11 @@ function renderPlayers(data) {
 
   const names = list.map(getPlayerName).filter(Boolean);
 
-  if (names.length === 0) {
+  if (!names.length) {
     const empty = document.createElement("div");
     empty.className = "empty";
     empty.textContent = Number(players.online || 0) > 0
-      ? "Сервер сообщает об игроках, но их ники недоступны через статус API."
+      ? "Онлайн есть, но API не передал ники игроков."
       : "Сейчас на сервере никого нет.";
     container.appendChild(empty);
     return;
@@ -201,28 +67,44 @@ function renderPlayers(data) {
 }
 
 async function updateStatus() {
+  if (checking) return;
+  checking = true;
+
   $("statusText").textContent = "Проверяем сервер…";
-  $("statusDot").className = "dot";
 
   try {
-    const response = await fetch(STATUS_API, { cache: "no-store" });
-    if (!response.ok) throw new Error("Status API error");
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 12000);
+
+    let response;
+    try {
+      response = await fetch(STATUS_API, {
+        cache: "no-store",
+        signal: controller.signal
+      });
+    } finally {
+      clearTimeout(timeoutId);
+    }
+
+    if (!response.ok) {
+      throw new Error("API ответил: HTTP " + response.status);
+    }
 
     const data = await response.json();
-    const online = data.online === true;
+
+    if (typeof data.online !== "boolean") {
+      throw new Error("API вернул неизвестный ответ");
+    }
+
     const players = data.players || {};
+    const online = data.online;
 
-    $("statusDot").className =
-      "dot " + (online ? "online" : "offline");
-
-    $("statusText").textContent =
-      online ? "Сервер онлайн" : "Сервер офлайн";
-
+    $("statusDot").className = "dot " + (online ? "online" : "offline");
+    $("statusText").textContent = online ? "Сервер онлайн" : "Сервер офлайн";
     $("playerCount").textContent =
       (players.online ?? 0) + " / " + (players.max ?? "?");
 
-    $("versionText").textContent =
-      "Версия: " +
+    $("versionText").textContent = "Версия: " +
       (data.version?.name_clean ||
        data.version?.name_raw ||
        data.version?.name ||
@@ -232,18 +114,22 @@ async function updateStatus() {
       "Обновлено: " + new Date().toLocaleTimeString("ru-RU");
 
     renderPlayers(data);
-  } catch {
-    $("statusDot").className = "dot offline";
-    $("statusText").textContent = "Не удалось проверить сервер";
-    $("playerCount").textContent = "— / —";
-    $("versionText").textContent = "Версия: недоступна";
-    $("updatedText").textContent = "Попробуй обновить позже.";
+  } catch (error) {
+    $("statusText").textContent = "Не удалось получить статус";
+    $("updatedText").textContent =
+      error.name === "AbortError"
+        ? "Превышено время ожидания. Повторим проверку."
+        : "Ошибка соединения с API. Повторим проверку.";
 
+    // Не объявляем сервер офлайн только из-за ошибки API.
     $("playersList").replaceChildren();
     const empty = document.createElement("div");
     empty.className = "empty";
-    empty.textContent = "Не удалось загрузить список игроков.";
+    empty.textContent =
+      "Статус временно недоступен. Нажми «Обновить» или подожди.";
     $("playersList").appendChild(empty);
+  } finally {
+    checking = false;
   }
 }
 
@@ -252,5 +138,3 @@ $("refreshBtn").addEventListener("click", updateStatus);
 updateStatus();
 setInterval(updateStatus, 30000);
 </script>
-</body>
-</html>
