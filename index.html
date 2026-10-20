@@ -4,8 +4,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MKHost — Minecraft Server</title>
 <meta name="theme-color" content="#101010">
+<title>MKHost — Minecraft Server</title>
+
 <style>
 :root {
   --bg:#0b0b0e;
@@ -61,12 +62,13 @@ hr{border:0;border-top:1px solid #303036;margin:24px 0}
 button{
   padding:14px 17px;border:0;border-radius:10px;
   font-size:14px;font-weight:bold;cursor:pointer;
-  display:inline-flex;justify-content:center;
-  align-items:center;flex:1;min-width:140px;
+  display:inline-flex;justify-content:center;align-items:center;
+  flex:1;min-width:140px;
 }
 .primary{background:var(--red);color:white}
 .secondary{background:#29292f;color:white}
 button:hover{filter:brightness(1.12)}
+button:disabled{opacity:.6;cursor:wait}
 .note{font-size:12px;color:var(--muted);line-height:1.6;margin-top:17px}
 #players{color:var(--muted);font-size:13px;margin-top:18px}
 #playerList{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
@@ -81,6 +83,7 @@ footer{text-align:center;color:#777;padding:30px 15px;font-size:12px}
 }
 </style>
 </head>
+
 <body>
 <header>
   <div class="logo">MK<span>HOST</span></div>
@@ -100,7 +103,7 @@ footer{text-align:center;color:#777;padding:30px 15px;font-size:12px}
       <div class="server-icon">⛏️</div>
       <div>
         <div class="server-name">Kartaviy Server</div>
-        <div class="ip" id="ip">Kartaviy.aternos.me</div>
+        <div class="ip">Kartaviy.aternos.me</div>
       </div>
       <div class="status checking" id="status">ПРОВЕРКА...</div>
     </div>
@@ -127,9 +130,10 @@ footer{text-align:center;color:#777;padding:30px 15px;font-size:12px}
     </div>
 
     <div class="note">
-      Статус сервера проверяется через внешний сервис мониторинга.
-      Данные могут обновляться с задержкой.
+      Статус проверяется через внешний мониторинг Minecraft.
+      Возможна небольшая задержка обновления.
     </div>
+
     <div id="updated">Ожидание проверки...</div>
   </section>
 </main>
@@ -138,8 +142,9 @@ footer{text-align:center;color:#777;padding:30px 15px;font-size:12px}
 
 <script>
 const SERVER = "Kartaviy.aternos.me";
-const API = "https://api.mcsrvstat.us/3/" +
-            encodeURIComponent(SERVER);
+const API =
+  "https://api.mcstatus.io/v2/status/java/" +
+  encodeURIComponent(SERVER);
 
 const statusEl = document.getElementById("status");
 const countEl = document.getElementById("playersCount");
@@ -147,6 +152,9 @@ const versionEl = document.getElementById("version");
 const playersEl = document.getElementById("players");
 const playerListEl = document.getElementById("playerList");
 const updatedEl = document.getElementById("updated");
+const refreshBtn = document.getElementById("refreshBtn");
+
+let checking = false;
 
 function setStatus(text, type) {
   statusEl.textContent = text;
@@ -154,53 +162,81 @@ function setStatus(text, type) {
 }
 
 async function checkServer() {
+  if (checking) return;
+
+  checking = true;
+  refreshBtn.disabled = true;
   setStatus("ПРОВЕРКА...", "checking");
-  updatedEl.textContent = "Обновляем информацию...";
+  updatedEl.textContent = "Получаем актуальные данные...";
 
   try {
-    const response = await fetch(API, {cache:"no-store"});
-    if (!response.ok) throw new Error("HTTP " + response.status);
+    const response = await fetch(API, {
+      cache: "no-store"
+    });
+
+    if (!response.ok) {
+      throw new Error("HTTP " + response.status);
+    }
+
     const data = await response.json();
 
-    if (data.online) {
+    if (data.online === true) {
       setStatus("● ONLINE", "online");
+
       countEl.textContent =
         (data.players?.online ?? 0) + " / " +
         (data.players?.max ?? "?");
+
       versionEl.textContent =
-        data.version || data.protocol?.name || "Неизвестно";
+        data.version?.name || "Неизвестно";
 
       const list = data.players?.list || [];
       playersEl.textContent = list.length
         ? "Игроки на сервере:"
-        : "";
+        : "Сервер доступен.";
 
       playerListEl.replaceChildren();
+
       list.forEach(player => {
         const item = document.createElement("span");
         item.className = "player";
-        item.textContent = player.name || "Игрок";
+        item.textContent = player.name_clean ||
+                           player.name_raw ||
+                           player.name ||
+                           "Игрок";
         playerListEl.appendChild(item);
       });
-    } else {
+
+    } else if (data.online === false) {
       setStatus("● OFFLINE", "offline");
-      countEl.textContent = "0 / 0";
+
+      // Не выдаём неизвестное количество игроков за точный ноль.
+      countEl.textContent = "— / —";
       versionEl.textContent = "—";
-      playersEl.textContent = "Сервер сейчас недоступен.";
+      playersEl.textContent =
+        "Мониторинг не смог подключиться к серверу.";
       playerListEl.replaceChildren();
+
+    } else {
+      throw new Error("Неизвестный ответ сервиса");
     }
 
     updatedEl.textContent =
-      "Последняя проверка: " +
+      "Проверено: " +
       new Date().toLocaleTimeString("ru-RU");
+
   } catch (error) {
     setStatus("НЕТ ДАННЫХ", "checking");
     countEl.textContent = "— / —";
     versionEl.textContent = "—";
     playersEl.textContent =
-      "Не удалось получить статус. Попробуй обновить.";
+      "Не удалось проверить сервер. Попробуй ещё раз.";
     playerListEl.replaceChildren();
-    updatedEl.textContent = "Ошибка проверки соединения.";
+    updatedEl.textContent =
+      "Ошибка проверки. Последний статус не подтверждён.";
+  } finally {
+    checking = false;
+    refreshBtn.disabled = false;
   }
 }
 
@@ -213,7 +249,7 @@ document.getElementById("copyBtn").addEventListener("click", async () => {
   }
 });
 
-document.getElementById("refreshBtn").addEventListener("click", checkServer);
+refreshBtn.addEventListener("click", checkServer);
 
 checkServer();
 setInterval(checkServer, 30000);
