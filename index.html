@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -32,7 +33,8 @@ body::before{
   background-size:28px 28px;z-index:-1
 }
 .web{position:fixed;top:-12px;width:180px;height:180px;opacity:.48;pointer-events:none;z-index:1}
-.web.left{left:-10px}.web.right{right:-10px;transform:scaleX(-1)}
+.web.left{left:-10px}
+.web.right{right:-10px;transform:scaleX(-1)}
 .spider{
   position:fixed;top:-7px;font-size:29px;z-index:3;pointer-events:none;
   transform-origin:top center;animation:swing 3.2s ease-in-out infinite alternate
@@ -61,7 +63,9 @@ main{width:min(900px,calc(100% - 28px));margin:0 auto 70px}
   box-shadow:0 10px 35px #0006,inset 0 0 24px #9e321008;overflow:hidden
 }
 .card h2{margin:0 0 15px;color:var(--gold);font-size:19px}
-.server-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.server-head,.players-head{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap
+}
 .status{
   display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;
   border:1px solid var(--border);background:#160d0b;font-size:13px;font-weight:800
@@ -92,12 +96,9 @@ button:disabled{opacity:.6;cursor:wait}
 .stat .label{color:var(--muted);font-size:12px;margin-top:4px}
 .note{color:var(--muted);font-size:13px;line-height:1.6;margin:14px 0 0}
 #lastCheck{color:#bda093}
-.players-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
 .players-head h2{margin-bottom:0}
 .player-count{font-size:12px;color:var(--muted)}
-.player-list{
-  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:16px
-}
+.player-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:16px}
 .player{
   display:flex;align-items:center;gap:10px;min-width:0;padding:12px;
   border:1px solid #48231b;border-radius:11px;background:#180c0a
@@ -118,13 +119,17 @@ button:disabled{opacity:.6;cursor:wait}
 .music-icon{font-size:28px;margin-right:8px}
 footer{text-align:center;padding:15px 15px 35px;color:#98796e;font-size:12px}
 .pumpkin{position:fixed;bottom:8px;font-size:36px;pointer-events:none;z-index:2;filter:drop-shadow(0 0 12px #ff641c55)}
-.pumpkin.left{left:12px}.pumpkin.right{right:12px}
+.pumpkin.left{left:12px}
+.pumpkin.right{right:12px}
 @media(max-width:520px){
-  header{padding-top:52px}.card{padding:17px}
+  header{padding-top:52px}
+  .card{padding:17px}
   .stats{grid-template-columns:1fr}
   .stat{display:flex;align-items:center;justify-content:space-between;text-align:left}
-  .stat .label{margin:0}.web{width:115px;height:115px}
-  .spider.one{left:7%}.spider.two{right:7%}
+  .stat .label{margin:0}
+  .web{width:115px;height:115px}
+  .spider.one{left:7%}
+  .spider.two{right:7%}
   .player-list{grid-template-columns:1fr}
 }
 @media(prefers-reduced-motion:reduce){.spider{animation:none}}
@@ -190,10 +195,8 @@ footer{text-align:center;padding:15px 15px 35px;color:#98796e;font-size:12px}
       <span class="player-count" id="playerCount">Список не получен</span>
     </div>
     <div id="playerList" class="player-list"></div>
-    <div id="playersEmpty" class="empty-players">
-      Загружаем список игроков…
-    </div>
-    <p class="note">Список зависит от данных, которые передаёт внешний сервис. Он может быть неполным или недоступным.</p>
+    <div id="playersEmpty" class="empty-players">Загружаем список игроков…</div>
+    <p class="note">Список ников отображается, только если внешний сервис передаёт их. Количество игроков может быть доступно отдельно.</p>
   </section>
 
   <section class="card">
@@ -223,16 +226,8 @@ footer{text-align:center;padding:15px 15px 35px;color:#98796e;font-size:12px}
   "use strict";
 
   const SERVER = "Kartaviy.aternos.me";
-  const SOURCES = [
-    {
-      name: "mcstatus",
-      url: `https://api.mcstatus.io/v2/status/java/${SERVER}?timeout=5`
-    },
-    {
-      name: "mcsrvstat",
-      url: `https://api.mcsrvstat.us/3/${SERVER}`
-    }
-  ];
+  const STATUS_URL =
+    `https://api.mcstatus.io/v2/status/java/${SERVER}?timeout=10`;
 
   const $ = id => document.getElementById(id);
   const statusBox = $("status");
@@ -247,6 +242,8 @@ footer{text-align:center;padding:15px 15px 35px;color:#98796e;font-size:12px}
   const musicText = $("musicText");
 
   let checking = false;
+  let lastGoodData = null;
+  let requestController = null;
 
   function setStatus(kind, text) {
     statusBox.className = "status " + kind;
@@ -257,87 +254,63 @@ footer{text-align:center;padding:15px 15px 35px;color:#98796e;font-size:12px}
     return Number.isFinite(value) ? value : null;
   }
 
-  function normalize(result) {
-    const d = result.data || {};
-    const p = d.players || {};
-    let online = null;
-    let max = null;
-    let version = "";
-    let names = [];
+  function normalize(data) {
+    const players = data.players || {};
+    const versionData = data.version || {};
 
-    if (result.source === "mcstatus") {
-      online = numberOrNull(p.online);
-      max = numberOrNull(p.max);
-      version = d.version?.name_clean || d.version?.name_raw || "";
-
-      if (Array.isArray(p.list)) {
-        names = p.list.map(x => typeof x === "string"
-          ? x
-          : (x.name_clean || x.name_raw || "")).filter(Boolean);
-      }
-    } else {
-      online = numberOrNull(p.online);
-      max = numberOrNull(p.max);
-      version = typeof d.version === "string"
-        ? d.version
-        : (d.protocol?.name || "");
-
-      if (Array.isArray(p.list)) {
-        names = p.list.map(x => typeof x === "string" ? x : (x.name || ""))
-          .filter(Boolean);
-      }
-    }
+    const names = Array.isArray(players.list)
+      ? players.list.map(player => {
+          if (typeof player === "string") return player;
+          return player.name_clean || player.name_raw || "";
+        }).filter(Boolean)
+      : [];
 
     return {
-      online: result.online,
-      count: online,
-      max,
-      version,
+      online: data.online === true,
+      count: numberOrNull(players.online),
+      max: numberOrNull(players.max),
+      version: versionData.name_clean || versionData.name_raw || "",
       names: [...new Set(names)]
     };
   }
 
-  async function fetchSource(source) {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 8000);
+  async function fetchServer() {
+    if (requestController) requestController.abort();
+    requestController = new AbortController();
+
+    const timeout = setTimeout(() => requestController.abort(), 12000);
 
     try {
-      const response = await fetch(source.url, {
+      const response = await fetch(STATUS_URL, {
         method: "GET",
         cache: "no-store",
-        signal: controller.signal
+        signal: requestController.signal
       });
 
       if (!response.ok) throw new Error("HTTP " + response.status);
 
       const data = await response.json();
+
       if (typeof data.online !== "boolean") {
-        throw new Error("Статус не получен");
+        throw new Error("Неизвестный формат ответа");
       }
 
-      return { ok: true, online: data.online, data, source: source.name };
+      return { ok: true, data };
     } catch (error) {
-      return { ok: false, source: source.name, error };
+      return { ok: false, error };
     } finally {
       clearTimeout(timeout);
     }
   }
 
-  function renderPlayers(names, serverOnline, reportedCount) {
+  function renderPlayers(data) {
     playerList.replaceChildren();
 
-    if (!serverOnline) {
-      $("playerCount").textContent = "Сервер не подтверждён";
-      playersEmpty.hidden = false;
-      playersEmpty.textContent = "Нельзя получить актуальный список игроков, пока сервер не отвечает.";
-      return;
-    }
-
-    if (names.length) {
-      $("playerCount").textContent = `Получено ников: ${names.length}`;
+    if (data.names.length > 0) {
+      $("playerCount").textContent = "Ников: " + data.names.length;
       playersEmpty.hidden = true;
 
-      names.forEach(name => {
+      data.names.forEach(name => {
         const row = document.createElement("div");
         row.className = "player";
 
@@ -345,7 +318,9 @@ footer{text-align:center;padding:15px 15px 35px;color:#98796e;font-size:12px}
         avatar.className = "player-avatar";
         avatar.alt = "";
         avatar.loading = "lazy";
-        avatar.src = "https://mc-heads.net/avatar/" + encodeURIComponent(name) + "/34";
+        avatar.src =
+          "https://mc-heads.net/avatar/" + encodeURIComponent(name) + "/34";
+
         avatar.onerror = () => {
           avatar.removeAttribute("src");
           avatar.style.display = "none";
@@ -361,93 +336,102 @@ footer{text-align:center;padding:15px 15px 35px;color:#98796e;font-size:12px}
         row.append(avatar, dot, label);
         playerList.appendChild(row);
       });
-    } else {
-      $("playerCount").textContent = "Ники не переданы";
-      playersEmpty.hidden = false;
+      return;
+    }
 
-      if (reportedCount === 0) {
-        playersEmpty.textContent = "Сейчас игроков нет.";
-      } else if (reportedCount > 0) {
-        playersEmpty.textContent =
-          `Сервер сообщает об игроках (${reportedCount}), но не передаёт их ники через этот источник.`;
-      } else {
-        playersEmpty.textContent =
-          "Сервер отвечает, но источник статуса не предоставил список ников.";
-      }
+    $("playerCount").textContent = "Ники не переданы";
+    playersEmpty.hidden = false;
+
+    if (data.count === 0) {
+      playersEmpty.textContent =
+        "Источник сообщает, что сейчас игроков нет.";
+    } else if (data.count > 0) {
+      playersEmpty.textContent =
+        "Сервер сообщает об игроках (" + data.count +
+        "), но не передаёт их ники. Это ограничение источника статуса.";
+    } else {
+      playersEmpty.textContent =
+        "Сервер ответил, но список ников не предоставлен.";
     }
   }
 
-  function showStats(result) {
-    const data = normalize(result);
-    $("players").textContent = data.count === null ? "—" : data.count;
-    $("maxPlayers").textContent = data.max === null ? "—" : data.max;
+  function showStats(data) {
+    $("players").textContent =
+      data.count === null ? "—" : data.count;
+
+    $("maxPlayers").textContent =
+      data.max === null ? "—" : data.max;
+
     $("version").textContent = data.version || "—";
-    renderPlayers(data.names, true, data.count);
+
+    renderPlayers(data);
   }
 
-  function clearStats() {
-    $("players").textContent = "—";
-    $("maxPlayers").textContent = "—";
-    $("version").textContent = "—";
-    renderPlayers([], false, null);
+  function showLastGoodData() {
+    if (!lastGoodData) return;
+
+    $("players").textContent =
+      lastGoodData.count === null ? "—" : lastGoodData.count;
+
+    $("maxPlayers").textContent =
+      lastGoodData.max === null ? "—" : lastGoodData.max;
+
+    $("version").textContent = lastGoodData.version || "—";
+    renderPlayers(lastGoodData);
   }
 
   async function checkServer() {
     if (checking) return;
+
     checking = true;
     refreshButton.disabled = true;
     refreshButton.textContent = "Проверяем…";
+
     setStatus("checking", "Проверяем сервер…");
-    statusNote.textContent = "Запрашиваем данные у двух сервисов проверки Minecraft.";
+    statusNote.textContent =
+      "Получаем ответ от единственного сервиса проверки.";
 
     try {
-      const results = await Promise.all(SOURCES.map(fetchSource));
-      const successful = results.filter(r => r.ok);
-      const onlineResults = successful.filter(r => r.online);
-      const offlineResults = successful.filter(r => !r.online);
+      const result = await fetchServer();
 
-      if (onlineResults.length) {
-        // Если сервер подтвердил хотя бы один источник, считаем его отвечающим.
-        // При расхождении источников сообщаем об этом пользователю.
-        const best = onlineResults.find(r => normalize(r).names.length) ||
-                     onlineResults.find(r => normalize(r).count !== null) ||
-                     onlineResults[0];
+      if (!result.ok) {
+        setStatus("error", "Статус неизвестен");
+
+        statusNote.textContent =
+          "Сервис проверки не ответил. Это не означает, что сервер выключен.";
+
+        showLastGoodData();
+      } else if (result.data.online) {
+        const data = normalize(result.data);
+
+        lastGoodData = data;
 
         setStatus("online", "Сервер отвечает");
-        showStats(best);
+        showStats(data);
 
-        if (offlineResults.length) {
-          statusNote.textContent =
-            "Один сервис подтвердил ответ сервера, другой сообщил обратное. Данные могут обновляться с задержкой.";
-        } else {
-          statusNote.textContent =
-            "Сервер ответил на проверку. Автоматическое обновление выполняется каждые 15 секунд; некоторые источники кэшируют данные.";
-        }
-      } else if (successful.length === 2) {
-        setStatus("warning", "Сервер не отвечает");
-        clearStats();
         statusNote.textContent =
-          "Оба сервиса сейчас сообщают, что сервер не отвечает. Это может означать, что он выключен, запускается или временно недоступен для внешней проверки. Сверься с панелью Aternos.";
-      } else if (successful.length === 1) {
-        setStatus("warning", "Статус не подтверждён");
-        clearStats();
-        statusNote.textContent =
-          "Единственный доступный сервис не подтвердил онлайн. Второй сервис недоступен, поэтому нельзя надёжно определить состояние сервера.";
+          "mcstatus.io подтвердил доступность сервера. Проверка повторяется каждые 30 секунд. Внешний сервис может показывать данные с задержкой.";
       } else {
-        setStatus("error", "Проверка недоступна");
-        clearStats();
+        setStatus("warning", "Онлайн не подтверждён");
+
         statusNote.textContent =
-          "Оба сервиса проверки не ответили. Это не доказывает, что сервер выключен. Проверь панель Aternos.";
+          "mcstatus.io сообщает, что сервер недоступен. Если ты сейчас играешь, этот результат может быть ошибочным. Последние полученные данные сохранены.";
+
+        showLastGoodData();
       }
 
-      lastCheck.textContent = "Последняя проверка: " +
+      lastCheck.textContent =
+        "Последняя проверка: " +
         new Date().toLocaleTimeString("ru-RU", {
-          hour: "2-digit", minute: "2-digit", second: "2-digit"
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit"
         });
     } catch (error) {
-      setStatus("error", "Ошибка проверки");
-      clearStats();
-      statusNote.textContent = "Не удалось получить данные. Состояние сервера неизвестно.";
+      setStatus("error", "Статус неизвестен");
+      statusNote.textContent =
+        "Произошла ошибка проверки. Состояние сервера не подтверждено.";
+      showLastGoodData();
     } finally {
       checking = false;
       refreshButton.disabled = false;
@@ -470,19 +454,24 @@ footer{text-align:center;padding:15px 15px 35px;color:#98796e;font-size:12px}
       field.select();
 
       let copied = false;
-      try { copied = document.execCommand("copy"); } catch {}
+      try {
+        copied = document.execCommand("copy");
+      } catch {}
 
       field.remove();
       button.textContent = copied ? "✓ Скопировано" : SERVER;
     }
 
-    setTimeout(() => button.textContent = "Копировать IP", 1800);
+    setTimeout(() => {
+      button.textContent = "Копировать IP";
+    }, 1800);
   });
 
   function updateMusicButton(playing) {
     musicButton.textContent = playing
       ? "❚❚ Выключить музыку"
       : "▶ Включить музыку";
+
     musicText.textContent = playing
       ? "Музыка Хэллоуина играет."
       : "Музыка выключена. Нажми кнопку, чтобы включить.";
@@ -501,20 +490,22 @@ footer{text-align:center;padding:15px 15px 35px;color:#98796e;font-size:12px}
     } catch {
       updateMusicButton(false);
       musicText.textContent =
-        "Не удалось запустить музыку. Проверь, что Music.mp3 лежит рядом с index.html и имя файла совпадает.";
+        "Не удалось запустить музыку. Проверь, что Music.mp3 лежит рядом с index.html.";
     }
   });
 
   music.addEventListener("play", () => updateMusicButton(true));
   music.addEventListener("pause", () => updateMusicButton(false));
+
   music.addEventListener("error", () => {
     musicText.textContent =
       "Music.mp3 не найден или не поддерживается. Положи файл рядом с index.html.";
   });
 
   $("refreshButton").addEventListener("click", checkServer);
+
   checkServer();
-  setInterval(checkServer, 15000);
+  setInterval(checkServer, 30000);
 })();
 </script>
 </body>
