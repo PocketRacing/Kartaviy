@@ -3,415 +3,576 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#100909">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MKHost — Kartaviy</title>
+<meta name="theme-color" content="#130807">
 <style>
-:root{--bg:#100909;--panel:rgba(29,15,15,.93);--red:#e32636;--orange:#ff9d25;--gold:#ffd36a;--text:#fff0df;--muted:#bba9a0}
-*{box-sizing:border-box}
-body{margin:0;min-height:100vh;color:var(--text);background:radial-gradient(ellipse at 10% 10%,#48200b 0,transparent 32%),radial-gradient(ellipse at 90% 70%,#391010 0,transparent 35%),linear-gradient(140deg,#100909,#1b0b0b 55%,#090606);font-family:Arial,sans-serif;overflow-x:hidden}
-body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.14;background-image:radial-gradient(circle at 15% 30%,#ff9d25 0 2px,transparent 3px),radial-gradient(circle at 75% 20%,#e32636 0 2px,transparent 3px),radial-gradient(circle at 60% 80%,#ff9d25 0 2px,transparent 3px);background-size:130px 150px,170px 190px,200px 180px}
-.web{position:fixed;top:0;left:0;width:160px;height:160px;z-index:3;pointer-events:none;opacity:.7}
-.web.right{left:auto;right:0;transform:scaleX(-1)}
-.spider{position:fixed;top:0;left:32px;z-index:4;font-size:27px;transform-origin:top center;animation:swing 4s ease-in-out infinite;pointer-events:none;filter:drop-shadow(0 0 8px #ff6b23)}
-.spider:before{content:"";position:absolute;left:50%;top:-4px;width:1px;height:42px;background:#c9a98f}
-.spider.two{left:auto;right:35px;top:115px;font-size:21px;animation-delay:-2s}
-.pumpkin{position:fixed;bottom:8px;left:12px;font-size:58px;opacity:.26;filter:drop-shadow(0 0 18px #ff7017);pointer-events:none;z-index:0}
-.pumpkin.right{left:auto;right:10px;font-size:76px}
-@keyframes swing{0%,100%{transform:rotate(-9deg)}50%{transform:rotate(9deg)}}
-header{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:19px max(18px,calc((100% - 1100px)/2));border-bottom:1px solid #5c2924;background:rgba(12,7,7,.88);backdrop-filter:blur(12px)}
-.brand{font-size:23px;font-weight:900;letter-spacing:1px}
-.brand span{color:var(--orange)}
-.music{border:1px solid #6c3828;background:#241311;color:var(--gold);border-radius:10px;padding:10px 13px;cursor:pointer;font-weight:bold}
-.music:hover{border-color:var(--orange)}
-main{position:relative;z-index:1;max-width:1000px;margin:auto;padding:40px 18px 65px}
-.hero{text-align:center;padding:30px 0 25px}
-.tag{color:var(--orange);font-weight:bold;letter-spacing:4px;font-size:12px;text-transform:uppercase}
-h1{font-size:clamp(34px,7vw,65px);margin:15px 0 8px;line-height:1.05}
-h1 span{color:var(--orange);text-shadow:0 0 25px #ff641c55}
-.subtitle{color:var(--muted);line-height:1.6}
-.card{background:var(--panel);border:1px solid #573027;border-radius:17px;padding:22px;margin:15px 0;box-shadow:0 12px 45px #0005;backdrop-filter:blur(8px)}
-.card h2{font-size:18px;margin:0 0 16px}
-.address{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;background:#100909;border:1px solid #42241e;border-radius:11px;padding:13px}
-.ip{font-weight:bold;overflow-wrap:anywhere;color:#ffe1ba}
-button{font:inherit;cursor:pointer}
-.copy{background:var(--red);color:white;border:0;border-radius:8px;padding:10px 14px;font-weight:bold}
-.copy:hover{filter:brightness(1.15)}
-.statusline{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.dot{width:11px;height:11px;border-radius:50%;background:#888;display:inline-block;flex-shrink:0}
-.dot.online{background:#48dc82;box-shadow:0 0 12px #48dc82}
-.dot.wait{background:var(--orange);box-shadow:0 0 12px #ff9d25}
-.dot.offline{background:#f04444;box-shadow:0 0 12px #f04444}
-.status{font-weight:bold;font-size:19px}
-.small{font-size:13px;color:var(--muted);line-height:1.5}
-.players{margin-top:17px}
-.player{display:inline-block;background:#2b1713;border:1px solid #573027;border-radius:8px;padding:8px 11px;margin:4px;font-size:14px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
-.stat{background:#140b0b;border:1px solid #42241e;border-radius:12px;padding:16px}
-.stat strong{display:block;font-size:22px;color:var(--gold);margin-bottom:5px}
-footer{text-align:center;color:#8e7770;font-size:12px;padding:20px}
-.halloween{color:var(--orange)}
-.music-note{color:var(--muted);font-size:12px;margin-top:8px}
-#volume{width:100%;accent-color:var(--orange);margin-top:10px}
-@media(max-width:500px){header{padding:15px}.brand{font-size:19px}main{padding:20px 12px 40px}.card{padding:17px}.web{width:100px;height:100px}}
+:root {
+  --bg: #100807;
+  --panel: rgba(32, 15, 12, .92);
+  --red: #e32636;
+  --orange: #ff8c1a;
+  --gold: #ffc15a;
+  --text: #fff0df;
+  --muted: #c6a69a;
+  --border: rgba(255, 133, 45, .28);
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--text);
+  background:
+    radial-gradient(ellipse at 50% 0%, #54200f 0%, transparent 45%),
+    radial-gradient(ellipse at 100% 65%, #36100d 0%, transparent 35%),
+    var(--bg);
+  font-family: system-ui, -apple-system, Segoe UI, sans-serif;
+  overflow-x: hidden;
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: .12;
+  background-image:
+    radial-gradient(#ff9b47 1px, transparent 1px);
+  background-size: 28px 28px;
+  z-index: -1;
+}
+.web {
+  position: fixed;
+  top: -12px;
+  width: 180px;
+  height: 180px;
+  opacity: .48;
+  pointer-events: none;
+  z-index: 1;
+}
+.web.left { left: -10px; }
+.web.right { right: -10px; transform: scaleX(-1); }
+.spider {
+  position: fixed;
+  top: -7px;
+  font-size: 29px;
+  z-index: 3;
+  pointer-events: none;
+  transform-origin: top center;
+  animation: swing 3.2s ease-in-out infinite alternate;
+}
+.spider::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -35px;
+  height: 38px;
+  border-left: 1px solid #8b7168;
+}
+.spider.one { left: 12%; animation-delay: -.5s; }
+.spider.two { right: 14%; top: 30px; animation-duration: 4.3s; }
+@keyframes swing {
+  from { transform: rotate(-13deg); }
+  to { transform: rotate(13deg); }
+}
+header {
+  position: relative;
+  text-align: center;
+  padding: 55px 18px 25px;
+}
+.logo {
+  font-size: clamp(38px, 8vw, 66px);
+  line-height: 1.1;
+  font-weight: 1000;
+  letter-spacing: 3px;
+  color: var(--orange);
+  text-shadow: 0 0 12px #ff4d1a, 0 0 35px #8e160e;
+}
+.subtitle {
+  margin-top: 12px;
+  color: var(--muted);
+  letter-spacing: 2px;
+  font-size: 13px;
+  text-transform: uppercase;
+}
+.halloween {
+  display: inline-block;
+  margin-top: 19px;
+  padding: 8px 15px;
+  border: 1px solid #b94d20;
+  border-radius: 999px;
+  background: rgba(91, 24, 11, .55);
+  color: var(--gold);
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+main {
+  width: min(900px, calc(100% - 28px));
+  margin: 0 auto 70px;
+}
+.card {
+  position: relative;
+  margin: 16px 0;
+  padding: 22px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: 0 10px 35px #0006, inset 0 0 24px #9e321008;
+  overflow: hidden;
+}
+.card h2 {
+  margin: 0 0 15px;
+  color: var(--gold);
+  font-size: 19px;
+}
+.server-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: #160d0b;
+  font-size: 13px;
+  font-weight: 800;
+}
+.dot {
+  width: 9px;
+  height: 9px;
+  display: inline-block;
+  border-radius: 50%;
+  background: #a98d80;
+  box-shadow: 0 0 8px currentColor;
+}
+.status.online .dot { background: #4be28a; color: #4be28a; }
+.status.checking .dot { background: #ffb33f; color: #ffb33f; }
+.status.warning .dot { background: #ff8c1a; color: #ff8c1a; }
+.status.error .dot { background: #ed5961; color: #ed5961; }
+.address {
+  margin: 18px 0 6px;
+  padding: 15px;
+  background: #0d0807;
+  border: 1px solid #48241b;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.address strong {
+  color: #fff;
+  font-size: clamp(16px, 3vw, 21px);
+  overflow-wrap: anywhere;
+}
+button {
+  font: inherit;
+  font-weight: 750;
+  cursor: pointer;
+  color: #fff2e6;
+  border: 1px solid #a94425;
+  background: linear-gradient(135deg, #8d2019, #4c110f);
+  border-radius: 10px;
+  padding: 10px 14px;
+  transition: transform .15s, filter .15s;
+}
+button:hover { filter: brightness(1.2); }
+button:active { transform: scale(.97); }
+button:disabled { opacity: .6; cursor: wait; }
+.primary {
+  background: linear-gradient(135deg, #ff8a1d, #b72b17);
+  border-color: #ff9b3d;
+  color: #210b06;
+}
+.actions {
+  display: flex;
+  gap: 9px;
+  flex-wrap: wrap;
+  margin-top: 15px;
+}
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 16px;
+}
+.stat {
+  min-width: 0;
+  padding: 14px 10px;
+  text-align: center;
+  background: #180c0a;
+  border: 1px solid #48231b;
+  border-radius: 12px;
+}
+.stat .value {
+  font-size: 21px;
+  font-weight: 900;
+  color: var(--orange);
+  overflow-wrap: anywhere;
+}
+.stat .label {
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 4px;
+}
+.note {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+  margin: 14px 0 0;
+}
+#lastCheck { color: #bda093; }
+.music-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.music-info { flex: 1; min-width: 180px; }
+.music-info p {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+.music-icon { font-size: 28px; margin-right: 8px; }
+footer {
+  text-align: center;
+  padding: 15px 15px 35px;
+  color: #98796e;
+  font-size: 12px;
+}
+.pumpkin {
+  position: fixed;
+  bottom: 8px;
+  font-size: 36px;
+  pointer-events: none;
+  z-index: 2;
+  filter: drop-shadow(0 0 12px #ff641c55);
+}
+.pumpkin.left { left: 12px; }
+.pumpkin.right { right: 12px; }
+@media (max-width: 520px) {
+  header { padding-top: 52px; }
+  .card { padding: 17px; }
+  .stats { grid-template-columns: 1fr; }
+  .stat { display: flex; align-items: center; justify-content: space-between; text-align: left; }
+  .stat .label { margin: 0; }
+  .web { width: 115px; height: 115px; }
+  .spider.one { left: 7%; }
+  .spider.two { right: 7%; }
+}
 </style>
 </head>
 <body>
-<svg class="web" viewBox="0 0 160 160" aria-hidden="true">
-<g fill="none" stroke="#d7b9a8" stroke-width="1.2" opacity=".8">
-<path d="M0 0L160 160M0 0L160 80M0 0L80 160M0 0L160 0M0 0L0 160"/>
-<path d="M12 0Q0 12 0 12M30 0Q0 30 0 30M50 0Q0 50 0 50M72 0Q0 72 0 72M95 0Q0 95 0 95M120 0Q0 120 0 120M145 0Q0 145 0 145"/>
-</g></svg>
-<svg class="web right" viewBox="0 0 160 160" aria-hidden="true">
-<g fill="none" stroke="#d7b9a8" stroke-width="1.2" opacity=".8">
-<path d="M0 0L160 160M0 0L160 80M0 0L80 160M0 0L160 0M0 0L0 160"/>
-<path d="M12 0Q0 12 0 12M30 0Q0 30 0 30M50 0Q0 50 0 50M72 0Q0 72 0 72M95 0Q0 95 0 95M120 0Q0 120 0 120M145 0Q0 145 0 145"/>
-</g></svg>
-<div class="spider">🕷️</div><div class="spider two">🕷️</div>
-<div class="pumpkin">🎃</div><div class="pumpkin right">🎃</div>
+
+<svg class="web left" viewBox="0 0 180 180" aria-hidden="true">
+  <g fill="none" stroke="#b8a098" stroke-width="1">
+    <path d="M0 0 L180 180 M0 0 L180 90 M0 0 L90 180 M0 0 L180 0 M0 0 L0 180 M0 0 L90 0 M0 0 L0 90"/>
+    <path d="M22 0 Q18 20 0 22 M48 0 Q40 40 0 48 M76 0 Q65 65 0 76 M105 0 Q87 87 0 105 M135 0 Q110 110 0 135 M0 22 Q20 18 22 0 M0 48 Q40 40 48 0 M0 76 Q65 65 76 0"/>
+  </g>
+</svg>
+<svg class="web right" viewBox="0 0 180 180" aria-hidden="true">
+  <g fill="none" stroke="#b8a098" stroke-width="1">
+    <path d="M0 0 L180 180 M0 0 L180 90 M0 0 L90 180 M0 0 L180 0 M0 0 L0 180 M0 0 L90 0 M0 0 L0 90"/>
+    <path d="M22 0 Q18 20 0 22 M48 0 Q40 40 0 48 M76 0 Q65 65 0 76 M105 0 Q87 87 0 105 M135 0 Q110 110 0 135"/>
+  </g>
+</svg>
+<div class="spider one" aria-hidden="true">🕷️</div>
+<div class="spider two" aria-hidden="true">🕷️</div>
+<div class="pumpkin left" aria-hidden="true">🎃</div>
+<div class="pumpkin right" aria-hidden="true">🎃</div>
 
 <header>
-<div class="brand">MK<span>HOST</span> <span style="color:#fff0df">☠</span></div>
-<button class="music" id="musicToggle">♫ Включить музыку</button>
+  <div class="logo">MKHOST</div>
+  <div class="subtitle">Minecraft server · Kartaviy</div>
+  <div class="halloween">☠ ХЭЛЛОУИНСКОЕ ОБНОВЛЕНИЕ ☠</div>
 </header>
 
 <main>
-<section class="hero">
-<div class="tag">☠ Halloween Edition ☠</div>
-<h1><span>KARTAVIY</span></h1>
-<div class="subtitle">Твоя игровая территория в Minecraft<br>Паутина, тыквы и немного жуткой атмосферы.</div>
-</section>
+  <section class="card">
+    <div class="server-head">
+      <h2>🎃 Статус сервера</h2>
+      <div id="status" class="status checking">
+        <span class="dot"></span>
+        <span id="statusText">Проверяем сервер…</span>
+      </div>
+    </div>
 
-<section class="card">
-<h2>🎃 Сервер Minecraft</h2>
-<div class="address">
-<span class="ip" id="serverIp">Kartaviy.aternos.me</span>
-<button class="copy" id="copyIp">Копировать IP</button>
-</div>
-<div style="margin-top:20px" class="statusline">
-<span class="dot wait" id="statusDot"></span>
-<span class="status" id="statusText">Проверяем сервер…</span>
-</div>
-<p class="small" id="statusInfo">Проверяем доступность сервера…</p>
-<div class="grid">
-<div class="stat"><strong id="playerCount">—</strong><span class="small">Игроков онлайн</span></div>
-<div class="stat"><strong id="maxPlayers">—</strong><span class="small">Максимум игроков</span></div>
-<div class="stat"><strong id="serverVersion">—</strong><span class="small">Версия сервера</span></div>
-</div>
-<div class="players">
-<h2>👥 Игроки онлайн</h2>
-<div id="playerList" class="small">Получаем список игроков…</div>
-</div>
-<button class="copy" id="refresh" style="margin-top:17px">↻ Проверить сейчас</button>
-</section>
+    <div class="address">
+      <strong id="serverAddress">Kartaviy.aternos.me</strong>
+      <button id="copyButton" type="button">Копировать IP</button>
+    </div>
 
-<section class="card">
-<h2>🕸️ О сервере</h2>
-<div class="grid">
-<div class="stat"><strong class="halloween">Выживание</strong><span class="small">Строй, исследуй и развивайся</span></div>
-<div class="stat"><strong class="halloween">Java + Bedrock</strong><span class="small">Подключайся с поддерживаемого устройства</span></div>
-<div class="stat"><strong class="halloween">Хэллоуин</strong><span class="small">Мрачное настроение и осенний декор</span></div>
-</div>
-</section>
+    <div class="stats">
+      <div class="stat">
+        <div class="value" id="players">—</div>
+        <div class="label">Игроков онлайн</div>
+      </div>
+      <div class="stat">
+        <div class="value" id="version">—</div>
+        <div class="label">Версия</div>
+      </div>
+      <div class="stat">
+        <div class="value" id="maxPlayers">—</div>
+        <div class="label">Слотов</div>
+      </div>
+    </div>
 
-<section class="card">
-<h2>🎵 Фоновая музыка</h2>
-<div class="small">Файл Music.mp3 должен лежать рядом с index.html. Автозапуск зависит от разрешений браузера.</div>
-<input id="volume" type="range" min="0" max="100" value="25" aria-label="Громкость музыки">
-<div class="music-note" id="musicInfo">Громкость: 25%</div>
-</section>
+    <div class="actions">
+      <button id="refreshButton" class="primary" type="button">↻ Проверить сейчас</button>
+    </div>
+
+    <p class="note" id="statusNote" aria-live="polite">
+      Получаем данные от сервисов проверки Minecraft.
+    </p>
+    <p class="note" id="lastCheck">Последняя проверка: ещё не выполнялась</p>
+  </section>
+
+  <section class="card">
+    <div class="music-row">
+      <div class="music-info">
+        <h2><span class="music-icon">🎵</span>Музыка Хэллоуина</h2>
+        <p id="musicText">Музыка выключена. Нажми кнопку, чтобы включить.</p>
+      </div>
+      <button id="musicButton" class="primary" type="button">▶ Включить музыку</button>
+    </div>
+    <audio id="backgroundMusic" src="Music.mp3" loop preload="none"></audio>
+  </section>
+
+  <section class="card">
+    <h2>🕸️ Добро пожаловать на Kartaviy</h2>
+    <p style="line-height:1.7;margin:0">
+      Заходи на сервер, исследуй мир, строй свои сооружения и играй вместе с друзьями.
+      В этот Хэллоуин паутина уже оплетает сайт… 🎃
+    </p>
+  </section>
 </main>
-<footer>© MKHost · Kartaviy.aternos.me · Halloween Edition 🎃</footer>
 
-<audio id="backgroundMusic" src="Music.mp3" loop preload="auto" playsinline></audio>
+<footer>MKHost © Kartaviy · Halloween Edition</footer>
 
 <script>
-const $ = id => document.getElementById(id);
-const audio = $("backgroundMusic");
-const toggle = $("musicToggle");
-const volume = $("volume");
-const musicInfo = $("musicInfo");
-const SERVER = "Kartaviy.aternos.me";
-let musicStarted = false;
-let checking = false;
-let lastGoodData = null;
+(() => {
+  "use strict";
 
-audio.volume = Number(volume.value) / 100;
+  const SERVER = "Kartaviy.aternos.me";
+  const API_URLS = [
+    `https://api.mcstatus.io/v2/status/java/${SERVER}`,
+    `https://api.mcsrvstat.us/3/${SERVER}`
+  ];
 
-function updateMusicButton() {
-  toggle.textContent = audio.paused ? "♫ Включить музыку" : "♫ Выключить музыку";
-  musicInfo.textContent = (audio.paused ? "Музыка выключена" : "Музыка играет") +
-    " · Громкость: " + volume.value + "%";
-}
+  const $ = id => document.getElementById(id);
+  const statusBox = $("status");
+  const statusText = $("statusText");
+  const statusNote = $("statusNote");
+  const refreshButton = $("refreshButton");
+  const lastCheck = $("lastCheck");
+  const music = $("backgroundMusic");
+  const musicButton = $("musicButton");
+  const musicText = $("musicText");
 
-async function startMusic() {
-  if (!audio.paused) return true;
-  try {
-    await audio.play();
-    musicStarted = true;
-    updateMusicButton();
-    return true;
-  } catch (e) {
-    toggle.textContent = "♫ Нажми, чтобы включить";
-    musicInfo.textContent = "Автозапуск заблокирован браузером. Нажми кнопку музыки.";
-    return false;
+  let checking = false;
+  let lastConfirmedOnline = false;
+
+  function setStatus(kind, text) {
+    statusBox.className = "status " + kind;
+    statusText.textContent = text;
   }
-}
 
-function tryStartMusic() {
-  if (!musicStarted) startMusic();
-}
-
-toggle.addEventListener("click", async () => {
-  if (audio.paused) {
-    await startMusic();
-  } else {
-    audio.pause();
-    musicStarted = false;
-    updateMusicButton();
+  function cleanVersion(data, source) {
+    if (source === "mcstatus") {
+      return data.version && (data.version.name_clean || data.version.name)
+        ? (data.version.name_clean || data.version.name)
+        : "";
+    }
+    return typeof data.version === "string" ? data.version : "";
   }
-});
 
-volume.addEventListener("input", () => {
-  audio.volume = Number(volume.value) / 100;
-  updateMusicButton();
-});
-
-audio.addEventListener("play", updateMusicButton);
-audio.addEventListener("pause", updateMusicButton);
-audio.addEventListener("error", () => {
-  musicInfo.textContent = "Не найден Music.mp3. Проверь имя файла и загрузи его рядом с index.html.";
-});
-
-document.addEventListener("pointerdown", tryStartMusic, {once:true});
-document.addEventListener("keydown", tryStartMusic, {once:true});
-
-window.addEventListener("load", () => {
-  startMusic();
-  setTimeout(tryStartMusic, 1200);
-});
-
-$("copyIp").addEventListener("click", async () => {
-  try {
-    await navigator.clipboard.writeText(SERVER);
-  } catch {
-    const area = document.createElement("textarea");
-    area.value = SERVER;
-    document.body.appendChild(area);
-    area.select();
-    document.execCommand("copy");
-    area.remove();
+  function getPlayerCounts(data, source) {
+    if (source === "mcstatus") {
+      return {
+        online: Number.isFinite(data.players?.online) ? data.players.online : null,
+        max: Number.isFinite(data.players?.max) ? data.players.max : null
+      };
+    }
+    return {
+      online: Number.isFinite(data.players?.online) ? data.players.online : null,
+      max: Number.isFinite(data.players?.max) ? data.players.max : null
+    };
   }
-  $("copyIp").textContent = "Скопировано!";
-  setTimeout(() => $("copyIp").textContent = "Копировать IP", 1800);
-});
 
-$("refresh").addEventListener("click", () => {
-  tryStartMusic();
-  checkServer(true);
-});
+  async function requestStatus(url, source) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 7000);
 
-function normalizeMcstatus(d) {
-  if (d.online !== true) return null;
-  return {
-    online: true,
-    players: Number(d.players?.online ?? 0),
-    max: Number(d.players?.max ?? 0),
-    version: d.version?.name_clean || d.version?.name || "Неизвестна",
-    list: (d.players?.list || [])
-      .map(p => typeof p === "string" ? p : p.name)
-      .filter(Boolean)
-  };
-}
-
-function normalizeMcsrvstat(d) {
-  if (d.online !== true) return null;
-  return {
-    online: true,
-    players: Number(d.players?.online ?? 0),
-    max: Number(d.players?.max ?? 0),
-    version: d.version || "Неизвестна",
-    list: (d.players?.list || [])
-      .map(p => typeof p === "string" ? p : p.name)
-      .filter(Boolean)
-  };
-}
-
-async function requestJSON(url, timeoutMs = 6500) {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), timeoutMs);
-  try {
-    const response = await fetch(url, {
-      cache: "no-store",
-      signal: controller.signal
-    });
-    if (!response.ok) throw new Error("HTTP " + response.status);
-    return await response.json();
-  } finally {
-    clearTimeout(timer);
-  }
-}
-
-const SOURCES = [
-  {
-    name: "mcstatus.io",
-    url: "https://api.mcstatus.io/v2/status/java/" + encodeURIComponent(SERVER),
-    normalize: normalizeMcstatus
-  },
-  {
-    name: "mcsrvstat.us",
-    url: "https://api.mcsrvstat.us/3/" + encodeURIComponent(SERVER),
-    normalize: normalizeMcsrvstat
-  }
-];
-
-/*
-  Важно:
-  ONLINE — источник подтвердил доступность.
-  OFFLINE — источник явно ответил online:false.
-  UNKNOWN — запрос не сработал или ответ непонятен.
-
-  Ошибка сети не считается доказательством, что сервер выключен.
-*/
-async function querySource(source) {
-  for (let attempt = 0; attempt < 2; attempt++) {
     try {
-      const raw = await requestJSON(source.url);
+      const response = await fetch(url, {
+        method: "GET",
+        cache: "no-store",
+        signal: controller.signal
+      });
 
-      if (raw.online === true) {
-        const data = source.normalize(raw);
-        if (data) return {state: "online", source: source.name, data};
+      if (!response.ok) throw new Error("HTTP " + response.status);
+
+      const data = await response.json();
+      if (typeof data.online !== "boolean") {
+        throw new Error("Статус не получен");
       }
 
-      if (raw.online === false) {
-        return {state: "offline", source: source.name};
-      }
-
-      return {state: "unknown", source: source.name};
+      return { ok: true, online: data.online, data, source };
     } catch (error) {
-      if (attempt === 0) {
-        await new Promise(resolve => setTimeout(resolve, 700));
-      }
+      return { ok: false, source, error };
+    } finally {
+      clearTimeout(timeout);
     }
   }
 
-  return {state: "unknown", source: source.name};
-}
+  function displayStats(result) {
+    const data = result.data;
+    const counts = getPlayerCounts(data, result.source);
+    const version = cleanVersion(data, result.source);
 
-function saveLastGoodData(data) {
-  try {
-    localStorage.setItem("mkhostLastOnline", String(Date.now()));
-    localStorage.setItem("mkhostLastData", JSON.stringify(data));
-  } catch {}
-}
-
-function loadLastGoodData() {
-  if (lastGoodData) return lastGoodData;
-
-  try {
-    const saved = JSON.parse(localStorage.getItem("mkhostLastData") || "null");
-    const savedAt = Number(localStorage.getItem("mkhostLastOnline") || 0);
-
-    if (saved && savedAt && Date.now() - savedAt < 24 * 60 * 60 * 1000) {
-      lastGoodData = saved;
-      return saved;
-    }
-  } catch {}
-
-  return null;
-}
-
-function showOnline(result) {
-  const data = result.data;
-  lastGoodData = data;
-  saveLastGoodData(data);
-
-  $("statusDot").className = "dot online";
-  $("statusText").textContent = "Онлайн";
-  $("statusInfo").textContent =
-    "Подтверждено источником " + result.source +
-    ". Проверено: " + new Date().toLocaleTimeString("ru-RU");
-
-  $("playerCount").textContent = data.players;
-  $("maxPlayers").textContent = data.max || "—";
-  $("serverVersion").textContent = data.version;
-
-  const list = $("playerList");
-  list.replaceChildren();
-
-  if (data.list.length) {
-    data.list.forEach(name => {
-      const element = document.createElement("span");
-      element.className = "player";
-      element.textContent = name;
-      list.appendChild(element);
-    });
-  } else {
-    list.textContent = data.players > 0
-      ? "Игроков: " + data.players + ". Сервис не предоставил их ники."
-      : "Игроков нет либо сервис не предоставил список.";
+    $("players").textContent = counts.online === null ? "—" : counts.online;
+    $("maxPlayers").textContent = counts.max === null ? "—" : counts.max;
+    $("version").textContent = version || "—";
   }
-}
 
-function showUnconfirmed(bothOffline = false) {
-  const saved = loadLastGoodData();
-
-  $("statusDot").className = "dot wait";
-  $("statusText").textContent = bothOffline
-    ? "Статус спорный"
-    : "Не удалось проверить";
-
-  $("statusInfo").textContent = bothOffline
-    ? "Оба внешних сервиса сообщают об офлайне, но это не доказывает, что твой сервер выключен. Проверка повторяется автоматически."
-    : "Внешние сервисы не смогли подтвердить статус. Это не обязательно означает, что сервер выключен.";
-
-  if (saved) {
-    $("playerCount").textContent = saved.players ?? "—";
-    $("maxPlayers").textContent = saved.max || "—";
-    $("serverVersion").textContent = saved.version || "—";
-    $("playerList").textContent =
-      "Показаны последние сохранённые данные. Они могут быть устаревшими.";
-  } else {
-    $("playerCount").textContent = "—";
+  function setUnknownStats() {
+    $("players").textContent = "—";
     $("maxPlayers").textContent = "—";
-    $("serverVersion").textContent = "—";
-    $("playerList").textContent =
-      "Нет подтверждённых данных об игроках.";
-  }
-}
-
-async function checkServer(manual = false) {
-  if (checking) return;
-  checking = true;
-
-  if (manual) {
-    $("statusText").textContent = "Проверяем…";
-    $("statusDot").className = "dot wait";
-    $("statusInfo").textContent = "Запрашиваем данные у внешних сервисов…";
+    $("version").textContent = "—";
   }
 
-  try {
-    const results = await Promise.all(SOURCES.map(querySource));
-    const onlineResults = results.filter(result => result.state === "online");
+  async function checkServer() {
+    if (checking) return;
+    checking = true;
+    refreshButton.disabled = true;
+    refreshButton.textContent = "Проверяем…";
 
-    // Достаточно одного достоверного ответа ONLINE.
-    if (onlineResults.length > 0) {
-      showOnline(onlineResults[0]);
+    if (!lastConfirmedOnline) {
+      setStatus("checking", "Проверяем сервер…");
+    }
+    statusNote.textContent = "Проверяем два независимых источника. Ответы могут запаздывать.";
+
+    try {
+      const results = await Promise.all(
+        API_URLS.map((url, index) =>
+          requestStatus(url, index === 0 ? "mcstatus" : "mcsrvstat")
+        )
+      );
+
+      const onlineResult = results.find(result => result.ok && result.online === true);
+      const successful = results.filter(result => result.ok);
+      const bothExplicitlyOffline =
+        successful.length === 2 &&
+        successful.every(result => result.online === false);
+
+      if (onlineResult) {
+        lastConfirmedOnline = true;
+        setStatus("online", "Сервер отвечает");
+        displayStats(onlineResult);
+        statusNote.textContent =
+          "Как минимум один сервис получил ответ от сервера. Если другой сервис показывает обратное, его данные могут запаздывать.";
+      } else if (bothExplicitlyOffline) {
+        lastConfirmedOnline = false;
+        setStatus("warning", "Статус не подтверждён");
+        statusNote.textContent =
+          "Оба внешних сервиса сейчас сообщают, что сервер не отвечает. Это не доказывает, что он выключен: Aternos может ограничивать внешние проверки или ответ может запаздывать. Проверь сервер в панели Aternos.";
+        setUnknownStats();
+      } else if (successful.length > 0) {
+        lastConfirmedOnline = false;
+        setStatus("warning", "Статус спорный");
+        statusNote.textContent =
+          "Источники не смогли надёжно подтвердить состояние сервера. Сайт не будет ошибочно объявлять его выключенным.";
+        const result = successful.find(item => item.online);
+        if (result) displayStats(result);
+        else setUnknownStats();
+      } else {
+        lastConfirmedOnline = false;
+        setStatus("error", "Не удалось проверить");
+        statusNote.textContent =
+          "Внешние сервисы проверки недоступны или запросы заблокированы. Это не означает, что сервер выключен.";
+        setUnknownStats();
+      }
+
+      lastCheck.textContent = "Последняя проверка: " +
+        new Date().toLocaleTimeString("ru-RU", {
+          hour: "2-digit", minute: "2-digit", second: "2-digit"
+        });
+    } catch (error) {
+      setStatus("error", "Не удалось проверить");
+      statusNote.textContent =
+        "Возникла ошибка проверки. Состояние сервера неизвестно — проверь панель Aternos.";
+    } finally {
+      checking = false;
+      refreshButton.disabled = false;
+      refreshButton.textContent = "↻ Проверить сейчас";
+    }
+  }
+
+  refreshButton.addEventListener("click", checkServer);
+
+  $("copyButton").addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText(SERVER);
+      $("copyButton").textContent = "✓ Скопировано";
+      setTimeout(() => $("copyButton").textContent = "Копировать IP", 1600);
+    } catch {
+      const field = document.createElement("textarea");
+      field.value = SERVER;
+      document.body.appendChild(field);
+      field.select();
+      try {
+        document.execCommand("copy");
+        $("copyButton").textContent = "✓ Скопировано";
+      } catch {
+        $("copyButton").textContent = SERVER;
+      }
+      field.remove();
+      setTimeout(() => $("copyButton").textContent = "Копировать IP", 1600);
+    }
+  });
+
+  function updateMusicButton(playing) {
+    musicButton.textContent = playing ? "❚❚ Выключить музыку" : "▶ Включить музыку";
+    musicText.textContent = playing
+      ? "Музыка Хэллоуина играет."
+      : "Музыка выключена. Нажми кнопку, чтобы включить.";
+  }
+
+  musicButton.addEventListener("click", async () => {
+    if (!music.paused) {
+      music.pause();
+      updateMusicButton(false);
       return;
     }
 
-    // Даже два ответа OFFLINE не считаем окончательным доказательством.
-    const bothOffline = results.every(result => result.state === "offline");
-    showUnconfirmed(bothOffline);
-  } catch (error) {
-    showUnconfirmed(false);
-  } finally {
-    checking = false;
-  }
-}
+    try {
+      await music.play();
+      updateMusicButton(true);
+    } catch {
+      updateMusicButton(false);
+      musicText.textContent =
+        "Не удалось запустить Music.mp3. Проверь, что файл лежит рядом с index.html и имя написано точно.";
+    }
+  });
 
-checkServer();
-setInterval(() => checkServer(), 15000);
+  music.addEventListener("play", () => updateMusicButton(true));
+  music.addEventListener("pause", () => updateMusicButton(false));
+  music.addEventListener("error", () => {
+    musicText.textContent =
+      "Файл Music.mp3 не найден или не поддерживается. Положи его рядом с index.html.";
+  });
+
+  checkServer();
+  setInterval(checkServer, 15000);
+})();
 </script>
 </body>
 </html>
