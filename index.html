@@ -92,7 +92,7 @@ footer{text-align:center;color:#8e7770;font-size:12px;padding:20px}
 <span class="dot wait" id="statusDot"></span>
 <span class="status" id="statusText">Проверяем сервер…</span>
 </div>
-<p class="small" id="statusInfo">Проверка через несколько источников…</p>
+<p class="small" id="statusInfo">Проверяем доступность сервера…</p>
 <div class="grid">
 <div class="stat"><strong id="playerCount">—</strong><span class="small">Игроков онлайн</span></div>
 <div class="stat"><strong id="maxPlayers">—</strong><span class="small">Максимум игроков</span></div>
@@ -116,7 +116,7 @@ footer{text-align:center;color:#8e7770;font-size:12px;padding:20px}
 
 <section class="card">
 <h2>🎵 Фоновая музыка</h2>
-<div class="small">Файл Music.mp3 должен лежать в той же папке, что и index.html. Автозапуск зависит от разрешений браузера.</div>
+<div class="small">Файл Music.mp3 должен лежать рядом с index.html. Автозапуск зависит от разрешений браузера.</div>
 <input id="volume" type="range" min="0" max="100" value="25" aria-label="Громкость музыки">
 <div class="music-note" id="musicInfo">Громкость: 25%</div>
 </section>
@@ -143,6 +143,7 @@ function updateMusicButton() {
   musicInfo.textContent = (audio.paused ? "Музыка выключена" : "Музыка играет") +
     " · Громкость: " + volume.value + "%";
 }
+
 async function startMusic() {
   if (!audio.paused) return true;
   try {
@@ -152,13 +153,15 @@ async function startMusic() {
     return true;
   } catch (e) {
     toggle.textContent = "♫ Нажми, чтобы включить";
-    musicInfo.textContent = "Браузер блокирует автозапуск. Нажми любую кнопку на странице.";
+    musicInfo.textContent = "Автозапуск заблокирован браузером. Нажми кнопку музыки.";
     return false;
   }
 }
+
 function tryStartMusic() {
   if (!musicStarted) startMusic();
 }
+
 toggle.addEventListener("click", async () => {
   if (audio.paused) {
     await startMusic();
@@ -168,17 +171,21 @@ toggle.addEventListener("click", async () => {
     updateMusicButton();
   }
 });
+
 volume.addEventListener("input", () => {
   audio.volume = Number(volume.value) / 100;
   updateMusicButton();
 });
+
 audio.addEventListener("play", updateMusicButton);
 audio.addEventListener("pause", updateMusicButton);
 audio.addEventListener("error", () => {
   musicInfo.textContent = "Не найден Music.mp3. Проверь имя файла и загрузи его рядом с index.html.";
 });
+
 document.addEventListener("pointerdown", tryStartMusic, {once:true});
 document.addEventListener("keydown", tryStartMusic, {once:true});
+
 window.addEventListener("load", () => {
   startMusic();
   setTimeout(tryStartMusic, 1200);
@@ -198,12 +205,12 @@ $("copyIp").addEventListener("click", async () => {
   $("copyIp").textContent = "Скопировано!";
   setTimeout(() => $("copyIp").textContent = "Копировать IP", 1800);
 });
+
 $("refresh").addEventListener("click", () => {
   tryStartMusic();
   checkServer(true);
 });
 
-// Нормализуем ответы двух внешних API в единый формат.
 function normalizeMcstatus(d) {
   if (d.online !== true) return null;
   return {
@@ -211,9 +218,12 @@ function normalizeMcstatus(d) {
     players: Number(d.players?.online ?? 0),
     max: Number(d.players?.max ?? 0),
     version: d.version?.name_clean || d.version?.name || "Неизвестна",
-    list: (d.players?.list || []).map(p => typeof p === "string" ? p : p.name).filter(Boolean)
+    list: (d.players?.list || [])
+      .map(p => typeof p === "string" ? p : p.name)
+      .filter(Boolean)
   };
 }
+
 function normalizeMcsrvstat(d) {
   if (d.online !== true) return null;
   return {
@@ -221,129 +231,185 @@ function normalizeMcsrvstat(d) {
     players: Number(d.players?.online ?? 0),
     max: Number(d.players?.max ?? 0),
     version: d.version || "Неизвестна",
-    list: (d.players?.list || []).map(p => typeof p === "string" ? p : p.name).filter(Boolean)
+    list: (d.players?.list || [])
+      .map(p => typeof p === "string" ? p : p.name)
+      .filter(Boolean)
   };
 }
-async function requestJSON(url, timeoutMs=6500) {
+
+async function requestJSON(url, timeoutMs = 6500) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
   try {
-    const r = await fetch(url, {cache:"no-store", signal:controller.signal});
-    if (!r.ok) throw new Error("HTTP " + r.status);
-    return await r.json();
+    const response = await fetch(url, {
+      cache: "no-store",
+      signal: controller.signal
+    });
+    if (!response.ok) throw new Error("HTTP " + response.status);
+    return await response.json();
   } finally {
     clearTimeout(timer);
   }
 }
-async function querySource(source) {
-  let lastError;
-  for (let attempt=0; attempt<2; attempt++) {
-    try {
-      const raw = await requestJSON(source.url);
-      const data = source.normalize(raw);
-      if (data) return {source:source.name, data};
-      throw new Error("Источник сообщает offline");
-    } catch (e) {
-      lastError = e;
-      if (attempt === 0) await new Promise(resolve => setTimeout(resolve, 700));
-    }
-  }
-  throw lastError || new Error("Проверка не удалась");
-}
+
 const SOURCES = [
-  {name:"mcstatus.io",url:"https://api.mcstatus.io/v2/status/java/"+encodeURIComponent(SERVER),normalize:normalizeMcstatus},
-  {name:"mcsrvstat.us",url:"https://api.mcsrvstat.us/3/"+encodeURIComponent(SERVER),normalize:normalizeMcsrvstat}
+  {
+    name: "mcstatus.io",
+    url: "https://api.mcstatus.io/v2/status/java/" + encodeURIComponent(SERVER),
+    normalize: normalizeMcstatus
+  },
+  {
+    name: "mcsrvstat.us",
+    url: "https://api.mcsrvstat.us/3/" + encodeURIComponent(SERVER),
+    normalize: normalizeMcsrvstat
+  }
 ];
 
-function showOnline(result) {
-  const d = result.data;
-  lastGoodData = d;
-  $("statusDot").className = "dot online";
-  $("statusText").textContent = "Онлайн";
-  $("statusInfo").textContent = "Подтверждено источником " + result.source + ". Последняя проверка: " + new Date().toLocaleTimeString("ru-RU");
-  $("playerCount").textContent = d.players;
-  $("maxPlayers").textContent = d.max || "—";
-  $("serverVersion").textContent = d.version;
-  $("playerList").replaceChildren();
-  if (d.list.length) {
-    d.list.forEach(name => {
-      const el = document.createElement("span");
-      el.className = "player";
-      el.textContent = name;
-      $("playerList").appendChild(el);
-    });
-  } else {
-    $("playerList").textContent = d.players > 0
-      ? "Сейчас игроков: " + d.players + ". Сервис не предоставляет их ники."
-      : "Сейчас игроков нет либо сервис не предоставил список.";
+/*
+  Важно:
+  ONLINE — источник подтвердил доступность.
+  OFFLINE — источник явно ответил online:false.
+  UNKNOWN — запрос не сработал или ответ непонятен.
+
+  Ошибка сети не считается доказательством, что сервер выключен.
+*/
+async function querySource(source) {
+  for (let attempt = 0; attempt < 2; attempt++) {
+    try {
+      const raw = await requestJSON(source.url);
+
+      if (raw.online === true) {
+        const data = source.normalize(raw);
+        if (data) return {state: "online", source: source.name, data};
+      }
+
+      if (raw.online === false) {
+        return {state: "offline", source: source.name};
+      }
+
+      return {state: "unknown", source: source.name};
+    } catch (error) {
+      if (attempt === 0) {
+        await new Promise(resolve => setTimeout(resolve, 700));
+      }
+    }
   }
+
+  return {state: "unknown", source: source.name};
+}
+
+function saveLastGoodData(data) {
   try {
     localStorage.setItem("mkhostLastOnline", String(Date.now()));
-    localStorage.setItem("mkhostLastData", JSON.stringify(d));
+    localStorage.setItem("mkhostLastData", JSON.stringify(data));
   } catch {}
 }
-function showOffline() {
-  $("statusDot").className = "dot offline";
-  $("statusText").textContent = "Офлайн";
-  $("statusInfo").textContent = "Оба сервиса после повторной проверки сообщили, что сервер недоступен. Последняя проверка: " + new Date().toLocaleTimeString("ru-RU");
-  $("playerCount").textContent = "0";
-  $("maxPlayers").textContent = lastGoodData?.max || "—";
-  $("serverVersion").textContent = lastGoodData?.version || "—";
-  $("playerList").textContent = "Сервер сейчас не подтверждён как доступный.";
+
+function loadLastGoodData() {
+  if (lastGoodData) return lastGoodData;
+
+  try {
+    const saved = JSON.parse(localStorage.getItem("mkhostLastData") || "null");
+    const savedAt = Number(localStorage.getItem("mkhostLastOnline") || 0);
+
+    if (saved && savedAt && Date.now() - savedAt < 24 * 60 * 60 * 1000) {
+      lastGoodData = saved;
+      return saved;
+    }
+  } catch {}
+
+  return null;
 }
-function showUnconfirmed() {
+
+function showOnline(result) {
+  const data = result.data;
+  lastGoodData = data;
+  saveLastGoodData(data);
+
+  $("statusDot").className = "dot online";
+  $("statusText").textContent = "Онлайн";
+  $("statusInfo").textContent =
+    "Подтверждено источником " + result.source +
+    ". Проверено: " + new Date().toLocaleTimeString("ru-RU");
+
+  $("playerCount").textContent = data.players;
+  $("maxPlayers").textContent = data.max || "—";
+  $("serverVersion").textContent = data.version;
+
+  const list = $("playerList");
+  list.replaceChildren();
+
+  if (data.list.length) {
+    data.list.forEach(name => {
+      const element = document.createElement("span");
+      element.className = "player";
+      element.textContent = name;
+      list.appendChild(element);
+    });
+  } else {
+    list.textContent = data.players > 0
+      ? "Игроков: " + data.players + ". Сервис не предоставил их ники."
+      : "Игроков нет либо сервис не предоставил список.";
+  }
+}
+
+function showUnconfirmed(bothOffline = false) {
+  const saved = loadLastGoodData();
+
   $("statusDot").className = "dot wait";
-  $("statusText").textContent = "Не удалось проверить";
-  $("statusInfo").textContent = "Сервисы не ответили вовремя. Это не обязательно означает, что сервер выключен.";
-  if (lastGoodData) {
-    $("playerCount").textContent = lastGoodData.players;
-    $("maxPlayers").textContent = lastGoodData.max || "—";
-    $("serverVersion").textContent = lastGoodData.version;
-    $("playerList").textContent = "Показаны последние полученные данные; они могут устареть.";
+  $("statusText").textContent = bothOffline
+    ? "Статус спорный"
+    : "Не удалось проверить";
+
+  $("statusInfo").textContent = bothOffline
+    ? "Оба внешних сервиса сообщают об офлайне, но это не доказывает, что твой сервер выключен. Проверка повторяется автоматически."
+    : "Внешние сервисы не смогли подтвердить статус. Это не обязательно означает, что сервер выключен.";
+
+  if (saved) {
+    $("playerCount").textContent = saved.players ?? "—";
+    $("maxPlayers").textContent = saved.max || "—";
+    $("serverVersion").textContent = saved.version || "—";
+    $("playerList").textContent =
+      "Показаны последние сохранённые данные. Они могут быть устаревшими.";
   } else {
     $("playerCount").textContent = "—";
     $("maxPlayers").textContent = "—";
     $("serverVersion").textContent = "—";
-    $("playerList").textContent = "Данные пока не получены.";
+    $("playerList").textContent =
+      "Нет подтверждённых данных об игроках.";
   }
-  try {
-    const old = JSON.parse(localStorage.getItem("mkhostLastData") || "null");
-    const time = Number(localStorage.getItem("mkhostLastOnline") || 0);
-    if (!lastGoodData && old && time && Date.now()-time < 10*60*1000) {
-      lastGoodData = old;
-      $("playerCount").textContent = old.players ?? "—";
-      $("maxPlayers").textContent = old.max || "—";
-      $("serverVersion").textContent = old.version || "—";
-      $("playerList").textContent = "Последние сохранённые данные; они могут устареть.";
-    }
-  } catch {}
 }
-async function checkServer(manual=false) {
+
+async function checkServer(manual = false) {
   if (checking) return;
   checking = true;
+
   if (manual) {
     $("statusText").textContent = "Проверяем…";
     $("statusDot").className = "dot wait";
+    $("statusInfo").textContent = "Запрашиваем данные у внешних сервисов…";
   }
+
   try {
-    const results = await Promise.allSettled(SOURCES.map(querySource));
-    const successes = results.filter(r => r.status === "fulfilled").map(r => r.value);
-    if (successes.length) {
-      // Если оба источника ответили онлайн, используем более свежий ответ
-      // как основной. Любой подтверждённый онлайн не будет перекрыт
-      // ошибкой второго сервиса.
-      showOnline(successes[0]);
-    } else {
-      const errors = results.filter(r => r.status === "rejected").length;
-      if (errors === SOURCES.length) showOffline();
-      else showUnconfirmed();
+    const results = await Promise.all(SOURCES.map(querySource));
+    const onlineResults = results.filter(result => result.state === "online");
+
+    // Достаточно одного достоверного ответа ONLINE.
+    if (onlineResults.length > 0) {
+      showOnline(onlineResults[0]);
+      return;
     }
-  } catch {
-    showUnconfirmed();
+
+    // Даже два ответа OFFLINE не считаем окончательным доказательством.
+    const bothOffline = results.every(result => result.state === "offline");
+    showUnconfirmed(bothOffline);
+  } catch (error) {
+    showUnconfirmed(false);
   } finally {
     checking = false;
   }
 }
+
 checkServer();
 setInterval(() => checkServer(), 15000);
 </script>
