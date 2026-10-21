@@ -1,281 +1,141 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MKHost — Kartaviy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#130807">
+<meta name="description" content="MKHost — Minecraft-сервер Kartaviy. Статус, игроки онлайн и информация о сервере.">
+<title>MKHost — Kartaviy</title>
+
 <style>
 :root {
-  --bg: #100807;
-  --panel: rgba(32, 15, 12, .92);
-  --red: #e32636;
-  --orange: #ff8c1a;
-  --gold: #ffc15a;
-  --text: #fff0df;
-  --muted: #c6a69a;
-  --border: rgba(255, 133, 45, .28);
+  --bg:#100807;
+  --panel:rgba(32,15,12,.94);
+  --red:#e32636;
+  --orange:#ff8c1a;
+  --gold:#ffc15a;
+  --text:#fff0df;
+  --muted:#c6a69a;
+  --border:rgba(255,133,45,.28);
 }
-* { box-sizing: border-box; }
-body {
-  margin: 0;
-  min-height: 100vh;
-  color: var(--text);
-  background:
-    radial-gradient(ellipse at 50% 0%, #54200f 0%, transparent 45%),
-    radial-gradient(ellipse at 100% 65%, #36100d 0%, transparent 35%),
-    var(--bg);
-  font-family: system-ui, -apple-system, Segoe UI, sans-serif;
-  overflow-x: hidden;
+*{box-sizing:border-box}
+body{
+  margin:0;min-height:100vh;color:var(--text);
+  background:radial-gradient(ellipse at 50% 0%,#54200f 0%,transparent 45%),
+  radial-gradient(ellipse at 100% 65%,#36100d 0%,transparent 35%),var(--bg);
+  font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+  overflow-x:hidden
 }
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  opacity: .12;
-  background-image:
-    radial-gradient(#ff9b47 1px, transparent 1px);
-  background-size: 28px 28px;
-  z-index: -1;
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;opacity:.12;
+  background-image:radial-gradient(#ff9b47 1px,transparent 1px);
+  background-size:28px 28px;z-index:-1
 }
-.web {
-  position: fixed;
-  top: -12px;
-  width: 180px;
-  height: 180px;
-  opacity: .48;
-  pointer-events: none;
-  z-index: 1;
+.web{position:fixed;top:-12px;width:180px;height:180px;opacity:.48;pointer-events:none;z-index:1}
+.web.left{left:-10px}.web.right{right:-10px;transform:scaleX(-1)}
+.spider{
+  position:fixed;top:-7px;font-size:29px;z-index:3;pointer-events:none;
+  transform-origin:top center;animation:swing 3.2s ease-in-out infinite alternate
 }
-.web.left { left: -10px; }
-.web.right { right: -10px; transform: scaleX(-1); }
-.spider {
-  position: fixed;
-  top: -7px;
-  font-size: 29px;
-  z-index: 3;
-  pointer-events: none;
-  transform-origin: top center;
-  animation: swing 3.2s ease-in-out infinite alternate;
+.spider::before{
+  content:"";position:absolute;left:50%;top:-35px;height:38px;border-left:1px solid #8b7168
 }
-.spider::before {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: -35px;
-  height: 38px;
-  border-left: 1px solid #8b7168;
+.spider.one{left:12%;animation-delay:-.5s}
+.spider.two{right:14%;top:30px;animation-duration:4.3s}
+@keyframes swing{from{transform:rotate(-13deg)}to{transform:rotate(13deg)}}
+header{position:relative;text-align:center;padding:55px 18px 25px}
+.logo{
+  font-size:clamp(38px,8vw,66px);line-height:1.1;font-weight:1000;
+  letter-spacing:3px;color:var(--orange);
+  text-shadow:0 0 12px #ff4d1a,0 0 35px #8e160e
 }
-.spider.one { left: 12%; animation-delay: -.5s; }
-.spider.two { right: 14%; top: 30px; animation-duration: 4.3s; }
-@keyframes swing {
-  from { transform: rotate(-13deg); }
-  to { transform: rotate(13deg); }
+.subtitle{margin-top:12px;color:var(--muted);letter-spacing:2px;font-size:13px;text-transform:uppercase}
+.halloween{
+  display:inline-block;margin-top:19px;padding:8px 15px;border:1px solid #b94d20;
+  border-radius:999px;background:#5b180b8c;color:var(--gold);font-weight:800;letter-spacing:1px
 }
-header {
-  position: relative;
-  text-align: center;
-  padding: 55px 18px 25px;
+main{width:min(900px,calc(100% - 28px));margin:0 auto 70px}
+.card{
+  position:relative;margin:16px 0;padding:22px;background:var(--panel);
+  border:1px solid var(--border);border-radius:18px;
+  box-shadow:0 10px 35px #0006,inset 0 0 24px #9e321008;overflow:hidden
 }
-.logo {
-  font-size: clamp(38px, 8vw, 66px);
-  line-height: 1.1;
-  font-weight: 1000;
-  letter-spacing: 3px;
-  color: var(--orange);
-  text-shadow: 0 0 12px #ff4d1a, 0 0 35px #8e160e;
+.card h2{margin:0 0 15px;color:var(--gold);font-size:19px}
+.server-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.status{
+  display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;
+  border:1px solid var(--border);background:#160d0b;font-size:13px;font-weight:800
 }
-.subtitle {
-  margin-top: 12px;
-  color: var(--muted);
-  letter-spacing: 2px;
-  font-size: 13px;
-  text-transform: uppercase;
+.dot{width:9px;height:9px;display:inline-block;border-radius:50%;background:#a98d80;box-shadow:0 0 8px currentColor}
+.status.online .dot{background:#4be28a;color:#4be28a}
+.status.checking .dot{background:#ffb33f;color:#ffb33f}
+.status.warning .dot{background:#ff8c1a;color:#ff8c1a}
+.status.error .dot{background:#ed5961;color:#ed5961}
+.address{
+  margin:18px 0 6px;padding:15px;background:#0d0807;border:1px solid #48241b;
+  border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap
 }
-.halloween {
-  display: inline-block;
-  margin-top: 19px;
-  padding: 8px 15px;
-  border: 1px solid #b94d20;
-  border-radius: 999px;
-  background: rgba(91, 24, 11, .55);
-  color: var(--gold);
-  font-weight: 800;
-  letter-spacing: 1px;
+.address strong{color:#fff;font-size:clamp(16px,3vw,21px);overflow-wrap:anywhere}
+button{
+  font:inherit;font-weight:750;cursor:pointer;color:#fff2e6;border:1px solid #a94425;
+  background:linear-gradient(135deg,#8d2019,#4c110f);border-radius:10px;padding:10px 14px;
+  transition:transform .15s,filter .15s
 }
-main {
-  width: min(900px, calc(100% - 28px));
-  margin: 0 auto 70px;
+button:hover{filter:brightness(1.2)}
+button:active{transform:scale(.97)}
+button:disabled{opacity:.6;cursor:wait}
+.primary{background:linear-gradient(135deg,#ff8a1d,#b72b17);border-color:#ff9b3d;color:#210b06}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:16px}
+.stat{min-width:0;padding:14px 10px;text-align:center;background:#180c0a;border:1px solid #48231b;border-radius:12px}
+.stat .value{font-size:21px;font-weight:900;color:var(--orange);overflow-wrap:anywhere}
+.stat .label{color:var(--muted);font-size:12px;margin-top:4px}
+.note{color:var(--muted);font-size:13px;line-height:1.6;margin:14px 0 0}
+#lastCheck{color:#bda093}
+.players-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.players-head h2{margin-bottom:0}
+.player-count{font-size:12px;color:var(--muted)}
+.player-list{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:16px
 }
-.card {
-  position: relative;
-  margin: 16px 0;
-  padding: 22px;
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  box-shadow: 0 10px 35px #0006, inset 0 0 24px #9e321008;
-  overflow: hidden;
+.player{
+  display:flex;align-items:center;gap:10px;min-width:0;padding:12px;
+  border:1px solid #48231b;border-radius:11px;background:#180c0a
 }
-.card h2 {
-  margin: 0 0 15px;
-  color: var(--gold);
-  font-size: 19px;
+.player-avatar{
+  width:34px;height:34px;border-radius:7px;flex-shrink:0;
+  background:#32140f;border:1px solid #744027;object-fit:cover
 }
-.server-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
+.player-name{font-weight:750;overflow-wrap:anywhere}
+.player-dot{width:8px;height:8px;flex-shrink:0;border-radius:50%;background:#4be28a;box-shadow:0 0 8px #4be28a}
+.empty-players{
+  margin-top:15px;padding:18px;border:1px dashed #633323;border-radius:12px;
+  text-align:center;color:var(--muted);font-size:13px;line-height:1.6
 }
-.status {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-  background: #160d0b;
-  font-size: 13px;
-  font-weight: 800;
+.music-row{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.music-info{flex:1;min-width:180px}
+.music-info p{margin:6px 0 0;color:var(--muted);font-size:13px}
+.music-icon{font-size:28px;margin-right:8px}
+footer{text-align:center;padding:15px 15px 35px;color:#98796e;font-size:12px}
+.pumpkin{position:fixed;bottom:8px;font-size:36px;pointer-events:none;z-index:2;filter:drop-shadow(0 0 12px #ff641c55)}
+.pumpkin.left{left:12px}.pumpkin.right{right:12px}
+@media(max-width:520px){
+  header{padding-top:52px}.card{padding:17px}
+  .stats{grid-template-columns:1fr}
+  .stat{display:flex;align-items:center;justify-content:space-between;text-align:left}
+  .stat .label{margin:0}.web{width:115px;height:115px}
+  .spider.one{left:7%}.spider.two{right:7%}
+  .player-list{grid-template-columns:1fr}
 }
-.dot {
-  width: 9px;
-  height: 9px;
-  display: inline-block;
-  border-radius: 50%;
-  background: #a98d80;
-  box-shadow: 0 0 8px currentColor;
-}
-.status.online .dot { background: #4be28a; color: #4be28a; }
-.status.checking .dot { background: #ffb33f; color: #ffb33f; }
-.status.warning .dot { background: #ff8c1a; color: #ff8c1a; }
-.status.error .dot { background: #ed5961; color: #ed5961; }
-.address {
-  margin: 18px 0 6px;
-  padding: 15px;
-  background: #0d0807;
-  border: 1px solid #48241b;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-.address strong {
-  color: #fff;
-  font-size: clamp(16px, 3vw, 21px);
-  overflow-wrap: anywhere;
-}
-button {
-  font: inherit;
-  font-weight: 750;
-  cursor: pointer;
-  color: #fff2e6;
-  border: 1px solid #a94425;
-  background: linear-gradient(135deg, #8d2019, #4c110f);
-  border-radius: 10px;
-  padding: 10px 14px;
-  transition: transform .15s, filter .15s;
-}
-button:hover { filter: brightness(1.2); }
-button:active { transform: scale(.97); }
-button:disabled { opacity: .6; cursor: wait; }
-.primary {
-  background: linear-gradient(135deg, #ff8a1d, #b72b17);
-  border-color: #ff9b3d;
-  color: #210b06;
-}
-.actions {
-  display: flex;
-  gap: 9px;
-  flex-wrap: wrap;
-  margin-top: 15px;
-}
-.stats {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
-  margin-top: 16px;
-}
-.stat {
-  min-width: 0;
-  padding: 14px 10px;
-  text-align: center;
-  background: #180c0a;
-  border: 1px solid #48231b;
-  border-radius: 12px;
-}
-.stat .value {
-  font-size: 21px;
-  font-weight: 900;
-  color: var(--orange);
-  overflow-wrap: anywhere;
-}
-.stat .label {
-  color: var(--muted);
-  font-size: 12px;
-  margin-top: 4px;
-}
-.note {
-  color: var(--muted);
-  font-size: 13px;
-  line-height: 1.6;
-  margin: 14px 0 0;
-}
-#lastCheck { color: #bda093; }
-.music-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  flex-wrap: wrap;
-}
-.music-info { flex: 1; min-width: 180px; }
-.music-info p {
-  margin: 6px 0 0;
-  color: var(--muted);
-  font-size: 13px;
-}
-.music-icon { font-size: 28px; margin-right: 8px; }
-footer {
-  text-align: center;
-  padding: 15px 15px 35px;
-  color: #98796e;
-  font-size: 12px;
-}
-.pumpkin {
-  position: fixed;
-  bottom: 8px;
-  font-size: 36px;
-  pointer-events: none;
-  z-index: 2;
-  filter: drop-shadow(0 0 12px #ff641c55);
-}
-.pumpkin.left { left: 12px; }
-.pumpkin.right { right: 12px; }
-@media (max-width: 520px) {
-  header { padding-top: 52px; }
-  .card { padding: 17px; }
-  .stats { grid-template-columns: 1fr; }
-  .stat { display: flex; align-items: center; justify-content: space-between; text-align: left; }
-  .stat .label { margin: 0; }
-  .web { width: 115px; height: 115px; }
-  .spider.one { left: 7%; }
-  .spider.two { right: 7%; }
-}
+@media(prefers-reduced-motion:reduce){.spider{animation:none}}
 </style>
 </head>
-<body>
 
+<body>
 <svg class="web left" viewBox="0 0 180 180" aria-hidden="true">
   <g fill="none" stroke="#b8a098" stroke-width="1">
     <path d="M0 0 L180 180 M0 0 L180 90 M0 0 L90 180 M0 0 L180 0 M0 0 L0 180 M0 0 L90 0 M0 0 L0 90"/>
-    <path d="M22 0 Q18 20 0 22 M48 0 Q40 40 0 48 M76 0 Q65 65 0 76 M105 0 Q87 87 0 105 M135 0 Q110 110 0 135 M0 22 Q20 18 22 0 M0 48 Q40 40 48 0 M0 76 Q65 65 76 0"/>
+    <path d="M22 0 Q18 20 0 22 M48 0 Q40 40 0 48 M76 0 Q65 65 0 76 M105 0 Q87 87 0 105 M135 0 Q110 110 0 135"/>
   </g>
 </svg>
 <svg class="web right" viewBox="0 0 180 180" aria-hidden="true">
@@ -284,6 +144,7 @@ footer {
     <path d="M22 0 Q18 20 0 22 M48 0 Q40 40 0 48 M76 0 Q65 65 0 76 M105 0 Q87 87 0 105 M135 0 Q110 110 0 135"/>
   </g>
 </svg>
+
 <div class="spider one" aria-hidden="true">🕷️</div>
 <div class="spider two" aria-hidden="true">🕷️</div>
 <div class="pumpkin left" aria-hidden="true">🎃</div>
@@ -299,9 +160,8 @@ footer {
   <section class="card">
     <div class="server-head">
       <h2>🎃 Статус сервера</h2>
-      <div id="status" class="status checking">
-        <span class="dot"></span>
-        <span id="statusText">Проверяем сервер…</span>
+      <div id="status" class="status checking" role="status" aria-live="polite">
+        <span class="dot"></span><span id="statusText">Проверяем сервер…</span>
       </div>
     </div>
 
@@ -311,28 +171,29 @@ footer {
     </div>
 
     <div class="stats">
-      <div class="stat">
-        <div class="value" id="players">—</div>
-        <div class="label">Игроков онлайн</div>
-      </div>
-      <div class="stat">
-        <div class="value" id="version">—</div>
-        <div class="label">Версия</div>
-      </div>
-      <div class="stat">
-        <div class="value" id="maxPlayers">—</div>
-        <div class="label">Слотов</div>
-      </div>
+      <div class="stat"><div class="value" id="players">—</div><div class="label">Игроков онлайн</div></div>
+      <div class="stat"><div class="value" id="version">—</div><div class="label">Версия</div></div>
+      <div class="stat"><div class="value" id="maxPlayers">—</div><div class="label">Максимум слотов</div></div>
     </div>
 
     <div class="actions">
       <button id="refreshButton" class="primary" type="button">↻ Проверить сейчас</button>
     </div>
 
-    <p class="note" id="statusNote" aria-live="polite">
-      Получаем данные от сервисов проверки Minecraft.
-    </p>
+    <p class="note" id="statusNote" aria-live="polite">Получаем данные о сервере…</p>
     <p class="note" id="lastCheck">Последняя проверка: ещё не выполнялась</p>
+  </section>
+
+  <section class="card">
+    <div class="players-head">
+      <h2>👥 Игроки онлайн</h2>
+      <span class="player-count" id="playerCount">Список не получен</span>
+    </div>
+    <div id="playerList" class="player-list"></div>
+    <div id="playersEmpty" class="empty-players">
+      Загружаем список игроков…
+    </div>
+    <p class="note">Список зависит от данных, которые передаёт внешний сервис. Он может быть неполным или недоступным.</p>
   </section>
 
   <section class="card">
@@ -362,9 +223,15 @@ footer {
   "use strict";
 
   const SERVER = "Kartaviy.aternos.me";
-  const API_URLS = [
-    `https://api.mcstatus.io/v2/status/java/${SERVER}`,
-    `https://api.mcsrvstat.us/3/${SERVER}`
+  const SOURCES = [
+    {
+      name: "mcstatus",
+      url: `https://api.mcstatus.io/v2/status/java/${SERVER}?timeout=5`
+    },
+    {
+      name: "mcsrvstat",
+      url: `https://api.mcsrvstat.us/3/${SERVER}`
+    }
   ];
 
   const $ = id => document.getElementById(id);
@@ -373,46 +240,69 @@ footer {
   const statusNote = $("statusNote");
   const refreshButton = $("refreshButton");
   const lastCheck = $("lastCheck");
+  const playerList = $("playerList");
+  const playersEmpty = $("playersEmpty");
   const music = $("backgroundMusic");
   const musicButton = $("musicButton");
   const musicText = $("musicText");
 
   let checking = false;
-  let lastConfirmedOnline = false;
 
   function setStatus(kind, text) {
     statusBox.className = "status " + kind;
     statusText.textContent = text;
   }
 
-  function cleanVersion(data, source) {
-    if (source === "mcstatus") {
-      return data.version && (data.version.name_clean || data.version.name)
-        ? (data.version.name_clean || data.version.name)
-        : "";
-    }
-    return typeof data.version === "string" ? data.version : "";
+  function numberOrNull(value) {
+    return Number.isFinite(value) ? value : null;
   }
 
-  function getPlayerCounts(data, source) {
-    if (source === "mcstatus") {
-      return {
-        online: Number.isFinite(data.players?.online) ? data.players.online : null,
-        max: Number.isFinite(data.players?.max) ? data.players.max : null
-      };
+  function normalize(result) {
+    const d = result.data || {};
+    const p = d.players || {};
+    let online = null;
+    let max = null;
+    let version = "";
+    let names = [];
+
+    if (result.source === "mcstatus") {
+      online = numberOrNull(p.online);
+      max = numberOrNull(p.max);
+      version = d.version?.name_clean || d.version?.name_raw || "";
+
+      if (Array.isArray(p.list)) {
+        names = p.list.map(x => typeof x === "string"
+          ? x
+          : (x.name_clean || x.name_raw || "")).filter(Boolean);
+      }
+    } else {
+      online = numberOrNull(p.online);
+      max = numberOrNull(p.max);
+      version = typeof d.version === "string"
+        ? d.version
+        : (d.protocol?.name || "");
+
+      if (Array.isArray(p.list)) {
+        names = p.list.map(x => typeof x === "string" ? x : (x.name || ""))
+          .filter(Boolean);
+      }
     }
+
     return {
-      online: Number.isFinite(data.players?.online) ? data.players.online : null,
-      max: Number.isFinite(data.players?.max) ? data.players.max : null
+      online: result.online,
+      count: online,
+      max,
+      version,
+      names: [...new Set(names)]
     };
   }
 
-  async function requestStatus(url, source) {
+  async function fetchSource(source) {
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 7000);
+    const timeout = setTimeout(() => controller.abort(), 8000);
 
     try {
-      const response = await fetch(url, {
+      const response = await fetch(source.url, {
         method: "GET",
         cache: "no-store",
         signal: controller.signal
@@ -425,28 +315,81 @@ footer {
         throw new Error("Статус не получен");
       }
 
-      return { ok: true, online: data.online, data, source };
+      return { ok: true, online: data.online, data, source: source.name };
     } catch (error) {
-      return { ok: false, source, error };
+      return { ok: false, source: source.name, error };
     } finally {
       clearTimeout(timeout);
     }
   }
 
-  function displayStats(result) {
-    const data = result.data;
-    const counts = getPlayerCounts(data, result.source);
-    const version = cleanVersion(data, result.source);
+  function renderPlayers(names, serverOnline, reportedCount) {
+    playerList.replaceChildren();
 
-    $("players").textContent = counts.online === null ? "—" : counts.online;
-    $("maxPlayers").textContent = counts.max === null ? "—" : counts.max;
-    $("version").textContent = version || "—";
+    if (!serverOnline) {
+      $("playerCount").textContent = "Сервер не подтверждён";
+      playersEmpty.hidden = false;
+      playersEmpty.textContent = "Нельзя получить актуальный список игроков, пока сервер не отвечает.";
+      return;
+    }
+
+    if (names.length) {
+      $("playerCount").textContent = `Получено ников: ${names.length}`;
+      playersEmpty.hidden = true;
+
+      names.forEach(name => {
+        const row = document.createElement("div");
+        row.className = "player";
+
+        const avatar = document.createElement("img");
+        avatar.className = "player-avatar";
+        avatar.alt = "";
+        avatar.loading = "lazy";
+        avatar.src = "https://mc-heads.net/avatar/" + encodeURIComponent(name) + "/34";
+        avatar.onerror = () => {
+          avatar.removeAttribute("src");
+          avatar.style.display = "none";
+        };
+
+        const dot = document.createElement("span");
+        dot.className = "player-dot";
+
+        const label = document.createElement("span");
+        label.className = "player-name";
+        label.textContent = name;
+
+        row.append(avatar, dot, label);
+        playerList.appendChild(row);
+      });
+    } else {
+      $("playerCount").textContent = "Ники не переданы";
+      playersEmpty.hidden = false;
+
+      if (reportedCount === 0) {
+        playersEmpty.textContent = "Сейчас игроков нет.";
+      } else if (reportedCount > 0) {
+        playersEmpty.textContent =
+          `Сервер сообщает об игроках (${reportedCount}), но не передаёт их ники через этот источник.`;
+      } else {
+        playersEmpty.textContent =
+          "Сервер отвечает, но источник статуса не предоставил список ников.";
+      }
+    }
   }
 
-  function setUnknownStats() {
+  function showStats(result) {
+    const data = normalize(result);
+    $("players").textContent = data.count === null ? "—" : data.count;
+    $("maxPlayers").textContent = data.max === null ? "—" : data.max;
+    $("version").textContent = data.version || "—";
+    renderPlayers(data.names, true, data.count);
+  }
+
+  function clearStats() {
     $("players").textContent = "—";
     $("maxPlayers").textContent = "—";
     $("version").textContent = "—";
+    renderPlayers([], false, null);
   }
 
   async function checkServer() {
@@ -454,51 +397,47 @@ footer {
     checking = true;
     refreshButton.disabled = true;
     refreshButton.textContent = "Проверяем…";
-
-    if (!lastConfirmedOnline) {
-      setStatus("checking", "Проверяем сервер…");
-    }
-    statusNote.textContent = "Проверяем два независимых источника. Ответы могут запаздывать.";
+    setStatus("checking", "Проверяем сервер…");
+    statusNote.textContent = "Запрашиваем данные у двух сервисов проверки Minecraft.";
 
     try {
-      const results = await Promise.all(
-        API_URLS.map((url, index) =>
-          requestStatus(url, index === 0 ? "mcstatus" : "mcsrvstat")
-        )
-      );
+      const results = await Promise.all(SOURCES.map(fetchSource));
+      const successful = results.filter(r => r.ok);
+      const onlineResults = successful.filter(r => r.online);
+      const offlineResults = successful.filter(r => !r.online);
 
-      const onlineResult = results.find(result => result.ok && result.online === true);
-      const successful = results.filter(result => result.ok);
-      const bothExplicitlyOffline =
-        successful.length === 2 &&
-        successful.every(result => result.online === false);
+      if (onlineResults.length) {
+        // Если сервер подтвердил хотя бы один источник, считаем его отвечающим.
+        // При расхождении источников сообщаем об этом пользователю.
+        const best = onlineResults.find(r => normalize(r).names.length) ||
+                     onlineResults.find(r => normalize(r).count !== null) ||
+                     onlineResults[0];
 
-      if (onlineResult) {
-        lastConfirmedOnline = true;
         setStatus("online", "Сервер отвечает");
-        displayStats(onlineResult);
+        showStats(best);
+
+        if (offlineResults.length) {
+          statusNote.textContent =
+            "Один сервис подтвердил ответ сервера, другой сообщил обратное. Данные могут обновляться с задержкой.";
+        } else {
+          statusNote.textContent =
+            "Сервер ответил на проверку. Автоматическое обновление выполняется каждые 15 секунд; некоторые источники кэшируют данные.";
+        }
+      } else if (successful.length === 2) {
+        setStatus("warning", "Сервер не отвечает");
+        clearStats();
         statusNote.textContent =
-          "Как минимум один сервис получил ответ от сервера. Если другой сервис показывает обратное, его данные могут запаздывать.";
-      } else if (bothExplicitlyOffline) {
-        lastConfirmedOnline = false;
+          "Оба сервиса сейчас сообщают, что сервер не отвечает. Это может означать, что он выключен, запускается или временно недоступен для внешней проверки. Сверься с панелью Aternos.";
+      } else if (successful.length === 1) {
         setStatus("warning", "Статус не подтверждён");
+        clearStats();
         statusNote.textContent =
-          "Оба внешних сервиса сейчас сообщают, что сервер не отвечает. Это не доказывает, что он выключен: Aternos может ограничивать внешние проверки или ответ может запаздывать. Проверь сервер в панели Aternos.";
-        setUnknownStats();
-      } else if (successful.length > 0) {
-        lastConfirmedOnline = false;
-        setStatus("warning", "Статус спорный");
-        statusNote.textContent =
-          "Источники не смогли надёжно подтвердить состояние сервера. Сайт не будет ошибочно объявлять его выключенным.";
-        const result = successful.find(item => item.online);
-        if (result) displayStats(result);
-        else setUnknownStats();
+          "Единственный доступный сервис не подтвердил онлайн. Второй сервис недоступен, поэтому нельзя надёжно определить состояние сервера.";
       } else {
-        lastConfirmedOnline = false;
-        setStatus("error", "Не удалось проверить");
+        setStatus("error", "Проверка недоступна");
+        clearStats();
         statusNote.textContent =
-          "Внешние сервисы проверки недоступны или запросы заблокированы. Это не означает, что сервер выключен.";
-        setUnknownStats();
+          "Оба сервиса проверки не ответили. Это не доказывает, что сервер выключен. Проверь панель Aternos.";
       }
 
       lastCheck.textContent = "Последняя проверка: " +
@@ -506,9 +445,9 @@ footer {
           hour: "2-digit", minute: "2-digit", second: "2-digit"
         });
     } catch (error) {
-      setStatus("error", "Не удалось проверить");
-      statusNote.textContent =
-        "Возникла ошибка проверки. Состояние сервера неизвестно — проверь панель Aternos.";
+      setStatus("error", "Ошибка проверки");
+      clearStats();
+      statusNote.textContent = "Не удалось получить данные. Состояние сервера неизвестно.";
     } finally {
       checking = false;
       refreshButton.disabled = false;
@@ -516,31 +455,34 @@ footer {
     }
   }
 
-  refreshButton.addEventListener("click", checkServer);
-
   $("copyButton").addEventListener("click", async () => {
+    const button = $("copyButton");
+
     try {
       await navigator.clipboard.writeText(SERVER);
-      $("copyButton").textContent = "✓ Скопировано";
-      setTimeout(() => $("copyButton").textContent = "Копировать IP", 1600);
+      button.textContent = "✓ Скопировано";
     } catch {
       const field = document.createElement("textarea");
       field.value = SERVER;
+      field.style.position = "fixed";
+      field.style.opacity = "0";
       document.body.appendChild(field);
       field.select();
-      try {
-        document.execCommand("copy");
-        $("copyButton").textContent = "✓ Скопировано";
-      } catch {
-        $("copyButton").textContent = SERVER;
-      }
+
+      let copied = false;
+      try { copied = document.execCommand("copy"); } catch {}
+
       field.remove();
-      setTimeout(() => $("copyButton").textContent = "Копировать IP", 1600);
+      button.textContent = copied ? "✓ Скопировано" : SERVER;
     }
+
+    setTimeout(() => button.textContent = "Копировать IP", 1800);
   });
 
   function updateMusicButton(playing) {
-    musicButton.textContent = playing ? "❚❚ Выключить музыку" : "▶ Включить музыку";
+    musicButton.textContent = playing
+      ? "❚❚ Выключить музыку"
+      : "▶ Включить музыку";
     musicText.textContent = playing
       ? "Музыка Хэллоуина играет."
       : "Музыка выключена. Нажми кнопку, чтобы включить.";
@@ -559,7 +501,7 @@ footer {
     } catch {
       updateMusicButton(false);
       musicText.textContent =
-        "Не удалось запустить Music.mp3. Проверь, что файл лежит рядом с index.html и имя написано точно.";
+        "Не удалось запустить музыку. Проверь, что Music.mp3 лежит рядом с index.html и имя файла совпадает.";
     }
   });
 
@@ -567,9 +509,10 @@ footer {
   music.addEventListener("pause", () => updateMusicButton(false));
   music.addEventListener("error", () => {
     musicText.textContent =
-      "Файл Music.mp3 не найден или не поддерживается. Положи его рядом с index.html.";
+      "Music.mp3 не найден или не поддерживается. Положи файл рядом с index.html.";
   });
 
+  $("refreshButton").addEventListener("click", checkServer);
   checkServer();
   setInterval(checkServer, 15000);
 })();
