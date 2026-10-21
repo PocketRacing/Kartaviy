@@ -8,33 +8,25 @@
 <title>MKHost — Kartaviy</title>
 <style>
 :root{
-  --bg:#120d0a;
-  --panel:#1d1510;
-  --panel2:#261a12;
-  --orange:#ff982f;
-  --gold:#ffc46b;
-  --text:#fff5e9;
-  --muted:#b5a394;
-  --line:#493020;
-  --green:#4be0a0;
-  --red:#ff625c;
-  --yellow:#ffd06a;
+  --bg:#120d0a;--panel:#1d1510;--panel2:#261a12;
+  --orange:#ff982f;--gold:#ffc46b;--text:#fff5e9;
+  --muted:#b5a394;--line:#493020;--green:#4be0a0;
+  --red:#ff625c;--yellow:#ffd06a;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{
   margin:0;background:
   radial-gradient(ellipse at 50% -20%,#442516 0%,transparent 55%),
-  var(--bg);
-  color:var(--text);
+  var(--bg);color:var(--text);
   font-family:Arial,Helvetica,sans-serif;
 }
 button{font:inherit;cursor:pointer}
 button:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
 header{
-  position:sticky;top:0;z-index:10;
-  display:flex;align-items:center;justify-content:space-between;
-  gap:12px;padding:15px max(16px,calc((100% - 1060px)/2));
+  position:sticky;top:0;z-index:10;display:flex;
+  align-items:center;justify-content:space-between;gap:12px;
+  padding:15px max(16px,calc((100% - 1060px)/2));
   background:#160f0bed;backdrop-filter:blur(14px);
   border-bottom:1px solid var(--line);
 }
@@ -43,27 +35,43 @@ header{
 .tag{font-size:11px;color:var(--muted);margin-top:4px}
 .wrap{max-width:1060px;margin:auto;padding:25px 16px 40px}
 .hero{
-  position:relative;overflow:hidden;
-  padding:32px 25px;border:1px solid #5a3821;border-radius:20px;
+  position:relative;overflow:hidden;padding:32px 25px;
+  border:1px solid #5a3821;border-radius:20px;
   background:
-  radial-gradient(ellipse at 95% 0%,#713b1c 0%,transparent 48%),
-  linear-gradient(135deg,#2c1b11,#19110d 70%);
+    radial-gradient(ellipse at 95% 0%,#713b1c 0%,transparent 48%),
+    linear-gradient(135deg,#2c1b11,#19110d 70%);
   box-shadow:0 15px 45px #0003;
 }
+/* Паутинка в углу приветствия */
+.hero:before{
+  content:"";position:absolute;top:0;right:0;
+  width:155px;height:155px;opacity:.75;pointer-events:none;
+  background:
+    repeating-conic-gradient(
+      from 0deg at 100% 0%,
+      transparent 0deg 14deg,
+      #d99a58 14.5deg 15deg,
+      transparent 15.5deg 45deg
+    );
+  -webkit-mask-image:radial-gradient(circle at 100% 0%,transparent 0 7px,#000 10px 100%);
+  mask-image:radial-gradient(circle at 100% 0%,transparent 0 7px,#000 10px 100%);
+  clip-path:polygon(0 0,100% 0,100% 100%);
+}
 .hero:after{
-  content:"🎃";position:absolute;right:24px;bottom:15px;
-  font-size:clamp(55px,10vw,100px);opacity:.12;
-  transform:rotate(-12deg);pointer-events:none;
+  content:"🕷️";position:absolute;top:105px;right:17px;
+  font-size:24px;opacity:.8;pointer-events:none;
+  filter:drop-shadow(0 2px 5px #0008);
 }
 .eyebrow{
-  color:var(--gold);font-size:12px;font-weight:bold;
-  letter-spacing:2px;text-transform:uppercase;
+  position:relative;z-index:1;color:var(--gold);
+  font-size:12px;font-weight:bold;letter-spacing:2px;
+  text-transform:uppercase;
 }
-h1{font-size:clamp(30px,6vw,47px);margin:12px 0}
+h1{position:relative;z-index:1;font-size:clamp(30px,6vw,47px);margin:12px 0}
 h1 span{color:var(--orange)}
 p{line-height:1.65}
 .muted{color:var(--muted)}
-.iprow{display:flex;gap:9px;flex-wrap:wrap;margin-top:20px}
+.iprow{display:flex;gap:9px;flex-wrap:wrap;margin-top:20px;position:relative;z-index:1}
 .ip{
   flex:1;min-width:190px;background:#100c09;
   border:1px solid var(--line);padding:14px;
@@ -77,9 +85,7 @@ p{line-height:1.65}
 }
 .btn:hover:not(:disabled){filter:brightness(1.1);transform:translateY(-1px)}
 .btn:active:not(:disabled){transform:scale(.98)}
-.btn.secondary{
-  color:var(--text);background:#302016;border-color:#5a3924;
-}
+.btn.secondary{color:var(--text);background:#302016;border-color:#5a3924}
 .btn:disabled{opacity:.75;cursor:wait}
 .small{font-size:12px;color:var(--muted);margin-top:8px;line-height:1.55}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:17px}
@@ -90,10 +96,7 @@ p{line-height:1.65}
 }
 .card h2{font-size:18px;margin:0 0 17px}
 .statusline{display:flex;align-items:center;gap:10px}
-.dot{
-  width:10px;height:10px;border-radius:50%;
-  background:#8e8175;flex-shrink:0;
-}
+.dot{width:10px;height:10px;border-radius:50%;background:#8e8175;flex-shrink:0}
 .dot.online{background:var(--green);box-shadow:0 0 13px #4be0a077}
 .dot.offline{background:var(--red);box-shadow:0 0 10px #ff625c44}
 .dot.checking{background:var(--yellow);box-shadow:0 0 12px #ffd06a66;animation:pulse 1.1s infinite}
@@ -123,17 +126,11 @@ p{line-height:1.65}
   border:1px solid #35251a;border-radius:10px;
   color:var(--muted);font-size:12px;line-height:1.65;
 }
-
-/* Панель проверки */
 .check-panel{
   margin-top:17px;padding:20px;border:1px solid #624025;
-  border-radius:16px;
-  background:linear-gradient(135deg,#2b1c12,#1b130e);
+  border-radius:16px;background:linear-gradient(135deg,#2b1c12,#1b130e);
 }
-.check-head{
-  display:flex;justify-content:space-between;align-items:center;
-  flex-wrap:wrap;gap:12px;
-}
+.check-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
 .check-title{font-size:17px;font-weight:800}
 .check-sub{font-size:12px;color:var(--muted);margin-top:5px}
 .check-actions{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
@@ -141,21 +138,16 @@ p{line-height:1.65}
 .refresh-icon{display:inline-block;margin-right:5px}
 #refreshBtn.loading .refresh-icon{animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.progress-top{
-  display:flex;justify-content:space-between;align-items:center;
-  gap:10px;margin-top:20px;font-size:12px;
-}
+.progress-top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:20px;font-size:12px}
 #progressPercent{color:var(--gold);font-weight:900;font-size:17px}
 .progress-track{
   width:100%;height:9px;background:#100c09;
-  border:1px solid #493020;border-radius:20px;
-  overflow:hidden;margin-top:10px;
+  border:1px solid #493020;border-radius:20px;overflow:hidden;margin-top:10px;
 }
 .progress-fill{
   width:0%;height:100%;border-radius:20px;
   background:linear-gradient(90deg,#f47b23,#ffc46b);
-  transition:width .3s ease;
-  position:relative;overflow:hidden;
+  transition:width .3s ease;position:relative;overflow:hidden;
 }
 .progress-fill.active:after{
   content:"";position:absolute;inset:0;
@@ -163,20 +155,12 @@ p{line-height:1.65}
   animation:shine 1.2s linear infinite;
 }
 @keyframes shine{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
-.check-bottom{
-  display:flex;justify-content:space-between;gap:10px;
-  flex-wrap:wrap;margin-top:12px;
-  font-size:12px;color:var(--muted);
-}
+.check-bottom{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:12px;font-size:12px;color:var(--muted)}
 .check-bottom strong{color:var(--text)}
-.steps{
-  display:grid;grid-template-columns:repeat(3,1fr);
-  gap:8px;margin-top:17px;
-}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:17px}
 .step{
   border:1px solid #493020;background:#160f0b;
-  padding:11px;border-radius:10px;color:#9e8a79;
-  font-size:12px;line-height:1.5;
+  padding:11px;border-radius:10px;color:#9e8a79;font-size:12px;line-height:1.5;
 }
 .step-icon{font-size:17px;margin-bottom:5px}
 .step.active{border-color:#b87836;color:var(--gold);background:#302014}
@@ -194,7 +178,8 @@ footer{text-align:center;padding:22px;color:#9c8775;font-size:12px}
   #refreshBtn{flex:1}
   .steps{gap:5px}
   .step{padding:9px 7px;font-size:11px}
-  .hero:after{right:10px;bottom:5px}
+  .hero:before{width:115px;height:115px}
+  .hero:after{top:83px;right:10px;font-size:20px}
 }
 @media(prefers-reduced-motion:reduce){
   *,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
@@ -232,9 +217,7 @@ footer{text-align:center;padding:22px;color:#9c8775;font-size:12px}
     <div class="check-head">
       <div>
         <div class="check-title">🦇 Проверка сервера</div>
-        <div class="check-sub" id="checkDescription">
-          Проверяем доступность сервера через два сервиса
-        </div>
+        <div class="check-sub" id="checkDescription">Проверяем доступность сервера через два сервиса</div>
       </div>
       <div class="check-actions">
         <button class="btn" id="refreshBtn" type="button">
@@ -247,9 +230,8 @@ footer{text-align:center;padding:22px;color:#9c8775;font-size:12px}
       <span id="progressLabel">Ожидаем проверку</span>
       <span id="progressPercent">0%</span>
     </div>
-    <div class="progress-track" role="progressbar"
-      aria-label="Ход проверки" aria-valuemin="0" aria-valuemax="100"
-      aria-valuenow="0" id="progressTrack">
+    <div class="progress-track" role="progressbar" aria-label="Ход проверки"
+      aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progressTrack">
       <div class="progress-fill" id="progressFill"></div>
     </div>
     <div class="check-bottom">
@@ -258,26 +240,11 @@ footer{text-align:center;padding:22px;color:#9c8775;font-size:12px}
     </div>
 
     <div class="steps">
-      <div class="step" id="step1">
-        <div class="step-icon">🔌</div>
-        <strong>Подключение</strong>
-        <div>Ожидаем ответ</div>
-      </div>
-      <div class="step" id="step2">
-        <div class="step-icon">🔎</div>
-        <strong>Сверка данных</strong>
-        <div>Проверяем два сервиса</div>
-      </div>
-      <div class="step" id="step3">
-        <div class="step-icon">📡</div>
-        <strong>Результат</strong>
-        <div>Ожидаем ответ</div>
-      </div>
+      <div class="step" id="step1"><div class="step-icon">🔌</div><strong>Подключение</strong><div>Ожидаем ответ</div></div>
+      <div class="step" id="step2"><div class="step-icon">🔎</div><strong>Сверка данных</strong><div>Проверяем два сервиса</div></div>
+      <div class="step" id="step3"><div class="step-icon">📡</div><strong>Результат</strong><div>Ожидаем ответ</div></div>
     </div>
-    <div class="small" id="checkNote">
-      Обычно ответ приходит за несколько секунд. При задержке проверка
-      может занять до 12 секунд.
-    </div>
+    <div class="small" id="checkNote">Статус проверяется через внешние сервисы. Точное состояние Aternos не всегда доступно извне.</div>
   </section>
 
   <div class="grid">
@@ -323,10 +290,9 @@ footer{text-align:center;padding:22px;color:#9c8775;font-size:12px}
       <div class="empty">История появится после подтверждённых проверок.</div>
     </div>
     <div class="notice">
-      История сохраняется в браузере этого устройства. Статус проверяется
+      История сохраняется в браузере этого устройства. Проверка выполняется
       автоматически примерно раз в минуту, пока страница открыта.
-      Время запуска и остановки приблизительное. Проверки не показывают
-      события, произошедшие до установки этого кода.
+      История начинается с момента первой подтверждённой проверки.
     </div>
   </section>
 </main>
@@ -357,48 +323,42 @@ let history = loadHistory();
 let checkStartedAt = null;
 let nextCheckAt = null;
 let progressTimer = null;
-let lastCheckDuration = null;
 let currentPhase = 0;
 
 function loadHistory(){
   try{
-    const value = JSON.parse(localStorage.getItem(HISTORY_KEY) || "[]");
-    return Array.isArray(value) ? value : [];
+    const value=JSON.parse(localStorage.getItem(HISTORY_KEY)||"[]");
+    return Array.isArray(value)?value:[];
   }catch{return [];}
 }
-
 function saveHistory(){
   try{localStorage.setItem(HISTORY_KEY,JSON.stringify(history.slice(0,50)));}catch{}
 }
-
 function loadSession(){
   try{
-    const value = JSON.parse(localStorage.getItem(SESSION_KEY) || "null");
-    if(value && Number.isFinite(value.startedAt)) return value;
+    const value=JSON.parse(localStorage.getItem(SESSION_KEY)||"null");
+    if(value&&Number.isFinite(value.startedAt))return value;
   }catch{}
   return null;
 }
-
 function saveSession(){
   try{
-    if(sessionStarted !== null){
+    if(sessionStarted!==null){
       localStorage.setItem(SESSION_KEY,JSON.stringify({startedAt:sessionStarted}));
     }else{
       localStorage.removeItem(SESSION_KEY);
     }
   }catch{}
 }
-
 function formatDate(timestamp){
-  if(!timestamp) return "Неизвестно";
+  if(!timestamp)return "Неизвестно";
   return new Date(timestamp).toLocaleString("ru-RU",{
     day:"2-digit",month:"2-digit",year:"numeric",
     hour:"2-digit",minute:"2-digit",second:"2-digit"
   });
 }
-
 function duration(ms){
-  if(!Number.isFinite(ms)||ms<0) return "—";
+  if(!Number.isFinite(ms)||ms<0)return "—";
   const total=Math.floor(ms/1000);
   const days=Math.floor(total/86400);
   const hours=Math.floor((total%86400)/3600);
@@ -406,11 +366,9 @@ function duration(ms){
   const seconds=total%60;
   return (days?days+" д ":"")+hours+" ч "+minutes+" мин "+seconds+" сек";
 }
-
 function renderHistory(){
   const list=$("historyList");
   list.replaceChildren();
-
   const latestStart=history.find(item=>item.type==="start");
   const latestCompleted=history.find(item=>item.type==="stop"&&item.durationMs!=null);
 
@@ -426,20 +384,16 @@ function renderHistory(){
     list.appendChild(empty);
     return;
   }
-
   history.slice(0,20).forEach(item=>{
     const row=document.createElement("div");
     row.className="history-item "+(item.type==="start"?"started":"stopped");
-
     const title=document.createElement("div");
     title.className="history-title";
     title.textContent=item.type==="start"?"● Сервер запущен":"● Сервер остановлен";
-
     const date=document.createElement("div");
     date.className="history-date";
     date.textContent=formatDate(item.time);
     row.append(title,date);
-
     if(item.type==="stop"&&item.durationMs!=null){
       const elapsed=document.createElement("div");
       elapsed.className="history-date";
@@ -449,30 +403,25 @@ function renderHistory(){
     list.appendChild(row);
   });
 }
-
 function updateDuration(){
-  $("currentDuration").textContent=sessionStarted===null
-    ?"—":duration(Date.now()-sessionStarted);
+  $("currentDuration").textContent=sessionStarted===null?"—":duration(Date.now()-sessionStarted);
   $("sessionText").textContent=sessionStarted===null
     ?"Нет подтверждённого активного сеанса"
     :"Запуск замечен: "+formatDate(sessionStarted);
 }
-
 function addEvent(type,time,durationMs=null){
   history.unshift({type,time,durationMs});
   history=history.slice(0,50);
   saveHistory();
   renderHistory();
 }
-
 function acceptConfirmedStatus(online){
   const now=Date.now();
-
   if(previousStatus===null){
     const saved=loadSession();
     if(online){
       sessionStarted=saved?.startedAt||now;
-      if(!saved) addEvent("start",now);
+      if(!saved)addEvent("start",now);
       saveSession();
     }else{
       sessionStarted=null;
@@ -490,25 +439,21 @@ function acceptConfirmedStatus(online){
       saveSession();
     }
   }
-
   previousStatus=online;
   updateDuration();
 }
-
 function getName(player){
-  if(typeof player==="string") return player;
-  if(!player||typeof player!=="object") return "";
-  if(typeof player.name==="string") return player.name;
+  if(typeof player==="string")return player;
+  if(!player||typeof player!=="object")return "";
+  if(typeof player.name==="string")return player.name;
   if(player.name&&typeof player.name==="object"){
     return player.name.clean||player.name.raw||"";
   }
   return player.name_clean||player.name_raw||player.username||"";
 }
-
 function renderPlayers(result){
   const container=$("playersList");
   container.replaceChildren();
-
   const players=result.data.players||{};
   const rawList=Array.isArray(players.list)?players.list:
     Array.isArray(players.sample)?players.sample:[];
@@ -523,7 +468,6 @@ function renderPlayers(result){
     container.appendChild(empty);
     return;
   }
-
   names.forEach(name=>{
     const row=document.createElement("div");
     row.className="player";
@@ -536,13 +480,19 @@ function renderPlayers(result){
     container.appendChild(row);
   });
 }
-
+function showPlayersMessage(message){
+  const container=$("playersList");
+  container.replaceChildren();
+  const empty=document.createElement("div");
+  empty.className="empty";
+  empty.textContent=message;
+  container.appendChild(empty);
+}
 function setStep(number,state,message){
   const element=$("step"+number);
   element.className="step "+state;
-  if(message) element.lastElementChild.textContent=message;
+  if(message)element.lastElementChild.textContent=message;
 }
-
 function setProgress(percent,label){
   const value=Math.max(0,Math.min(100,Math.round(percent)));
   $("progressFill").style.width=value+"%";
@@ -550,7 +500,6 @@ function setProgress(percent,label){
   $("progressLabel").textContent=label;
   $("progressTrack").setAttribute("aria-valuenow",String(value));
 }
-
 function setCheckingUI(){
   $("refreshBtn").classList.add("loading");
   $("refreshBtn").disabled=true;
@@ -564,63 +513,75 @@ function setCheckingUI(){
   setStep(2,"","Ожидаем ответы");
   setStep(3,"","Результат ещё не готов");
 }
-
 function updateProgress(){
-  if(!checking||checkStartedAt===null) return;
+  if(!checking||checkStartedAt===null)return;
   const elapsed=Date.now()-checkStartedAt;
   $("elapsedTime").textContent=(elapsed/1000).toLocaleString("ru-RU",{
     minimumFractionDigits:1,maximumFractionDigits:1
   })+" с";
-
-  // Это визуальная оценка хода процесса, не процент ответа API.
-  let percent;
-  let label;
-
-  if(elapsed<900){
-    percent=12+(elapsed/900)*18;
-    label="Подключаемся…";
-  }else if(elapsed<3500){
-    percent=30+((elapsed-900)/2600)*35;
-    label="Ожидаем ответы…";
-  }else{
-    percent=Math.min(88,65+((elapsed-3500)/8500)*23);
-    label="Проверяем доступность…";
-  }
-
-  if(currentPhase>=2){
-    percent=Math.max(percent,75);
-    label="Сверяем результаты…";
-  }
+  let percent,label;
+  if(elapsed<900){percent=12+(elapsed/900)*18;label="Подключаемся…";}
+  else if(elapsed<3500){percent=30+((elapsed-900)/2600)*35;label="Ожидаем ответы…";}
+  else{percent=Math.min(88,65+((elapsed-3500)/8500)*23);label="Проверяем доступность…";}
+  if(currentPhase>=2){percent=Math.max(percent,75);label="Сверяем результаты…";}
   setProgress(percent,label);
 }
-
 async function fetchJSON(url){
   const controller=new AbortController();
   const timer=setTimeout(()=>controller.abort(),REQUEST_TIMEOUT_MS);
   try{
     const response=await fetch(url,{
-      method:"GET",cache:"no-store",
-      signal:controller.signal,
+      method:"GET",cache:"no-store",signal:controller.signal,
       headers:{"Accept":"application/json"}
     });
-    if(!response.ok) throw new Error("HTTP "+response.status);
+    if(!response.ok)throw new Error("HTTP "+response.status);
     return await response.json();
   }finally{
     clearTimeout(timer);
   }
 }
 
+/* Собираем именно MOTD — описание сервера, в котором Aternos
+   иногда сообщает, что сервер выключен, даже при online:true. */
+function getMotdText(data){
+  const motd=data?.motd;
+  const values=[];
+  if(typeof motd==="string")values.push(motd);
+  if(Array.isArray(motd)){
+    values.push(...motd.filter(v=>typeof v==="string"));
+  }
+  if(motd&&typeof motd==="object"){
+    for(const key of ["clean","raw","html"]){
+      const value=motd[key];
+      if(typeof value==="string")values.push(value);
+      if(Array.isArray(value)){
+        values.push(...value.filter(v=>typeof v==="string"));
+      }
+    }
+  }
+  return values.join(" ")
+    .replace(/§[0-9a-fk-or]/gi," ")
+    .replace(/<[^>]*>/g," ")
+    .replace(/\s+/g," ")
+    .trim()
+    .toLowerCase();
+}
+function hasAternosOfflineMessage(data){
+  const motd=getMotdText(data);
+  return /this server is offline|server is offline|сервер выключен|сервер отключен|сервер отключён/i.test(motd);
+}
 function normalizeResult(data,source){
   if(!data||typeof data.online!=="boolean"){
     throw new Error("Некорректный ответ API");
   }
-
   const players=data.players||{};
   const version=data.version;
+  const aternosOffline=hasAternosOfflineMessage(data);
 
   return{
-    online:data.online,
-    playersOnline:Number(players.online||0),
+    online:aternosOffline?false:data.online,
+    aternosOffline,
+    playersOnline:aternosOffline?0:Number(players.online||0),
     playersMax:players.max??"?",
     version:source==="mcstatus"
       ?version?.name_clean||version?.name_raw||version?.name||"не определена"
@@ -628,28 +589,21 @@ function normalizeResult(data,source){
     data,source
   };
 }
-
 function showUnconfirmed(message){
   $("statusDot").className="dot checking";
   $("statusText").textContent="Статус не подтверждён";
   $("sourceText").textContent=message;
-  $("playersList").replaceChildren();
-  const empty=document.createElement("div");
-  empty.className="empty";
-  empty.textContent="Не удалось надёжно подтвердить статус. Попробуй ещё раз чуть позже.";
-  $("playersList").appendChild(empty);
+  $("playerCount").textContent="— / —";
+  showPlayersMessage("Ответы не позволяют достоверно определить состояние сервера.");
 }
-
 async function updateStatus(){
-  if(checking) return;
-
+  if(checking)return;
   checking=true;
   checkStartedAt=Date.now();
   currentPhase=1;
   setCheckingUI();
   updateProgress();
   progressTimer=setInterval(updateProgress,100);
-
   $("statusDot").className="dot checking";
   $("statusText").textContent="Проверяем сервер…";
 
@@ -658,7 +612,6 @@ async function updateStatus(){
       fetchJSON(API_URLS[0]).then(data=>normalizeResult(data,"mcstatus")),
       fetchJSON(API_URLS[1]).then(data=>normalizeResult(data,"mcsrvstat"))
     ]);
-
     const good=results
       .filter(result=>result.status==="fulfilled")
       .map(result=>result.value);
@@ -666,124 +619,100 @@ async function updateStatus(){
     currentPhase=2;
     setStep(1,"done","Запрос отправлен");
     setStep(2,"active","Сверяем ответы");
-    setProgress(Math.max(76,Math.round(parseFloat($("progressPercent").textContent)||0)),
-      "Анализируем результаты…");
 
-    if(!good.length){
-      throw new Error("Оба сервиса проверки не ответили");
-    }
+    if(!good.length)throw new Error("Оба сервиса проверки не ответили");
 
-    const agree=good.length===2&&good[0].online===good[1].online;
-    const confirmed=agree;
-    let chosen;
+    /* Специальное сообщение Aternos имеет приоритет над online:true. */
+    const explicitOffline=good.find(result=>result.aternosOffline);
+    let chosen=null;
+    let confirmed=false;
+    let statusMessage="";
 
-    if(confirmed){
-      chosen=good.find(r=>r.online)||good[0];
-    }else if(good.length===2){
-      // При разногласии не выдаём онлайн или офлайн за подтверждённый статус.
-      chosen=good.find(r=>r.online)||good[0];
-    }else{
+    if(explicitOffline){
+      chosen=explicitOffline;
+      confirmed=true;
+      statusMessage="В ответе API найдено сообщение Aternos: сервер выключен.";
+    }else if(good.length===2&&good[0].online===good[1].online){
       chosen=good[0];
+      confirmed=true;
+      statusMessage="Оба сервиса сообщают одинаковый статус.";
+    }else{
+      chosen=good.find(result=>result.online)||good[0];
+      confirmed=false;
+      statusMessage=good.length===2
+        ?"Сервисы расходятся во мнениях — статус не подтверждён."
+        :"Ответил только один сервис — статус не подтверждён.";
     }
 
-    $("playerCount").textContent=chosen.playersOnline+" / "+chosen.playersMax;
-    $("versionText").textContent="Версия: "+chosen.version;
     $("updatedText").textContent="Последний ответ: "+new Date().toLocaleTimeString("ru-RU");
+    $("versionText").textContent="Версия: "+chosen.version;
 
     if(confirmed){
+      $("playerCount").textContent=chosen.playersOnline+" / "+chosen.playersMax;
       $("statusDot").className="dot "+(chosen.online?"online":"offline");
       $("statusText").textContent=chosen.online?"Сервер онлайн":"Сервер офлайн";
-      $("sourceText").textContent="Статус подтверждён двумя сервисами";
+      $("sourceText").textContent=statusMessage;
       acceptConfirmedStatus(chosen.online);
 
       if(chosen.online){
         renderPlayers(chosen);
       }else{
-        $("playersList").replaceChildren();
-        const empty=document.createElement("div");
-        empty.className="empty";
-        empty.textContent="Сервер выключен — игроков сейчас нет.";
-        $("playersList").appendChild(empty);
+        showPlayersMessage("Сервер выключен — игроков сейчас нет.");
       }
     }else{
-      $("statusDot").className="dot checking";
-      $("statusText").textContent="Нужно уточнение";
-      $("sourceText").textContent=good.length===2
-        ?"Сервисы показывают разные статусы. История не изменена."
-        :"Ответил только один сервис. Статус не подтверждён.";
-      $("playersList").replaceChildren();
-      const empty=document.createElement("div");
-      empty.className="empty";
-      empty.textContent="Пока нельзя уверенно определить статус сервера.";
-      $("playersList").appendChild(empty);
+      showUnconfirmed(statusMessage);
     }
 
-    setStep(2,confirmed?"done":"error",confirmed?"Ответы совпали":"Нет подтверждения");
+    setStep(2,confirmed?"done":"error",confirmed?"Результат согласован":"Нет подтверждения");
     setStep(3,confirmed?"done":"error",confirmed?"Результат готов":"Нужна повторная проверка");
-    setProgress(100,confirmed?"Проверка завершена":"Проверка завершена не полностью");
+    setProgress(100,confirmed?"Проверка завершена":"Статус не подтверждён");
     $("checkDescription").textContent=confirmed
-      ?"Получен согласованный ответ двух сервисов"
-      :"Результат не удалось полностью подтвердить";
-    lastCheckDuration=Date.now()-checkStartedAt;
-    $("checkNote").textContent="Проверка заняла "+
-      (lastCheckDuration/1000).toLocaleString("ru-RU",{maximumFractionDigits:1})+
-      " с. Проценты показывают ход интерфейса, а не сетевую загрузку.";
+      ?"Получен результат проверки"
+      :"Нельзя уверенно определить состояние сервера";
 
+    const elapsed=Date.now()-checkStartedAt;
+    $("checkNote").textContent="Проверка заняла "+
+      (elapsed/1000).toLocaleString("ru-RU",{maximumFractionDigits:1})+
+      " с. Важно: внешние API иногда ошибаются при проверке Aternos.";
   }catch(error){
     console.warn("MKHost status error:",error);
-    showUnconfirmed("Сервисы не ответили. Ошибка не доказывает, что сервер выключен.");
+    showUnconfirmed("Сервисы не ответили. Ошибка соединения не доказывает, что сервер выключен.");
     setStep(1,"error","Нет ответа");
     setStep(2,"error","Проверка прервана");
     setStep(3,"error","Нет результата");
-    setProgress(100,"Не удалось получить подтверждённый статус");
+    setProgress(100,"Не удалось подтвердить статус");
     $("checkDescription").textContent="Попробуй повторить проверку";
     $("updatedText").textContent="Последняя проверка: ошибка соединения";
-    $("checkNote").textContent="Возможна задержка API или отсутствие ответа. Это не означает, что сервер точно офлайн.";
+    $("checkNote").textContent="Если оба сервиса недоступны, сайт не может узнать настоящий статус.";
   }finally{
     if(progressTimer!==null){
       clearInterval(progressTimer);
       progressTimer=null;
     }
-
     const elapsed=checkStartedAt===null?0:Date.now()-checkStartedAt;
     $("elapsedTime").textContent=(elapsed/1000).toLocaleString("ru-RU",{
       minimumFractionDigits:1,maximumFractionDigits:1
     })+" с";
-
     checking=false;
     checkStartedAt=null;
     currentPhase=0;
     nextCheckAt=Date.now()+INTERVAL_MS;
-
     $("refreshBtn").classList.remove("loading");
     $("refreshBtn").disabled=false;
     $("refreshLabel").textContent="Проверить снова";
     $("topRefreshBtn").disabled=false;
     $("topRefreshBtn").innerHTML='<span class="refresh-icon">↻</span> Проверить';
-
     $("progressFill").classList.remove("active");
     updateCountdown();
   }
 }
-
 function updateCountdown(){
-  if(checking){
-    $("nextCheck").textContent="после завершения";
-    return;
-  }
-  if(nextCheckAt===null){
-    $("nextCheck").textContent="сейчас";
-    return;
-  }
+  if(checking){$("nextCheck").textContent="после завершения";return;}
+  if(nextCheckAt===null){$("nextCheck").textContent="сейчас";return;}
   const seconds=Math.max(0,Math.ceil((nextCheckAt-Date.now())/1000));
-  $("nextCheck").textContent=seconds>0
-    ?seconds+" с":"сейчас";
-
-  if(seconds===0){
-    updateStatus();
-  }
+  $("nextCheck").textContent=seconds>0?seconds+" с":"сейчас";
+  if(seconds===0)updateStatus();
 }
-
 async function copyIP(){
   try{
     if(navigator.clipboard&&window.isSecureContext){
@@ -797,7 +726,7 @@ async function copyIP(){
       field.select();
       const ok=document.execCommand("copy");
       field.remove();
-      if(!ok) throw new Error("Copy failed");
+      if(!ok)throw new Error("Copy failed");
     }
     $("copyStatus").textContent="✓ IP скопирован! Заходи к нам в игру.";
   }catch{
@@ -808,9 +737,8 @@ async function copyIP(){
 $("copyBtn").addEventListener("click",copyIP);
 $("refreshBtn").addEventListener("click",updateStatus);
 $("topRefreshBtn").addEventListener("click",updateStatus);
-
 $("clearHistoryBtn").addEventListener("click",()=>{
-  if(!confirm("Удалить историю на этом устройстве?")) return;
+  if(!confirm("Удалить историю на этом устройстве?"))return;
   history=[];
   sessionStarted=null;
   previousStatus=null;
