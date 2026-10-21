@@ -7,216 +7,123 @@
 <meta name="theme-color" content="#100909">
 <title>MKHost — Kartaviy</title>
 <style>
-:root {
-  --bg:#100909;
-  --panel:rgba(29,15,15,.91);
-  --red:#e32636;
-  --orange:#ff9d25;
-  --gold:#ffd36a;
-  --text:#fff0df;
-  --muted:#bba9a0;
-}
-* {box-sizing:border-box}
-body {
-  margin:0;
-  min-height:100vh;
-  color:var(--text);
-  background:
-    radial-gradient(ellipse at 10% 10%,#48200b 0,transparent 32%),
-    radial-gradient(ellipse at 90% 70%,#391010 0,transparent 35%),
-    linear-gradient(140deg,#100909,#1b0b0b 55%,#090606);
-  font-family:Arial,sans-serif;
-  overflow-x:hidden;
-}
-body:before {
-  content:"";
-  position:fixed;inset:0;
-  pointer-events:none;
-  opacity:.14;
-  background-image:
-    radial-gradient(circle at 15% 30%,#ff9d25 0 2px,transparent 3px),
-    radial-gradient(circle at 75% 20%,#e32636 0 2px,transparent 3px),
-    radial-gradient(circle at 60% 80%,#ff9d25 0 2px,transparent 3px);
-  background-size:130px 150px,170px 190px,200px 180px;
-}
-.web {
-  position:fixed;top:0;left:0;width:160px;height:160px;
-  z-index:3;pointer-events:none;opacity:.7;
-}
-.web.right {left:auto;right:0;transform:scaleX(-1)}
-.spider {
-  position:fixed;top:0;left:32px;z-index:4;
-  font-size:27px;transform-origin:top center;
-  animation:swing 4s ease-in-out infinite;
-  pointer-events:none;filter:drop-shadow(0 0 8px #ff6b23);
-}
-.spider:before {
-  content:"";position:absolute;left:50%;top:-4px;
-  width:1px;height:42px;background:#c9a98f;
-}
-.spider.two {left:auto;right:35px;top:115px;font-size:21px;animation-delay:-2s}
-.pumpkin {
-  position:fixed;bottom:8px;left:12px;font-size:58px;
-  opacity:.26;filter:drop-shadow(0 0 18px #ff7017);
-  pointer-events:none;z-index:0;
-}
-.pumpkin.right {left:auto;right:10px;font-size:76px}
-@keyframes swing {
-  0%,100%{transform:rotate(-9deg)}
-  50%{transform:rotate(9deg)}
-}
-header {
-  position:relative;z-index:2;
-  display:flex;align-items:center;justify-content:space-between;
-  gap:12px;flex-wrap:wrap;padding:19px max(18px,calc((100% - 1100px)/2));
-  border-bottom:1px solid #5c2924;
-  background:rgba(12,7,7,.78);backdrop-filter:blur(12px);
-}
-.brand {font-size:23px;font-weight:900;letter-spacing:1px}
-.brand span {color:var(--orange)}
-.music {
-  border:1px solid #6c3828;background:#241311;color:var(--gold);
-  border-radius:10px;padding:10px 13px;cursor:pointer;font-weight:bold;
-}
-.music:hover {border-color:var(--orange)}
-main {position:relative;z-index:1;max-width:1000px;margin:auto;padding:40px 18px 65px}
-.hero {text-align:center;padding:30px 0 25px}
-.tag {
-  color:var(--orange);font-weight:bold;letter-spacing:4px;
-  font-size:12px;text-transform:uppercase;
-}
-h1 {font-size:clamp(34px,7vw,65px);margin:15px 0 8px;line-height:1.05}
-h1 span {color:var(--orange);text-shadow:0 0 25px #ff641c55}
-.subtitle {color:var(--muted);line-height:1.6}
-.card {
-  background:var(--panel);border:1px solid #573027;border-radius:17px;
-  padding:22px;margin:15px 0;box-shadow:0 12px 45px #0005;
-  backdrop-filter:blur(8px);
-}
-.card h2 {font-size:18px;margin:0 0 16px}
-.address {
-  display:flex;gap:10px;flex-wrap:wrap;align-items:center;
-  justify-content:space-between;background:#100909;
-  border:1px solid #42241e;border-radius:11px;padding:13px;
-}
-.ip {font-weight:bold;overflow-wrap:anywhere;color:#ffe1ba}
-button {
-  font:inherit;cursor:pointer;
-}
-.copy {
-  background:var(--red);color:white;border:0;border-radius:8px;
-  padding:10px 14px;font-weight:bold;
-}
-.copy:hover {filter:brightness(1.15)}
-.statusline {display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.dot {width:11px;height:11px;border-radius:50%;background:#888;display:inline-block}
-.dot.online {background:#48dc82;box-shadow:0 0 12px #48dc82}
-.dot.wait {background:var(--orange);box-shadow:0 0 12px #ff9d25}
-.status {font-weight:bold;font-size:19px}
-.small {font-size:13px;color:var(--muted);line-height:1.5}
-.players {margin-top:17px}
-.player {
-  display:inline-block;background:#2b1713;border:1px solid #573027;
-  border-radius:8px;padding:8px 11px;margin:4px;font-size:14px;
-}
-.grid {display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
-.stat {background:#140b0b;border:1px solid #42241e;border-radius:12px;padding:16px}
-.stat strong {display:block;font-size:22px;color:var(--gold);margin-bottom:5px}
-footer {text-align:center;color:#8e7770;font-size:12px;padding:20px}
-.halloween {color:var(--orange)}
-.music-note {color:var(--muted);font-size:12px;margin-top:8px}
-#volume {width:100%;accent-color:var(--orange);margin-top:10px}
-.hidden {display:none}
-@media(max-width:500px) {
-  header {padding:15px}
-  .brand {font-size:19px}
-  main {padding:20px 12px 40px}
-  .card {padding:17px}
-  .web {width:100px;height:100px}
-}
+:root{--bg:#100909;--panel:rgba(29,15,15,.93);--red:#e32636;--orange:#ff9d25;--gold:#ffd36a;--text:#fff0df;--muted:#bba9a0}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;color:var(--text);background:radial-gradient(ellipse at 10% 10%,#48200b 0,transparent 32%),radial-gradient(ellipse at 90% 70%,#391010 0,transparent 35%),linear-gradient(140deg,#100909,#1b0b0b 55%,#090606);font-family:Arial,sans-serif;overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.14;background-image:radial-gradient(circle at 15% 30%,#ff9d25 0 2px,transparent 3px),radial-gradient(circle at 75% 20%,#e32636 0 2px,transparent 3px),radial-gradient(circle at 60% 80%,#ff9d25 0 2px,transparent 3px);background-size:130px 150px,170px 190px,200px 180px}
+.web{position:fixed;top:0;left:0;width:160px;height:160px;z-index:3;pointer-events:none;opacity:.7}
+.web.right{left:auto;right:0;transform:scaleX(-1)}
+.spider{position:fixed;top:0;left:32px;z-index:4;font-size:27px;transform-origin:top center;animation:swing 4s ease-in-out infinite;pointer-events:none;filter:drop-shadow(0 0 8px #ff6b23)}
+.spider:before{content:"";position:absolute;left:50%;top:-4px;width:1px;height:42px;background:#c9a98f}
+.spider.two{left:auto;right:35px;top:115px;font-size:21px;animation-delay:-2s}
+.pumpkin{position:fixed;bottom:8px;left:12px;font-size:58px;opacity:.26;filter:drop-shadow(0 0 18px #ff7017);pointer-events:none;z-index:0}
+.pumpkin.right{left:auto;right:10px;font-size:76px}
+@keyframes swing{0%,100%{transform:rotate(-9deg)}50%{transform:rotate(9deg)}}
+header{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:19px max(18px,calc((100% - 1100px)/2));border-bottom:1px solid #5c2924;background:rgba(12,7,7,.88);backdrop-filter:blur(12px)}
+.brand{font-size:23px;font-weight:900;letter-spacing:1px}
+.brand span{color:var(--orange)}
+.music{border:1px solid #6c3828;background:#241311;color:var(--gold);border-radius:10px;padding:10px 13px;cursor:pointer;font-weight:bold}
+.music:hover{border-color:var(--orange)}
+main{position:relative;z-index:1;max-width:1000px;margin:auto;padding:40px 18px 65px}
+.hero{text-align:center;padding:30px 0 25px}
+.tag{color:var(--orange);font-weight:bold;letter-spacing:4px;font-size:12px;text-transform:uppercase}
+h1{font-size:clamp(34px,7vw,65px);margin:15px 0 8px;line-height:1.05}
+h1 span{color:var(--orange);text-shadow:0 0 25px #ff641c55}
+.subtitle{color:var(--muted);line-height:1.6}
+.card{background:var(--panel);border:1px solid #573027;border-radius:17px;padding:22px;margin:15px 0;box-shadow:0 12px 45px #0005;backdrop-filter:blur(8px)}
+.card h2{font-size:18px;margin:0 0 16px}
+.address{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;background:#100909;border:1px solid #42241e;border-radius:11px;padding:13px}
+.ip{font-weight:bold;overflow-wrap:anywhere;color:#ffe1ba}
+button{font:inherit;cursor:pointer}
+.copy{background:var(--red);color:white;border:0;border-radius:8px;padding:10px 14px;font-weight:bold}
+.copy:hover{filter:brightness(1.15)}
+.statusline{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.dot{width:11px;height:11px;border-radius:50%;background:#888;display:inline-block;flex-shrink:0}
+.dot.online{background:#48dc82;box-shadow:0 0 12px #48dc82}
+.dot.wait{background:var(--orange);box-shadow:0 0 12px #ff9d25}
+.dot.offline{background:#f04444;box-shadow:0 0 12px #f04444}
+.status{font-weight:bold;font-size:19px}
+.small{font-size:13px;color:var(--muted);line-height:1.5}
+.players{margin-top:17px}
+.player{display:inline-block;background:#2b1713;border:1px solid #573027;border-radius:8px;padding:8px 11px;margin:4px;font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
+.stat{background:#140b0b;border:1px solid #42241e;border-radius:12px;padding:16px}
+.stat strong{display:block;font-size:22px;color:var(--gold);margin-bottom:5px}
+footer{text-align:center;color:#8e7770;font-size:12px;padding:20px}
+.halloween{color:var(--orange)}
+.music-note{color:var(--muted);font-size:12px;margin-top:8px}
+#volume{width:100%;accent-color:var(--orange);margin-top:10px}
+@media(max-width:500px){header{padding:15px}.brand{font-size:19px}main{padding:20px 12px 40px}.card{padding:17px}.web{width:100px;height:100px}}
 </style>
 </head>
 <body>
 <svg class="web" viewBox="0 0 160 160" aria-hidden="true">
- <g fill="none" stroke="#d7b9a8" stroke-width="1.2" opacity=".8">
-  <path d="M0 0L160 160M0 0L160 80M0 0L80 160M0 0L160 0M0 0L0 160"/>
-  <path d="M12 0Q0 12 0 12M30 0Q0 30 0 30M50 0Q0 50 0 50M72 0Q0 72 0 72M95 0Q0 95 0 95M120 0Q0 120 0 120M145 0Q0 145 0 145"/>
- </g>
-</svg>
+<g fill="none" stroke="#d7b9a8" stroke-width="1.2" opacity=".8">
+<path d="M0 0L160 160M0 0L160 80M0 0L80 160M0 0L160 0M0 0L0 160"/>
+<path d="M12 0Q0 12 0 12M30 0Q0 30 0 30M50 0Q0 50 0 50M72 0Q0 72 0 72M95 0Q0 95 0 95M120 0Q0 120 0 120M145 0Q0 145 0 145"/>
+</g></svg>
 <svg class="web right" viewBox="0 0 160 160" aria-hidden="true">
- <g fill="none" stroke="#d7b9a8" stroke-width="1.2" opacity=".8">
-  <path d="M0 0L160 160M0 0L160 80M0 0L80 160M0 0L160 0M0 0L0 160"/>
-  <path d="M12 0Q0 12 0 12M30 0Q0 30 0 30M50 0Q0 50 0 50M72 0Q0 72 0 72M95 0Q0 95 0 95M120 0Q0 120 0 120M145 0Q0 145 0 145"/>
- </g>
-</svg>
-<div class="spider">🕷️</div>
-<div class="spider two">🕷️</div>
-<div class="pumpkin">🎃</div>
-<div class="pumpkin right">🎃</div>
+<g fill="none" stroke="#d7b9a8" stroke-width="1.2" opacity=".8">
+<path d="M0 0L160 160M0 0L160 80M0 0L80 160M0 0L160 0M0 0L0 160"/>
+<path d="M12 0Q0 12 0 12M30 0Q0 30 0 30M50 0Q0 50 0 50M72 0Q0 72 0 72M95 0Q0 95 0 95M120 0Q0 120 0 120M145 0Q0 145 0 145"/>
+</g></svg>
+<div class="spider">🕷️</div><div class="spider two">🕷️</div>
+<div class="pumpkin">🎃</div><div class="pumpkin right">🎃</div>
 
 <header>
-  <div class="brand">MK<span>HOST</span> <span style="color:#fff0df">☠</span></div>
-  <button class="Music" id="musicToggle">♫ Включить музыку</button>
+<div class="brand">MK<span>HOST</span> <span style="color:#fff0df">☠</span></div>
+<button class="music" id="musicToggle">♫ Включить музыку</button>
 </header>
 
 <main>
-  <section class="hero">
-    <div class="tag">☠ Halloween Edition ☠</div>
-    <h1><span>KARTAVIY</span></h1>
-    <div class="subtitle">Твоя игровая территория в Minecraft<br>Паутина, тыквы и немного жуткой атмосферы.</div>
-  </section>
+<section class="hero">
+<div class="tag">☠ Halloween Edition ☠</div>
+<h1><span>KARTAVIY</span></h1>
+<div class="subtitle">Твоя игровая территория в Minecraft<br>Паутина, тыквы и немного жуткой атмосферы.</div>
+</section>
 
-  <section class="card">
-    <h2>🎃 Сервер Minecraft</h2>
-    <div class="address">
-      <span class="ip" id="serverIp">Kartaviy.aternos.me</span>
-      <button class="copy" id="copyIp">Копировать IP</button>
-    </div>
-    <div style="margin-top:20px" class="statusline">
-      <span class="dot wait" id="statusDot"></span>
-      <span class="status" id="statusText">Проверяем сервер…</span>
-    </div>
-    <p class="small" id="statusInfo">Проверяем доступность. Внешние сервисы иногда ошибаются.</p>
-    <div class="grid">
-      <div class="stat">
-        <strong id="playerCount">—</strong>
-        <span class="small">Игроков онлайн</span>
-      </div>
-      <div class="stat">
-        <strong id="maxPlayers">—</strong>
-        <span class="small">Слотов</span>
-      </div>
-      <div class="stat">
-        <strong id="serverVersion">—</strong>
-        <span class="small">Версия сервера</span>
-      </div>
-    </div>
-    <div class="players">
-      <h2>👥 Игроки онлайн</h2>
-      <div id="playerList" class="small">Получаем список игроков…</div>
-    </div>
-    <button class="copy" id="refresh" style="margin-top:17px">↻ Проверить снова</button>
-  </section>
+<section class="card">
+<h2>🎃 Сервер Minecraft</h2>
+<div class="address">
+<span class="ip" id="serverIp">Kartaviy.aternos.me</span>
+<button class="copy" id="copyIp">Копировать IP</button>
+</div>
+<div style="margin-top:20px" class="statusline">
+<span class="dot wait" id="statusDot"></span>
+<span class="status" id="statusText">Проверяем сервер…</span>
+</div>
+<p class="small" id="statusInfo">Проверка через несколько источников…</p>
+<div class="grid">
+<div class="stat"><strong id="playerCount">—</strong><span class="small">Игроков онлайн</span></div>
+<div class="stat"><strong id="maxPlayers">—</strong><span class="small">Максимум игроков</span></div>
+<div class="stat"><strong id="serverVersion">—</strong><span class="small">Версия сервера</span></div>
+</div>
+<div class="players">
+<h2>👥 Игроки онлайн</h2>
+<div id="playerList" class="small">Получаем список игроков…</div>
+</div>
+<button class="copy" id="refresh" style="margin-top:17px">↻ Проверить сейчас</button>
+</section>
 
-  <section class="card">
-    <h2>🕸️ О сервере</h2>
-    <div class="grid">
-      <div class="stat"><strong class="halloween">Выживание</strong><span class="small">Строй, исследуй и развивайся</span></div>
-      <div class="stat"><strong class="halloween">Java + Bedrock</strong><span class="small">Подключайся с поддерживаемого устройства</span></div>
-      <div class="stat"><strong class="halloween">Хэллоуин</strong><span class="small">Мрачное настроение и осенний декор</span></div>
-    </div>
-  </section>
+<section class="card">
+<h2>🕸️ О сервере</h2>
+<div class="grid">
+<div class="stat"><strong class="halloween">Выживание</strong><span class="small">Строй, исследуй и развивайся</span></div>
+<div class="stat"><strong class="halloween">Java + Bedrock</strong><span class="small">Подключайся с поддерживаемого устройства</span></div>
+<div class="stat"><strong class="halloween">Хэллоуин</strong><span class="small">Мрачное настроение и осенний декор</span></div>
+</div>
+</section>
 
-  <section class="card">
-    <h2>🎵 Фоновая музыка</h2>
-    <div class="small">Музыка загружается из файла music.mp3. Если браузер заблокирует автозапуск, нажми кнопку вверху.</div>
-    <input id="volume" type="range" min="0" max="100" value="25" aria-label="Громкость музыки">
-    <div class="music-note" id="musicInfo">Громкость: 25%</div>
-  </section>
+<section class="card">
+<h2>🎵 Фоновая музыка</h2>
+<div class="small">Файл Music.mp3 должен лежать в той же папке, что и index.html. Автозапуск зависит от разрешений браузера.</div>
+<input id="volume" type="range" min="0" max="100" value="25" aria-label="Громкость музыки">
+<div class="music-note" id="musicInfo">Громкость: 25%</div>
+</section>
 </main>
 <footer>© MKHost · Kartaviy.aternos.me · Halloween Edition 🎃</footer>
 
-<audio id="backgroundMusic" src="music.mp3" loop preload="auto"></audio>
+<audio id="backgroundMusic" src="Music.mp3" loop preload="auto" playsinline></audio>
 
 <script>
 const $ = id => document.getElementById(id);
@@ -224,137 +131,221 @@ const audio = $("backgroundMusic");
 const toggle = $("musicToggle");
 const volume = $("volume");
 const musicInfo = $("musicInfo");
-const ip = "Kartaviy.aternos.me";
+const SERVER = "Kartaviy.aternos.me";
+let musicStarted = false;
+let checking = false;
+let lastGoodData = null;
 
 audio.volume = Number(volume.value) / 100;
 
 function updateMusicButton() {
   toggle.textContent = audio.paused ? "♫ Включить музыку" : "♫ Выключить музыку";
-  musicInfo.textContent = audio.paused
-    ? "Музыка выключена · Громкость: " + volume.value + "%"
-    : "Музыка играет · Громкость: " + volume.value + "%";
+  musicInfo.textContent = (audio.paused ? "Музыка выключена" : "Музыка играет") +
+    " · Громкость: " + volume.value + "%";
 }
-async function playMusic() {
+async function startMusic() {
+  if (!audio.paused) return true;
   try {
     await audio.play();
+    musicStarted = true;
     updateMusicButton();
+    return true;
   } catch (e) {
     toggle.textContent = "♫ Нажми, чтобы включить";
-    musicInfo.textContent = "Автозапуск заблокирован браузером. Нажми кнопку сверху.";
+    musicInfo.textContent = "Браузер блокирует автозапуск. Нажми любую кнопку на странице.";
+    return false;
   }
 }
+function tryStartMusic() {
+  if (!musicStarted) startMusic();
+}
 toggle.addEventListener("click", async () => {
-  if (audio.paused) await playMusic();
-  else { audio.pause(); updateMusicButton(); }
+  if (audio.paused) {
+    await startMusic();
+  } else {
+    audio.pause();
+    musicStarted = false;
+    updateMusicButton();
+  }
 });
 volume.addEventListener("input", () => {
   audio.volume = Number(volume.value) / 100;
   updateMusicButton();
 });
-audio.addEventListener("error", () => {
-  musicInfo.textContent = "Не найден music.mp3. Загрузи файл рядом с index.html.";
-});
 audio.addEventListener("play", updateMusicButton);
 audio.addEventListener("pause", updateMusicButton);
-
-// Браузер может разрешить автозапуск, но это зависит от его настроек.
+audio.addEventListener("error", () => {
+  musicInfo.textContent = "Не найден Music.mp3. Проверь имя файла и загрузи его рядом с index.html.";
+});
+document.addEventListener("pointerdown", tryStartMusic, {once:true});
+document.addEventListener("keydown", tryStartMusic, {once:true});
 window.addEventListener("load", () => {
-  playMusic();
+  startMusic();
+  setTimeout(tryStartMusic, 1200);
 });
 
 $("copyIp").addEventListener("click", async () => {
   try {
-    await navigator.clipboard.writeText(ip);
-    $("copyIp").textContent = "Скопировано!";
+    await navigator.clipboard.writeText(SERVER);
   } catch {
     const area = document.createElement("textarea");
-    area.value = ip;
+    area.value = SERVER;
     document.body.appendChild(area);
     area.select();
     document.execCommand("copy");
     area.remove();
-    $("copyIp").textContent = "Скопировано!";
   }
+  $("copyIp").textContent = "Скопировано!";
   setTimeout(() => $("copyIp").textContent = "Копировать IP", 1800);
 });
+$("refresh").addEventListener("click", () => {
+  tryStartMusic();
+  checkServer(true);
+});
 
-let checking = false;
-async function fetchStatus(url) {
-  const response = await fetch(url, {cache:"no-store"});
-  if (!response.ok) throw new Error("HTTP " + response.status);
-  return await response.json();
+// Нормализуем ответы двух внешних API в единый формат.
+function normalizeMcstatus(d) {
+  if (d.online !== true) return null;
+  return {
+    online: true,
+    players: Number(d.players?.online ?? 0),
+    max: Number(d.players?.max ?? 0),
+    version: d.version?.name_clean || d.version?.name || "Неизвестна",
+    list: (d.players?.list || []).map(p => typeof p === "string" ? p : p.name).filter(Boolean)
+  };
 }
-function showOnline(data, source) {
+function normalizeMcsrvstat(d) {
+  if (d.online !== true) return null;
+  return {
+    online: true,
+    players: Number(d.players?.online ?? 0),
+    max: Number(d.players?.max ?? 0),
+    version: d.version || "Неизвестна",
+    list: (d.players?.list || []).map(p => typeof p === "string" ? p : p.name).filter(Boolean)
+  };
+}
+async function requestJSON(url, timeoutMs=6500) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const r = await fetch(url, {cache:"no-store", signal:controller.signal});
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    return await r.json();
+  } finally {
+    clearTimeout(timer);
+  }
+}
+async function querySource(source) {
+  let lastError;
+  for (let attempt=0; attempt<2; attempt++) {
+    try {
+      const raw = await requestJSON(source.url);
+      const data = source.normalize(raw);
+      if (data) return {source:source.name, data};
+      throw new Error("Источник сообщает offline");
+    } catch (e) {
+      lastError = e;
+      if (attempt === 0) await new Promise(resolve => setTimeout(resolve, 700));
+    }
+  }
+  throw lastError || new Error("Проверка не удалась");
+}
+const SOURCES = [
+  {name:"mcstatus.io",url:"https://api.mcstatus.io/v2/status/java/"+encodeURIComponent(SERVER),normalize:normalizeMcstatus},
+  {name:"mcsrvstat.us",url:"https://api.mcsrvstat.us/3/"+encodeURIComponent(SERVER),normalize:normalizeMcsrvstat}
+];
+
+function showOnline(result) {
+  const d = result.data;
+  lastGoodData = d;
   $("statusDot").className = "dot online";
   $("statusText").textContent = "Онлайн";
-  $("statusInfo").textContent = "Ответ получен от " + source + ". Данные могут обновляться с задержкой.";
-  const online = Number(data.players?.online ?? data.players?.now ?? 0);
-  const max = Number(data.players?.max ?? data.players?.maxPlayers ?? 0);
-  $("playerCount").textContent = online;
-  $("maxPlayers").textContent = max || "—";
-  $("serverVersion").textContent = data.version || data.software || "—";
-  const list = data.players?.list || data.players?.sample || [];
+  $("statusInfo").textContent = "Подтверждено источником " + result.source + ". Последняя проверка: " + new Date().toLocaleTimeString("ru-RU");
+  $("playerCount").textContent = d.players;
+  $("maxPlayers").textContent = d.max || "—";
+  $("serverVersion").textContent = d.version;
   $("playerList").replaceChildren();
-  if (list.length) {
-    list.forEach(player => {
+  if (d.list.length) {
+    d.list.forEach(name => {
       const el = document.createElement("span");
       el.className = "player";
-      el.textContent = typeof player === "string" ? player : (player.name || player.username || "Игрок");
+      el.textContent = name;
       $("playerList").appendChild(el);
     });
   } else {
-    $("playerList").textContent = online > 0
-      ? "Игроки есть, но сервис не предоставил их ники."
-      : "Сейчас нет игроков или список не предоставлен.";
+    $("playerList").textContent = d.players > 0
+      ? "Сейчас игроков: " + d.players + ". Сервис не предоставляет их ники."
+      : "Сейчас игроков нет либо сервис не предоставил список.";
   }
   try {
     localStorage.setItem("mkhostLastOnline", String(Date.now()));
+    localStorage.setItem("mkhostLastData", JSON.stringify(d));
   } catch {}
 }
-function showUnknown() {
+function showOffline() {
+  $("statusDot").className = "dot offline";
+  $("statusText").textContent = "Офлайн";
+  $("statusInfo").textContent = "Оба сервиса после повторной проверки сообщили, что сервер недоступен. Последняя проверка: " + new Date().toLocaleTimeString("ru-RU");
+  $("playerCount").textContent = "0";
+  $("maxPlayers").textContent = lastGoodData?.max || "—";
+  $("serverVersion").textContent = lastGoodData?.version || "—";
+  $("playerList").textContent = "Сервер сейчас не подтверждён как доступный.";
+}
+function showUnconfirmed() {
   $("statusDot").className = "dot wait";
-  $("statusText").textContent = "Статус не подтверждён";
-  $("statusInfo").textContent = "Сервисы проверки не ответили. Это не доказывает, что сервер выключен.";
-  $("playerCount").textContent = "—";
-  $("maxPlayers").textContent = "—";
-  $("serverVersion").textContent = "—";
-  $("playerList").textContent = "Не удалось получить список игроков.";
+  $("statusText").textContent = "Не удалось проверить";
+  $("statusInfo").textContent = "Сервисы не ответили вовремя. Это не обязательно означает, что сервер выключен.";
+  if (lastGoodData) {
+    $("playerCount").textContent = lastGoodData.players;
+    $("maxPlayers").textContent = lastGoodData.max || "—";
+    $("serverVersion").textContent = lastGoodData.version;
+    $("playerList").textContent = "Показаны последние полученные данные; они могут устареть.";
+  } else {
+    $("playerCount").textContent = "—";
+    $("maxPlayers").textContent = "—";
+    $("serverVersion").textContent = "—";
+    $("playerList").textContent = "Данные пока не получены.";
+  }
   try {
-    const last = Number(localStorage.getItem("mkhostLastOnline") || 0);
-    if (last && Date.now() - last < 10 * 60 * 1000) {
-      $("statusText").textContent = "Возможно, онлайн";
-      $("statusInfo").textContent = "Недавно сервер отвечал как онлайн, но сейчас API не подтвердил статус.";
+    const old = JSON.parse(localStorage.getItem("mkhostLastData") || "null");
+    const time = Number(localStorage.getItem("mkhostLastOnline") || 0);
+    if (!lastGoodData && old && time && Date.now()-time < 10*60*1000) {
+      lastGoodData = old;
+      $("playerCount").textContent = old.players ?? "—";
+      $("maxPlayers").textContent = old.max || "—";
+      $("serverVersion").textContent = old.version || "—";
+      $("playerList").textContent = "Последние сохранённые данные; они могут устареть.";
     }
   } catch {}
 }
-async function checkServer() {
+async function checkServer(manual=false) {
   if (checking) return;
   checking = true;
-  $("statusText").textContent = "Проверяем сервер…";
-  $("statusDot").className = "dot wait";
-  const endpoints = [
-    ["https://api.mcstatus.io/v2/status/java/" + encodeURIComponent(ip), "mcstatus.io"],
-    ["https://api.mcsrvstat.us/3/" + encodeURIComponent(ip), "mcsrvstat.us"]
-  ];
+  if (manual) {
+    $("statusText").textContent = "Проверяем…";
+    $("statusDot").className = "dot wait";
+  }
   try {
-    const results = await Promise.allSettled(endpoints.map(async ([url, source]) => {
-      const data = await fetchStatus(url);
-      const online = data.online === true || data.online === 1;
-      if (!online) throw new Error("Сервис сообщает офлайн");
-      return {data, source};
-    }));
-    const good = results.find(r => r.status === "fulfilled");
-    if (good) showOnline(good.value.data, good.value.source);
-    else showUnknown();
+    const results = await Promise.allSettled(SOURCES.map(querySource));
+    const successes = results.filter(r => r.status === "fulfilled").map(r => r.value);
+    if (successes.length) {
+      // Если оба источника ответили онлайн, используем более свежий ответ
+      // как основной. Любой подтверждённый онлайн не будет перекрыт
+      // ошибкой второго сервиса.
+      showOnline(successes[0]);
+    } else {
+      const errors = results.filter(r => r.status === "rejected").length;
+      if (errors === SOURCES.length) showOffline();
+      else showUnconfirmed();
+    }
   } catch {
-    showUnknown();
+    showUnconfirmed();
   } finally {
     checking = false;
   }
 }
-$("refresh").addEventListener("click", checkServer);
 checkServer();
-setInterval(checkServer, 60000);
+setInterval(() => checkServer(), 15000);
 </script>
 </body>
 </html>
